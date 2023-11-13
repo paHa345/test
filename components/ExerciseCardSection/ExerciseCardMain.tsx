@@ -4,37 +4,64 @@ import React from "react";
 import { useState } from "react";
 import Review from "./Review";
 import ReviewForm from "./ReviewForm";
+import { IExercise } from "@/types";
 
-const ExerciseCardMain = () => {
+const ExerciseCardMain = ({
+  id,
+  type,
+  _id,
+  name,
+  image,
+  isBest,
+  raiting,
+  video,
+  description,
+  muscleGroups,
+  mainGroup,
+  mainGroupRu,
+}: IExercise) => {
+  const imageName = image || "";
+  console.log(muscleGroups);
+
+  const muscleGroupsEl = muscleGroups?.map((el) => {
+    return (
+      <li key={el} className=" list-none pl-9">
+        {el}
+      </li>
+    );
+  });
   return (
     <div>
       <div>
-        <h1 className=" text-center text-2xl font-bold pb-6">Жим лёжа на горизонтальной скамье</h1>
+        <h1 className=" text-center text-2xl font-bold pb-6">{name}</h1>
       </div>
       <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 ">
         <div className=" w-4/5 justify-self-center pb-5">
           <Image
             className=" w-full"
-            src="/bp02.jpeg"
-            alt="benchPress"
+            src={imageName}
+            alt={imageName}
             width={200}
             height={200}
           ></Image>
         </div>
         <div className=" self-center">
           <div className=" flex items-center justify-around">
-            <p className="  bg-baseColour py-1 px-2 rounded-md">Базовое</p>
+            {type === "base" ? (
+              <p className="  bg-baseColour py-1 px-2 rounded-md">Базовое</p>
+            ) : (
+              <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">Изолированное</p>
+            )}
 
             <div className="">
-              Рейтинг: <span className=" text-lg font-bold">4.5</span>
+              Рейтинг: <span className=" text-lg font-bold">{raiting}</span>
             </div>
           </div>
 
           <div className=" text-xl leading-7">
             <ul className=" text-center font-bold pt-7 pb-4"> Мышечные группы</ul>
-            <li className=" list-none pl-9">большие грудные мышщы</li>
-            <li className=" list-none pl-9">трехглавая мышца плеча</li>
-            <li className=" list-none pl-9">передние пучки дельтовидных мышц</li>
+
+            {muscleGroupsEl}
           </div>
         </div>
         <div>
@@ -42,7 +69,7 @@ const ExerciseCardMain = () => {
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/vthMCtgVtFw?si=e8IX2qeM4URTVArB"
+              src={video}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -53,11 +80,7 @@ const ExerciseCardMain = () => {
         <div>
           <div>
             <h2 className=" text-center font-bold text-xl my-6">Описание</h2>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perspiciatis illo.
-              Cumque, exercitationem totam? Pariatur inventore magni nobis quas nesciunt veniam
-              autem, voluptas obcaecati. Esse id cupiditate minus corporis eum.
-            </p>
+            <p>{description}</p>
           </div>
         </div>
         <div>
