@@ -16,13 +16,15 @@ const SmallExerciseCard = ({
   mainGroup,
   mainGroupRu,
 }: IExercise) => {
-  const muscleGroupsEl = muscleGroups.map((el) => {
+  const muscleGroupsEl = muscleGroups?.map((el) => {
     return (
       <li key={el} className=" list-none pl-9">
         {el}
       </li>
     );
   });
+
+  const imageName = image || "";
 
   return (
     <article className="  transition-shadow px-5 py-5 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
@@ -43,8 +45,8 @@ const SmallExerciseCard = ({
             <div className=" basis-3/4">
               <Image
                 className=" w-full"
-                src={image}
-                alt="exercise-image"
+                src={imageName}
+                alt={imageName}
                 width={60}
                 height={60}
               ></Image>
