@@ -37,18 +37,18 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  // const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
-  // if (!req.ok) {
-  //   return {
-  //     props: { status: "error" },
-  //   };
-  // }
-  // const data: IResponseOneExercise = await req.json();
+// export async function getServerSideProps(context: any) {
+// const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
+// if (!req.ok) {
+//   return {
+//     props: { status: "error" },
+//   };
+// }
+// const data: IResponseOneExercise = await req.json();
 
-  return {
-    props: { status: "success", exercise: "uyuy" },
-  };
-}
+//   return {
+//     props: { status: "success", exercise: "uyuy" },
+//   };
+// }
 
 export default Exercise;
