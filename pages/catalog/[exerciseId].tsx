@@ -9,8 +9,6 @@ interface IExerciseProps {
 }
 
 const Exercise = ({ status, exercise }: IExerciseProps) => {
-  console.log(exercise);
-
   return (
     <div className="mx-auto">
       <div className="col-span-2  mx-auto py-10"></div>
@@ -47,7 +45,7 @@ export async function getServerSideProps(context: any) {
   const data: IResponseOneExercise = await req.json();
 
   return {
-    props: { status: "success", exercise: "uyuy" },
+    props: { status: "success", exercise: data },
   };
 }
 
