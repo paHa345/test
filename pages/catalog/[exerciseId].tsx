@@ -9,13 +9,15 @@ interface IExerciseProps {
 }
 
 const Exercise = ({ status, exercise }: IExerciseProps) => {
+  console.log(exercise);
+
   return (
     <div className="mx-auto">
       <div className="col-span-2  mx-auto py-10"></div>
       {status === "error" && (
         <h1 className=" text-center text-xl font-bold my-32">Упражнение не найдено</h1>
       )}
-      {status === "success" && (
+      {/* {status === "success" && (
         <ExerciseCardMain
           id={exercise.result?.id}
           type={exercise.result?.type}
@@ -30,7 +32,7 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
           mainGroup={exercise.result?.mainGroup}
           mainGroupRu={exercise.result?.mainGroupRu}
         ></ExerciseCardMain>
-      )}
+      )} */}
     </div>
   );
 };
