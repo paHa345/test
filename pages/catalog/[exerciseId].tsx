@@ -17,7 +17,7 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
       {status === "error" && (
         <h1 className=" text-center text-xl font-bold my-32">Упражнение не найдено</h1>
       )}
-      {/* {status === "success" && (
+      {status === "success" && (
         <ExerciseCardMain
           id={exercise.result?.id}
           type={exercise.result?.type}
@@ -32,23 +32,23 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
           mainGroup={exercise.result?.mainGroup}
           mainGroupRu={exercise.result?.mainGroupRu}
         ></ExerciseCardMain>
-      )} */}
+      )}
     </div>
   );
 };
 
-// export async function getServerSideProps(context: any) {
-// const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
-// if (!req.ok) {
-//   return {
-//     props: { status: "error" },
-//   };
-// }
-// const data: IResponseOneExercise = await req.json();
+export async function getServerSideProps(context: any) {
+  const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
+  if (!req.ok) {
+    return {
+      props: { status: "error" },
+    };
+  }
+  const data: IResponseOneExercise = await req.json();
 
-//   return {
-//     props: { status: "success", exercise: "uyuy" },
-//   };
-// }
+  return {
+    props: { status: "success", exercise: "uyuy" },
+  };
+}
 
 export default Exercise;
