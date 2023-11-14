@@ -1,4 +1,4 @@
-import { IResponseArrExercises } from "@/types";
+import { IExercise, IResponseArrExercises } from "@/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchBestExercisesAndSet = createAsyncThunk(
@@ -20,24 +20,39 @@ export const fetchBestExercisesAndSet = createAsyncThunk(
   }
 );
 
-// export const secoundReducer = createAsyncThunk(
-//   "appState/secoundReducer",
-//   async function (currentExercisesName, { rejectWithValue, dispatch }) {
-//     try {
-//       const req = await fetch("../api/exercises");
-//       const data = await req.json();
-//       if (!req.ok) {
-//         throw new Error("Ошибка сервера");
-//       }
+export const setCurrentMuscleGroupAndSet = createAsyncThunk(
+  "appState/setCurrentMuscleGroupAndSet",
+  async function (currentMuscleGroup: ICurrentMuscleGroup, { rejectWithValue, dispatch }) {
+    try {
+      let data;
+      if (currentMuscleGroup.en === "all") {
+        const req = await fetch(`../api/allExercises`);
+        data = await req.json();
+        if (!req.ok) {
+          throw new Error("Ошибка сервера");
+        }
+      } else {
+        const req = await fetch(`../api/muscleGroupsExercises/${currentMuscleGroup.en}`);
+        data = await req.json();
+        if (!req.ok) {
+          throw new Error("Ошибка сервера");
+        }
+      }
 
-//       dispatch(appStateActions.setExercises(data));
+      dispatch(appStateActions.setCurrentMuscleGroup(currentMuscleGroup));
+      dispatch(appStateActions.setExercisesByGroup(data.result));
 
-//       return data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+interface ICurrentMuscleGroup {
+  en: string;
+  ru: string;
+}
 
 export interface IAppSlice {
   appState: {
@@ -46,6 +61,8 @@ export interface IAppSlice {
     exercises: null | any;
     fetchBestExercisesStatus: fetchStatus;
     error: string;
+    currentMuscleGroup: ICurrentMuscleGroup;
+    currentExercisesByGroup: IExercise[];
   };
 }
 
@@ -61,6 +78,8 @@ interface IAppState {
   exercises: null | any;
   fetchBestExercisesStatus: fetchStatus;
   error: string;
+  currentMuscleGroup: ICurrentMuscleGroup;
+  currentExercisesByGroup: IExercise[];
 }
 
 export const initAppState: IAppState = {
@@ -69,6 +88,8 @@ export const initAppState: IAppState = {
   exercises: null,
   fetchBestExercisesStatus: fetchStatus.Loading,
   error: "",
+  currentMuscleGroup: { en: "all", ru: "Все" },
+  currentExercisesByGroup: [],
 };
 
 export const appStateSlice = createSlice({
@@ -81,19 +102,33 @@ export const appStateSlice = createSlice({
     setExercises(state, action) {
       state.exercises = action.payload;
     },
+    setExercisesByGroup(state, action) {
+      state.currentExercisesByGroup = action.payload;
+    },
+    setCurrentMuscleGroup(state, action) {
+      console.log(action.payload);
+      state.currentMuscleGroup = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBestExercisesAndSet.pending, (state) => {
       state.fetchBestExercisesStatus = fetchStatus.Loading;
     });
+    builder.addCase(setCurrentMuscleGroupAndSet.pending, (state) => {
+      state.fetchBestExercisesStatus = fetchStatus.Loading;
+    });
 
     builder.addCase(fetchBestExercisesAndSet.fulfilled, (state, action) => {
-      console.log(action);
       state.fetchBestExercisesStatus = fetchStatus.Resolve;
     });
-    builder.addCase(fetchBestExercisesAndSet.rejected, (state, action) => {
-      console.log(action);
+    builder.addCase(setCurrentMuscleGroupAndSet.fulfilled, (state, action) => {
+      state.fetchBestExercisesStatus = fetchStatus.Resolve;
+    });
 
+    builder.addCase(fetchBestExercisesAndSet.rejected, (state, action) => {
+      state.fetchBestExercisesStatus = fetchStatus.Error;
+    });
+    builder.addCase(setCurrentMuscleGroupAndSet.rejected, (state, action) => {
       state.fetchBestExercisesStatus = fetchStatus.Error;
     });
   },

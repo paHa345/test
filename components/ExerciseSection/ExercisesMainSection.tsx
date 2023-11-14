@@ -1,12 +1,43 @@
+import { IAppSlice } from "@/store/appStateSlice";
+import { IExercise } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useSelector } from "react-redux";
+import SmallExerciseCard from "../SmallExerciseCardSection/SmallExerciseCard";
 
 const ExercisesMainSection = () => {
+  const currentExercises = useSelector(
+    (state: IAppSlice) => state.appState.currentExercisesByGroup
+  );
+
+  const bestExercisesCard = currentExercises.map((exercise: IExercise) => {
+    return (
+      <div key={exercise._id}>
+        <SmallExerciseCard
+          name={exercise.name}
+          _id={exercise._id}
+          id={exercise.id}
+          image={exercise.image}
+          isBest={exercise.isBest}
+          type={exercise.type}
+          raiting={exercise.raiting}
+          video={exercise.video}
+          description={exercise.description}
+          muscleGroups={exercise.muscleGroups}
+          mainGroupRu={exercise.mainGroupRu}
+          mainGroup={exercise.mainGroup}
+        ></SmallExerciseCard>
+      </div>
+    );
+  });
+
   return (
     <section className="pb-10">
       <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <article className="  transition-shadow px-5 py-5 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
+        {bestExercisesCard}
+
+        {/* <article className="  transition-shadow px-5 py-5 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
           <div className=" flex flex-col">
             <Link href="/">
               <div className=" flex flex-row gap-2 mb-3">
@@ -215,7 +246,7 @@ const ExercisesMainSection = () => {
               </div>
             </div>
           </div>
-        </article>
+        </article> */}
       </div>
     </section>
   );

@@ -24,11 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .find({ mainGroup: req.query.mainGroup })
         .toArray();
 
-      //   if (!result) {
-      //     res.status(400).json({ message: `Ошибка` });
-      //     return;
-      //   }
-
       res.status(200).json({
         message: "sucess",
         result: result,
