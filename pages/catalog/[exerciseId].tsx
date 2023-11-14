@@ -36,7 +36,7 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
 };
 
 export async function getServerSideProps(context: any) {
-  const req = await fetch(`${process.env.DEV_HOST}api/${context.query.exerciseId}`);
+  const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
   if (!req.ok) {
     return {
       props: { status: "error" },
