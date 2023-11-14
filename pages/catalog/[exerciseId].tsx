@@ -38,16 +38,16 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
 };
 
 export async function getServerSideProps(context: any) {
-  const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
-  if (!req.ok) {
-    return {
-      props: { status: "error" },
-    };
-  }
-  const data: IResponseOneExercise = await req.json();
+  // const req = await fetch(`${process.env.HOST}api/${context.query.exerciseId}`);
+  // if (!req.ok) {
+  //   return {
+  //     props: { status: "error" },
+  //   };
+  // }
+  // const data: IResponseOneExercise = await req.json();
 
   return {
-    props: { status: "success", exercise: data },
+    props: { status: "success", exercise: "uyuy" },
   };
 }
 
