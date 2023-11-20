@@ -37,8 +37,8 @@ const CatalogMain = () => {
         data-number={index}
         onClick={selectMuscleGroupHandler}
         className={` ${
-          currentMuscleGroup.en === el.en ? "bg-cyan-800" : "bg-baseColour"
-        }   self-center mx-3 my-3 py-1 px-2 rounded-md`}
+          currentMuscleGroup.en === el.en ? "bg-cyan-800 text-slate-100" : "bg-baseColour"
+        }   self-center mx-3 my-3 py-1 px-2 rounded-md hover:shadow-cardElementShadow `}
         key={el.en}
       >
         {" "}
@@ -56,6 +56,7 @@ const CatalogMain = () => {
       <div className="mx-auto py-8">
         <h1 className=" text-center text-2xl font-bold">Каталог упражнений</h1>
       </div>
+
       <div>{buttonsEl}</div>
 
       <div>

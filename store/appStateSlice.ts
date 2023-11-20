@@ -5,7 +5,7 @@ export const fetchBestExercisesAndSet = createAsyncThunk(
   "appState/fetchBestExercisesAndSet",
   async function (currentExercisesName, { rejectWithValue, dispatch }) {
     try {
-      const req = await fetch("../api/bestExercises");
+      const req = await fetch("../api/exercises/bestExercises");
       const data: IResponseArrExercises = await req.json();
       if (!req.ok) {
         throw new Error("Ошибка сервера");
@@ -26,7 +26,7 @@ export const setCurrentMuscleGroupAndSet = createAsyncThunk(
     try {
       let data;
       if (currentMuscleGroup.en === "all") {
-        const req = await fetch(`../api/allExercises`);
+        const req = await fetch(`../api/exercises/allExercises`);
         data = await req.json();
         if (!req.ok) {
           throw new Error("Ошибка сервера");
