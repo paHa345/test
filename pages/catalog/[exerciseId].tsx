@@ -36,8 +36,19 @@ const Exercise = ({ status, exercise }: IExerciseProps) => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  const req = await fetch(`${process.env.HOST}api/exercises/${context.query.exerciseId}`);
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.HOST}api/exercises/allExercises`);
+  const exercises = await res.json();
+
+  const paths = exercises.result.map((exercise: any) => ({
+    params: { exerciseId: exercise._id },
+  }));
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }: any) {
+  const req = await fetch(`${process.env.HOST}api/exercises/${params.exerciseId}`);
   if (!req.ok) {
     return {
       props: { status: "error" },
@@ -50,5 +61,20 @@ export async function getServerSideProps(context: any) {
     props: { status: "success", exercise: data },
   };
 }
+
+// export async function getServerSideProps(context: any) {
+//   const req = await fetch(`${process.env.HOST}api/exercises/${context.query.exerciseId}`);
+//   if (!req.ok) {
+//     return {
+//       props: { status: "error" },
+//     };
+//   }
+//   const data: IResponseOneExercise = await req.json();
+//   console.log(data);
+
+//   return {
+//     props: { status: "success", exercise: data },
+//   };
+// }
 
 export default Exercise;
