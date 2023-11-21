@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema<IUserSchema>({
   workoutsArr: [{ type: mongoose.Types.ObjectId, ref: Workout }],
 });
 
-const User = mongoose.model<IUserSchema>("User", userSchema, "exercisesAppUsers");
+const User =
+  mongoose.models.User || mongoose.model<IUserSchema>("User", userSchema, "exercisesAppUsers");
 
 export default User;

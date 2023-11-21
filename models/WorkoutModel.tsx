@@ -9,6 +9,8 @@ const workoutSchema = new mongoose.Schema<IWorkoutSchema>({
   exercisesArr: [{ type: mongoose.Types.ObjectId, required: true, ref: Exercise }],
 });
 
-const Workout = mongoose.model<IWorkoutSchema>("Workout", workoutSchema, "testWorkout");
+const Workout =
+  mongoose.models.Workout ||
+  mongoose.model<IWorkoutSchema>("Workout", workoutSchema, "testWorkout");
 
 export default Workout;

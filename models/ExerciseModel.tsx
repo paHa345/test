@@ -17,6 +17,8 @@ const execiseSchema = new mongoose.Schema<IExerciseSchema>({
   commentsArr: [{ type: mongoose.Types.ObjectId, required: false, ref: Comment }],
 });
 
-const Exercise = mongoose.model<IExerciseSchema>("Exercise", execiseSchema, "exercises");
+const Exercise =
+  mongoose.models.Exercise ||
+  mongoose.model<IExerciseSchema>("Exercise", execiseSchema, "exercises");
 
 export default Exercise;

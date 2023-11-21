@@ -9,6 +9,8 @@ const commentSchema = new mongoose.Schema<ICommentSchema>({
   exerciseId: { type: String, required: true },
 });
 
-const Comment = mongoose.model<ICommentSchema>("Comment", commentSchema, "execisesAppComments");
+const Comment =
+  mongoose.models.Comment ||
+  mongoose.model<ICommentSchema>("Comment", commentSchema, "execisesAppComments");
 
 export default Comment;
