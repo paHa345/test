@@ -1,5 +1,4 @@
-import Exercise from "@/models/ExerciseModel";
-import { ICommentSchema } from "@/types";
+import { ICommentSchema } from "../types";
 import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema<ICommentSchema>({
   date: { type: Date, required: true },
