@@ -1,4 +1,4 @@
-import { IAddExerciseSlice } from "@/store/addExerciseSlice";
+import { IAddExerciseSlice } from "../../store/addExerciseSlice";
 import React from "react";
 import { useSelector } from "react-redux";
 

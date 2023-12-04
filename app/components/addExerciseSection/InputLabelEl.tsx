@@ -5,8 +5,8 @@ import TextArea from "./TextArea";
 import Select from "./Select";
 import AddButton from "./AddButton";
 import { useDispatch } from "react-redux";
-import { appStateActions } from "@/store/appStateSlice";
-import { addExerciseActions } from "@/store/addExerciseSlice";
+import { appStateActions } from "../../store/appStateSlice";
+import { addExerciseActions } from "../../store/addExerciseSlice";
 
 interface IInputLabelElProps {
   nameEn: string;

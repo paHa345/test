@@ -3,8 +3,8 @@ import Link from "next/link";
 import React from "react";
 import SmallExerciseCard from "./SmallExerciseCardSection/SmallExerciseCard";
 import { useSelector } from "react-redux";
-import { IAppSlice } from "@/store/appStateSlice";
-import { IExercise } from "@/types";
+import { IAppSlice } from "../store/appStateSlice";
+import { IExercise } from "../types";
 
 const MainComponent = () => {
   const bestExercises = useSelector((state: IAppSlice) => state.appState.exercises);

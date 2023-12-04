@@ -1,5 +1,5 @@
-import { IAppSlice } from "@/store/appStateSlice";
-import { IExercise } from "@/types";
+import { IAppSlice } from "../../store/appStateSlice";
+import { IExercise } from "../../types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

@@ -8,8 +8,8 @@ import {
   addExerciseActions,
   addExerciseAndImage,
   addExerciseFetchStatus,
-} from "@/store/addExerciseSlice";
-import { AppDispatch } from "@/store";
+} from "../../store/addExerciseSlice";
+import { AppDispatch } from "../../store";
 import AddButton from "./AddButton";
 
 const AddExerciseForm = () => {
