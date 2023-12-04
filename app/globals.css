@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+main {
+  background-color: #f8ffdd00;
+}
+
+html {
+  /* font-size: 62.5%; */
+  font-family: "Uni Sans Demo", sans-serif;
+  font-weight: 500;
+}
+
+@media (max-width: 53em) {
+  html {
+    /* font-size: 10px; */
+    font-size: 90%;
+  }
+}
+
+@media (max-width: 26em) {
+  html {
+    /* font-size: 10px; */
+    font-size: 80%;
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  /* background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb)); */
+}
+
+input {
+  all: unset;
+}
+
+textarea {
+  all: unset;
+}
+
+.buttonStandart {
+  @apply text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor;
+}
+
+.footerMainContainer {
+  @apply grid gap-4 grid-cols-1 py-8 px-10 text-center align-middle sm:grid-cols-3 sm:px-10;
+}
+
+.footerLinksContainer {
+  @apply flex flex-col text-center gap-6 text-lg sm:text-left;
+}
+.footerLinks {
+  @apply hover:underline hover:text-slate-800;
+}
