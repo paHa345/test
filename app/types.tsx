@@ -39,7 +39,7 @@ export interface IWorkoutSchema {
   date: Date;
   userId: String;
   name?: String;
-  exercisesArr: String[];
+  exercisesArr: [{ name: String; id: String; sets: Number; reps: Number }];
 }
 
 export interface IExerciseSchema {

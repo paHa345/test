@@ -11,6 +11,7 @@ import {
 } from "../../store/addExerciseSlice";
 import { AppDispatch } from "../../store";
 import AddButton from "./AddButton";
+import UploadImageForm from "./UploadImageForm";
 
 const AddExerciseForm = () => {
   const exerciseFields = [
@@ -61,6 +62,10 @@ const AddExerciseForm = () => {
   const addedExercise = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise
   );
+
+  const image = useSelector(
+    (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise.image
+  );
   const dispatch = useDispatch<AppDispatch>();
   const uploadImageDispatch = useDispatch();
 
@@ -77,14 +82,10 @@ const AddExerciseForm = () => {
     );
   });
 
-  const uploadImageHandler = (e: any) => {
-    console.log(e.target.files?.[0]);
-    uploadImageDispatch(addExerciseActions.changeUploadedImage(e.target.files?.[0]));
-    // (e) => setFile(e.target.files?.[0])
-  };
-
-  const addExerciseButtonHandler = () => {
+  const addExerciseButtonHandler = async () => {
     console.log(addedExercise);
+    //добавляем загрузку изображения и далее берём его имя и загружаем его в упражнение
+    await uploadImage();
     dispatch(addExerciseAndImage(addedExercise));
   };
 
@@ -92,19 +93,13 @@ const AddExerciseForm = () => {
     (state: IAddExerciseSlice) => state.addExerciseState.fetchAddExerciseStatus
   );
 
-  const uploadImage = useSelector(
-    (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise.imageFile
-  );
-
   const [file, setFile] = useState<File>();
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const uploadImage = async () => {
     if (!file) return;
     try {
       const data = new FormData();
-      data.set("file", file);
-
+      data.append("file", file, `${image}`);
       const res = await fetch("/api/upload", {
         method: "POST",
         body: data,
@@ -124,10 +119,8 @@ const AddExerciseForm = () => {
     </div> */}
 
         {exerciseInputEl}
-        <form action="" onSubmit={onSubmit}>
-          <input type="file" name="file" onChange={(e) => setFile(e.target.files?.[0])} />
-          <input type="submit" value="Upload" />
-        </form>
+        <UploadImageForm file={file} setFile={setFile}></UploadImageForm>
+        <button onClick={uploadImage}>Click</button>
       </div>
 
       {addExerciseStatus === "loading" && <p>Loading</p>}

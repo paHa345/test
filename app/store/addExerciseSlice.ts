@@ -13,7 +13,7 @@ export const addExerciseAndImage = createAsyncThunk(
         },
         body: JSON.stringify(currentexercise),
       });
-      console.log(req);
+      // console.log(req);
       const data = await req.json();
       if (!req.ok) {
         throw new Error("Ошибка сервера");
@@ -79,6 +79,7 @@ export const initAddExerciseState: IAddExerciseState = {
     type: null,
     muscleGroups: [],
     video: null,
+    image: null,
     description: null,
     mainGroup: null,
     mainGroupRu: null,
@@ -136,9 +137,11 @@ export const addExerciseSlice = createSlice({
       console.log(state.currentAddedExercise.muscleGroups);
     },
     changeUploadedImage(state, action) {
-      state.currentAddedExercise.imageFile = action.payload;
-      console.log(state.currentAddedExercise.imageFile);
+      // state.currentAddedExercise.imageFile = action.payload;
+      console.log(action.payload);
+      state.currentAddedExercise.image = String(action.payload);
     },
+
     clearAddexerciseForm(state) {
       state.currentAddedExercise.createdUserId = "";
       state.currentAddedExercise.name = "";

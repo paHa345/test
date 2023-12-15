@@ -7,7 +7,14 @@ const workoutSchema = new mongoose.Schema<IWorkoutSchema>({
   date: { type: Date, required: true },
   userId: { type: String, required: true },
   name: { type: String, required: false, default: String(Date.now()) },
-  exercisesArr: [{ type: mongoose.Types.ObjectId, required: true, ref: Exercise }],
+  exercisesArr: [
+    {
+      name: { type: String, required: true },
+      id: { type: String, required: true },
+      sets: { type: Number, required: true },
+      reps: { type: Number, required: true },
+    },
+  ],
 });
 
 const Workout =
