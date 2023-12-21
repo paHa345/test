@@ -1,8 +1,8 @@
+// "use client";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "./store";
 import ReduxProvider from "./ReduxProvider";
 import MainLayout from "./components/Layout/MainLayout";
 

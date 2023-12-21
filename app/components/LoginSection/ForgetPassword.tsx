@@ -35,7 +35,7 @@ const ForgetPassword = () => {
               onFocus={focusElHandler}
               onBlur={focusOutElHandler}
               className="w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
-              id="email"
+              id="forgetEmail"
               type="email"
               value={emailValue}
             />

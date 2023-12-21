@@ -1,5 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import { AppDispatch } from "@/app/store";
+
+import { authActions, registerNewUser, IAuthSlice } from "@/app/store/authSlice";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Registration = () => {
   const [onFocusStatus, setInFocusStatus] = useState({
@@ -8,20 +12,28 @@ const Registration = () => {
     password: false,
   });
 
-  const [emailValue, setEmailValue] = useState("");
-  const [nameValue, setNameValue] = useState("");
-  const [passValue, setPassValue] = useState("");
+  const emailValue = useSelector((state: IAuthSlice) => state.authState.registeredUser.email);
+  const nameValue = useSelector((state: IAuthSlice) => state.authState.registeredUser.name);
+  const passValue = useSelector((state: IAuthSlice) => state.authState.registeredUser.password);
+
+  const registrationStatus = useSelector((state: IAuthSlice) => state.authState.registerUserStatus);
+
+  const errorRegistrationMessage = useSelector(
+    (state: IAuthSlice) => state.authState.registerUserErrorMessage
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const changeLoginHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setEmailValue(e.currentTarget.value);
+    dispatch(authActions.setRegisteredEmail(e.currentTarget.value));
   };
 
   const changeNameHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setNameValue(e.currentTarget.value);
+    dispatch(authActions.setRegisteredName(e.currentTarget.value));
   };
 
   const changePassHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setPassValue(e.currentTarget.value);
+    dispatch(authActions.setRegisteredPassword(e.currentTarget.value));
   };
 
   const focusElHandler = (e: React.FocusEvent<HTMLElement>) => {
@@ -31,6 +43,20 @@ const Registration = () => {
   const focusOutElHandler = (e: React.FocusEvent<HTMLElement>) => {
     setInFocusStatus({ ...onFocusStatus, [e.target.id]: false });
   };
+
+  const registrationUserHandler = (e: any) => {
+    e.preventDefault();
+    dispatch(registerNewUser({ name: nameValue, email: emailValue, password: passValue }));
+  };
+
+  useEffect(() => {
+    if (registrationStatus === "resolve") {
+      setTimeout(() => {
+        dispatch(authActions.setRegisterUserStatusToReady());
+      }, 3000);
+    }
+  }, [registrationStatus]);
+
   return (
     <div>
       <div className="pb-6">
@@ -111,8 +137,29 @@ const Registration = () => {
             </span>
           </div>
 
+          <div className=" py-4">
+            {registrationStatus === "loading" && (
+              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
+                Регистрация нового пользователя
+              </h1>
+            )}
+            {registrationStatus === "resolve" && (
+              <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
+                Пользователь успешно зарегистрирован
+              </h1>
+            )}
+            {registrationStatus === "error" && (
+              <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+                {`Ошибка регистрации ${errorRegistrationMessage}`}
+              </h1>
+            )}
+          </div>
+
           <div>
-            <button className=" text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor">
+            <button
+              onClick={registrationUserHandler}
+              className=" text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
+            >
               {" "}
               Отправить заявку на регистрацию
             </button>

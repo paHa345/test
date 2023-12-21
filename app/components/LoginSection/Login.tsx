@@ -1,7 +1,13 @@
 "use client";
 
+import { IAuthSlice, authActions } from "@/app/store/authSlice";
+import { signIn } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [onFocusStatus, setInFocusStatus] = useState({
@@ -9,8 +15,20 @@ const Login = () => {
     password: false,
   });
 
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const loginUserErrorMessage = useSelector(
+    (state: IAuthSlice) => state.authState.loginUserErrorMessage
+  );
+
+  const pathname = usePathname();
   const [loginValue, setLoginValue] = useState("");
   const [passValue, setPassValue] = useState("");
+
+  useEffect(() => {
+    const doc = document.getElementById("loginEl");
+  }, []);
 
   const changeLoginHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setLoginValue(e.currentTarget.value);
@@ -31,6 +49,25 @@ const Login = () => {
       ? setInFocusStatus({ ...onFocusStatus, login: false })
       : setInFocusStatus({ ...onFocusStatus, password: false });
   };
+
+  const loginHandler = async (e: any) => {
+    e.preventDefault();
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: loginValue,
+      password: passValue,
+    });
+    console.log(result);
+    if (result?.error) {
+      dispatch(authActions.setLoginUserErrorMessage(result.error));
+    }
+
+    if (!result?.error) {
+      router.replace("/");
+    }
+  };
+
   return (
     <div>
       <div className="pb-6">
@@ -96,7 +133,19 @@ const Login = () => {
             </button>
           </div>
           <div>
-            <button className=" text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor">
+            {!loginUserErrorMessage ||
+              (loginUserErrorMessage.length > 0 && (
+                <div>
+                  <h1 className=" text-center text-xl text-gray-950 rounded-md my-6  px-3 py-3 bg-rose-300">
+                    {loginUserErrorMessage}
+                  </h1>
+                </div>
+              ))}
+
+            <button
+              onClick={loginHandler}
+              className=" text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
+            >
               {" "}
               Вход
             </button>
