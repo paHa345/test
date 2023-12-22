@@ -5,7 +5,7 @@ import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const authOptions: NextAuthOptions = {
+const authOptions: any = {
   pages: {
     signIn: "/auth",
   },
