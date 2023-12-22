@@ -1,32 +1,27 @@
-"use client";
-import MyPage from "../components/MyPage";
 import React from "react";
 import Aside from "../components/Aside";
-// import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import MyPage from "./../components/MyPageComponent/MyPage";
+import Link from "next/link";
 
-const My = () => {
-  // const router = useRouter();
-  // const { data: session } = useSession();
-  // console.log(session);
-  // if (!session) {
-  //   router.replace("/");
-  // }
-  return (
-    <div className="mx-auto">
-      <div className=" grid  grid-cols-mainGrid gap-3">
-        <div className="col-span-2  mx-auto py-10">
-          <h1 className=" text-4xl font-bold">Личный кабинет</h1>
-        </div>
-        {/* <div className=" col-span-2 md:col-span-1">
-          <Aside></Aside>
-        </div> */}
-        <div className=" col-span-2  md:col-span-2">
-          <MyPage></MyPage>
-        </div>
+const My = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return (
+      <div className="flex flex-col items-center my-32">
+        <h1 className=" text-2xl my-5">Вы не зарегистрированы</h1>
+        <Link
+          className=" text-2xl my-5 hover:text-sky-700 hover:underline hover:underline-offset-4"
+          href={`./login`}
+        >
+          Войти на сайт
+        </Link>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return <MyPage></MyPage>;
 };
 
 export default My;
