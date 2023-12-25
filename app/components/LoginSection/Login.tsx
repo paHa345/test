@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
