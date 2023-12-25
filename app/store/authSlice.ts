@@ -1,4 +1,30 @@
 import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+export const loginUser = createAsyncThunk(
+  "authState/loginUser",
+  async function (loginUser: any, { rejectWithValue, dispatch }) {
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: loginUser.login,
+        password: loginUser.password,
+      });
+      //   if (!result?.error) {
+      //     router.replace("/my");
+      //   }
+      console.log(result);
+      if (result?.error) {
+        dispatch(authActions.setLoginUserErrorMessage(result));
+        throw new Error(`${result.error}`);
+      }
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const registerNewUser = createAsyncThunk(
   "authState/registerNewUser",
@@ -51,10 +77,14 @@ export interface IAuthSlice {
       email: string;
       password: string;
     };
+    loginUser: {
+      login: string;
+      password: string;
+    };
     registerUserStatus: registerUserStatus;
     registerUserErrorMessage: string | unknown;
     loginUserstatus: loginUserStatus;
-    loginUserErrorMessage: string;
+    loginUserErrorMessage: string | unknown;
   };
 }
 
@@ -64,10 +94,14 @@ interface IAuthState {
     email: string;
     password: string;
   };
+  loginUser: {
+    login: string;
+    password: string;
+  };
   registerUserStatus: registerUserStatus;
   registerUserErrorMessage: string | unknown;
   loginUserstatus: loginUserStatus;
-  loginUserErrorMessage: string;
+  loginUserErrorMessage: string | unknown;
 }
 
 export const initAuthState: IAuthState = {
@@ -75,6 +109,10 @@ export const initAuthState: IAuthState = {
     name: "",
     password: "",
     email: "",
+  },
+  loginUser: {
+    login: "",
+    password: "",
   },
   registerUserStatus: registerUserStatus.Ready,
   registerUserErrorMessage: "",
@@ -98,6 +136,12 @@ export const authSlice = createSlice({
     setRegisteredPassword(state, action) {
       state.registeredUser.password = action.payload;
     },
+    setLoginUserLogin(state, action) {
+      state.loginUser.login = action.payload;
+    },
+    setLoginUserPassword(state, action) {
+      state.loginUser.password = action.payload;
+    },
     resetRegisteredUser(state) {
       state.registeredUser.name = "";
       state.registeredUser.email = "";
@@ -111,13 +155,22 @@ export const authSlice = createSlice({
     builder.addCase(registerNewUser.pending, (state) => {
       state.registerUserStatus = registerUserStatus.Loading;
     });
+    builder.addCase(loginUser.pending, (state) => {
+      state.loginUserstatus = loginUserStatus.Loading;
+    });
     builder.addCase(registerNewUser.fulfilled, (state) => {
       state.registerUserStatus = registerUserStatus.Resolve;
     });
+    builder.addCase(loginUser.fulfilled, (state) => {
+      state.loginUserstatus = loginUserStatus.Resolve;
+    });
     builder.addCase(registerNewUser.rejected, (state, action) => {
-      console.log(action.payload);
       state.registerUserErrorMessage = action.payload;
       state.registerUserStatus = registerUserStatus.Error;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      state.loginUserErrorMessage = action.payload;
+      state.loginUserstatus = loginUserStatus.Error;
     });
   },
 });

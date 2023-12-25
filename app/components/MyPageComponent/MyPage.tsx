@@ -31,6 +31,12 @@ const MyPage = () => {
           </Link>
         </div>
 
+        <div className=" py-5">
+          <Link className=" buttonStandart" rel="stylesheet" href="/catalog/addNewExercise">
+            Добавить упражнение
+          </Link>
+        </div>
+
         <div>
           <h1 className=" text-center text-4xl font-bold py-10"> Мои тренировки</h1>
         </div>

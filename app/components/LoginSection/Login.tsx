@@ -1,12 +1,13 @@
 "use client";
 
-import { IAuthSlice, authActions } from "@/app/store/authSlice";
+import { IAuthSlice, authActions, loginUser } from "@/app/store/authSlice";
 import { signIn } from "next-auth/react";
-import { usePathname } from "next/navigation";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/app/store";
+import { redirect } from "next/navigation";
 
 const Login = () => {
   const [onFocusStatus, setInFocusStatus] = useState({
@@ -14,27 +15,31 @@ const Login = () => {
     password: false,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const loginUserErrorMessage = useSelector(
     (state: IAuthSlice) => state.authState.loginUserErrorMessage
   );
 
-  const pathname = usePathname();
-  const [loginValue, setLoginValue] = useState("");
-  const [passValue, setPassValue] = useState("");
+  const loginUserStatus = useSelector((state: IAuthSlice) => state.authState.loginUserstatus);
+
+  const loginValue = useSelector((state: IAuthSlice) => state.authState.loginUser.login);
+  const passValue = useSelector((state: IAuthSlice) => state.authState.loginUser.password);
+
+  // const [loginValue, setLoginValue] = useState("");
+  // const [passValue, setPassValue] = useState("");
 
   useEffect(() => {
     const doc = document.getElementById("loginEl");
   }, []);
 
   const changeLoginHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setLoginValue(e.currentTarget.value);
+    dispatch(authActions.setLoginUserLogin(e.currentTarget.value));
   };
 
   const changePassHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setPassValue(e.currentTarget.value);
+    dispatch(authActions.setLoginUserPassword(e.currentTarget.value));
   };
 
   const focusElHandler = (e: React.FocusEvent<HTMLElement>) => {
@@ -52,20 +57,29 @@ const Login = () => {
   const loginHandler = async (e: any) => {
     e.preventDefault();
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: loginValue,
-      password: passValue,
-    });
-    console.log(result);
-    if (result?.error) {
-      dispatch(authActions.setLoginUserErrorMessage(result.error));
-    }
+    dispatch(loginUser({ login: loginValue, password: passValue }));
 
-    if (!result?.error) {
-      router.replace("/my");
-    }
+    // const result = await signIn("credentials", {
+    //   redirect: false,
+    //   email: loginValue,
+    //   password: passValue,
+    // });
+    // console.log(result);
+    // if (result?.error) {
+    //   dispatch(authActions.setLoginUserErrorMessage(result.error));
+    // }
+
+    // if (!result?.error) {
+    //   router.replace("/my");
+    // }
   };
+
+  useEffect(() => {
+    if (loginUserStatus === "resolve") {
+      // router.replace("/my");
+      redirect("/my");
+    }
+  }, [loginUserStatus]);
 
   return (
     <div>
@@ -132,14 +146,33 @@ const Login = () => {
             </button>
           </div>
           <div>
-            {!loginUserErrorMessage ||
+            {/* {!loginUserErrorMessage ||
               (loginUserErrorMessage.length > 0 && (
                 <div>
                   <h1 className=" text-center text-xl text-gray-950 rounded-md my-6  px-3 py-3 bg-rose-300">
                     {loginUserErrorMessage}
                   </h1>
                 </div>
-              ))}
+              ))} */}
+
+            <div className=" py-5">
+              {loginUserStatus === "loading" && (
+                <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
+                  Вход пользователя в систему
+                </h1>
+              )}
+
+              {loginUserStatus === "resolve" && (
+                <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
+                  Пользователь успешно зашёл в систему
+                </h1>
+              )}
+              {loginUserStatus === "error" && (
+                <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+                  {`Ошибка входа в систему ${loginUserErrorMessage}`}
+                </h1>
+              )}
+            </div>
 
             <button
               onClick={loginHandler}
