@@ -64,7 +64,7 @@ const Login = () => {
     }
 
     if (!result?.error) {
-      router.replace("/");
+      router.replace("/my");
     }
   };
 
