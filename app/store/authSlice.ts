@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export const loginUser = createAsyncThunk(
   "authState/loginUser",
@@ -12,7 +12,8 @@ export const loginUser = createAsyncThunk(
         password: loginUser.password,
       });
       //   if (!result?.error) {
-      //     router.replace("/my");
+      //     //   router.replace("/my");
+      //     redirect("my");
       //   }
       console.log(result);
       if (result?.error) {

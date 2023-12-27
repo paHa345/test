@@ -34,6 +34,10 @@ const addNewWorkout = () => {
     (state: IAddWorkoutSlice) => state.addWorkoutState.fetchAddWorkoutStatus
   );
 
+  const id = useSelector(
+    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.addedWorkoutId
+  );
+
   const [onFocusStatus, setInFocusStatus] = useState({
     name: false,
     description: false,

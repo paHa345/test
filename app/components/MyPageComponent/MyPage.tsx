@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Train from "./../TrainSection/Train";
 import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const MyPage = () => {
   const { data: session } = useSession();

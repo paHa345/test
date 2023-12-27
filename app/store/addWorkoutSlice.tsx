@@ -13,12 +13,25 @@ export const addWorkout = createAsyncThunk(
         },
         body: JSON.stringify(currentWorkout),
       });
-      const data = await req.json();
+      const addedWorkout = await req.json();
+      console.log("Workout", addedWorkout);
+
+      const updatedUser = await fetch("./../api/users/addWorkoutToUser", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ workoutsArr: "658bbb1c3323ba4cf88567d7" }),
+      });
+
+      const user = await updatedUser.json();
+
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
+      dispatch(addWorkoutActions.setAddedWorkoutId("sdfsdfsdf"));
       dispatch(addWorkoutActions.resetCurrentWorkout());
-      return data;
+      return user;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -47,6 +60,7 @@ export interface IAddWorkoutSlice {
       exercises: IAddedExercises[];
       workoutDate: string;
       userId: string;
+      addedWorkoutId: string;
     };
     fetchAddWorkoutStatus: addWorkoutFetchStatus;
   };
@@ -59,6 +73,7 @@ interface IAddWorkoutState {
     exercises: IAddedExercises[];
     workoutDate: string;
     userId: string;
+    addedWorkoutId: string;
   };
   fetchAddWorkoutStatus: addWorkoutFetchStatus;
 }
@@ -70,6 +85,7 @@ export const initAddExerciseState: IAddWorkoutState = {
     exercises: [],
     workoutDate: "",
     userId: "",
+    addedWorkoutId: "987987987987",
   },
   fetchAddWorkoutStatus: addWorkoutFetchStatus.Ready,
 };
@@ -108,6 +124,9 @@ export const addWorkoutSlice = createSlice({
     setWorkoutDate(state, action) {
       console.log(action.payload);
       state.currentAddedWorkout.workoutDate = action.payload;
+    },
+    setAddedWorkoutId(state, action) {
+      state.currentAddedWorkout.addedWorkoutId = action.payload;
     },
     resetCurrentWorkout(state) {
       state.currentAddedWorkout.description = "";
