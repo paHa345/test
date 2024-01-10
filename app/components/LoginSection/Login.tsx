@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "@/app/store";
 import { redirect } from "next/navigation";
+import { setCurrentUserWorkouts } from "@/app/store/appStateSlice";
+import { IUserSlice } from "@/app/store/userSlice";
 
 const Login = () => {
   const [onFocusStatus, setInFocusStatus] = useState({
@@ -57,7 +59,9 @@ const Login = () => {
   const loginHandler = async (e: any) => {
     e.preventDefault();
 
-    dispatch(loginUser({ login: loginValue, password: passValue }));
+    await dispatch(loginUser({ login: loginValue, password: passValue }));
+
+    await dispatch(setCurrentUserWorkouts());
 
     // const result = await signIn("credentials", {
     //   redirect: false,

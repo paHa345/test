@@ -21,7 +21,7 @@ export const addWorkout = createAsyncThunk(
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify({ workoutsArr: "658bbb1c3323ba4cf88567d7" }),
+        body: JSON.stringify({ workoutsArr: addedWorkout.result._id }),
       });
 
       const user = await updatedUser.json();

@@ -19,7 +19,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     await connectMongoDB();
 
-    const currentUser = await User.findOne({ email: session?.user?.email });
+    const currentUser = await User.findOne({ email: session?.user?.email }).populate({
+      path: "workoutsArr",
+      populate: {
+        path: "exercisesArr",
+        model: "Exercise",
+        select: "id name",
+      },
+    });
 
     return NextResponse.json({ message: "Success", result: currentUser });
   } catch (error: any) {

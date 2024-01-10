@@ -17,6 +17,27 @@ export interface IExercise {
   mainGroupRu: string | undefined;
 }
 
+export interface IWorkout {
+  _id: string;
+  comments: string;
+  date: Date;
+  userId: string;
+  name?: string;
+  exercisesArr: [{ name: string; id: string; reps: number; sets: number }];
+}
+
+export interface IUser {
+  email: string;
+  name: string;
+  password: string;
+  workoutsArr?: IWorkout[];
+}
+
+export interface IResponseUser {
+  message: string;
+  result: IUser;
+}
+
 export interface IResponseArrExercises {
   message: string;
   result?: IExercise[];

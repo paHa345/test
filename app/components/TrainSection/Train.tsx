@@ -1,18 +1,42 @@
+import { IExercise } from "@/app/types";
 import Link from "next/link";
 import React from "react";
 
-const Train = () => {
+const Train = ({ name, description, date, exercises }: any) => {
+  const exercisesEl = exercises.map(
+    (
+      exercise: { id: number; name: string; reps: number; sets: number; _id: number },
+      index: number
+    ) => {
+      console.log(exercise);
+      return (
+        <>
+          <div className=" flex flex-row gap-3">
+            <p>{index + 1}</p>
+            <Link className=" hover:underline" href={`./catalog/${exercise.id}`}>
+              <p>{exercise.name}</p>
+            </Link>
+            <p>
+              {exercise.sets} X {exercise.reps}
+            </p>
+          </div>
+        </>
+      );
+    }
+  );
+
   return (
     <article className=" transition-shadow px-5 py-5 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-sm shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
       <div className=" flex flex-col gap-6">
         <div className=" flex flex-row justify-between ">
           <div>
-            <h1 className=" text-xl font-bold">Грудь, ноги</h1>
+            <h1 className=" text-xl font-bold">{name}</h1>
           </div>
-          <div> 10.08.23</div>
+          <div> {date}</div>
         </div>
         <div className=" flex flex-col gap-4">
-          <div className=" flex flex-row gap-3">
+          {exercisesEl}
+          {/* <div className=" flex flex-row gap-3">
             <p>1</p>
             <Link className=" hover:underline" href="/">
               <p>Жим штанги лёжа</p>
@@ -40,15 +64,11 @@ const Train = () => {
               <p>Приседания со штангой</p>
             </Link>
             <p>4 X 10</p>
-          </div>
+          </div> */}
         </div>
         <div>
           <h1>Комментарии</h1>
-          <p className=" text-sm pt-2">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quidem ipsam
-            nesciunt dolore eveniet dicta voluptas tenetur modi culpa odio saepe quis dolorum nulla
-            facere qui, earum aut veritatis id!
-          </p>
+          <p className=" text-sm pt-2">{description}</p>
         </div>
       </div>
     </article>

@@ -1,5 +1,6 @@
-import { IExercise, IResponseArrExercises } from "../types";
+import { IExercise, IResponseArrExercises, IResponseUser } from "../types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { userActions } from "./userSlice";
 
 export const fetchBestExercisesAndSet = createAsyncThunk(
   "appState/fetchBestExercisesAndSet",
@@ -49,6 +50,23 @@ export const setCurrentMuscleGroupAndSet = createAsyncThunk(
   }
 );
 
+export const setCurrentUserWorkouts = createAsyncThunk(
+  "appState/setCurrentUserWorkouts",
+  async function (_, { rejectWithValue, dispatch }) {
+    try {
+      const req = await fetch("../api/workout/getCurrentUserWorkouts");
+      if (!req.ok) {
+        throw new Error("Ошибка сервера");
+      }
+      const user: IResponseUser = await req.json();
+      console.log(user.result.workoutsArr);
+      dispatch(userActions.setCurrentUserWorkout(user.result.workoutsArr));
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 interface ICurrentMuscleGroup {
   en: string;
   ru: string;
@@ -60,6 +78,7 @@ export interface IAppSlice {
     test: boolean;
     exercises: null | any;
     fetchBestExercisesStatus: fetchStatus;
+    fetchUserWorkoutsStatus: fetchStatus;
     error: string;
     currentMuscleGroup: ICurrentMuscleGroup;
     currentExercisesByGroup: IExercise[];
@@ -77,6 +96,8 @@ interface IAppState {
   name: string;
   exercises: null | any;
   fetchBestExercisesStatus: fetchStatus;
+  fetchUserWorkoutsStatus: fetchStatus;
+
   error: string;
   currentMuscleGroup: ICurrentMuscleGroup;
   currentExercisesByGroup: IExercise[];
@@ -87,6 +108,8 @@ export const initAppState: IAppState = {
   name: "paHa345",
   exercises: null,
   fetchBestExercisesStatus: fetchStatus.Loading,
+  fetchUserWorkoutsStatus: fetchStatus.Loading,
+
   error: "",
   currentMuscleGroup: { en: "all", ru: "Все" },
   currentExercisesByGroup: [],
@@ -118,11 +141,18 @@ export const appStateSlice = createSlice({
       state.fetchBestExercisesStatus = fetchStatus.Loading;
     });
 
+    builder.addCase(setCurrentUserWorkouts.pending, (state) => {
+      state.fetchUserWorkoutsStatus = fetchStatus.Loading;
+    });
+
     builder.addCase(fetchBestExercisesAndSet.fulfilled, (state, action) => {
       state.fetchBestExercisesStatus = fetchStatus.Resolve;
     });
     builder.addCase(setCurrentMuscleGroupAndSet.fulfilled, (state, action) => {
       state.fetchBestExercisesStatus = fetchStatus.Resolve;
+    });
+    builder.addCase(setCurrentUserWorkouts.fulfilled, (state, action) => {
+      state.fetchUserWorkoutsStatus = fetchStatus.Resolve;
     });
 
     builder.addCase(fetchBestExercisesAndSet.rejected, (state, action) => {
@@ -130,6 +160,9 @@ export const appStateSlice = createSlice({
     });
     builder.addCase(setCurrentMuscleGroupAndSet.rejected, (state, action) => {
       state.fetchBestExercisesStatus = fetchStatus.Error;
+    });
+    builder.addCase(setCurrentUserWorkouts.rejected, (state, action) => {
+      state.fetchUserWorkoutsStatus = fetchStatus.Error;
     });
   },
 });

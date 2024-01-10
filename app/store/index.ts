@@ -3,6 +3,7 @@ import { appStateSlice } from "./appStateSlice";
 import { addExerciseSlice } from "./addExerciseSlice";
 import { addWorkoutSlice } from "./addWorkoutSlice";
 import { authSlice } from "./authSlice";
+import { userSlice } from "./userSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     addExerciseState: addExerciseSlice.reducer,
     addWorkoutState: addWorkoutSlice.reducer,
     authState: authSlice.reducer,
+    userState: userSlice.reducer,
   },
 });
 
