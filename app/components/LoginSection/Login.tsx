@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "@/app/store";
 import { redirect } from "next/navigation";
-import { setCurrentUserWorkouts } from "@/app/store/appStateSlice";
+import { appStateActions, setCurrentUserWorkouts } from "@/app/store/appStateSlice";
 import { IUserSlice } from "@/app/store/userSlice";
 
 const Login = () => {
@@ -31,10 +31,6 @@ const Login = () => {
 
   // const [loginValue, setLoginValue] = useState("");
   // const [passValue, setPassValue] = useState("");
-
-  useEffect(() => {
-    const doc = document.getElementById("loginEl");
-  }, []);
 
   const changeLoginHandler = (e: React.FormEvent<HTMLInputElement>) => {
     dispatch(authActions.setLoginUserLogin(e.currentTarget.value));
@@ -78,6 +74,12 @@ const Login = () => {
     // }
   };
 
+  const registrationHandler = (e: any) => {
+    e.preventDefault();
+    console.log("first");
+    dispatch(appStateActions.showRegistration());
+  };
+
   useEffect(() => {
     if (loginUserStatus === "resolve") {
       // router.replace("/my");
@@ -117,7 +119,10 @@ const Login = () => {
             </span>
           </div>
           <div className=" flex justify-end">
-            <button className=" text-cyan-700 hover:bg-slate-100 px-4 py-2">
+            <button
+              onClick={registrationHandler}
+              className=" text-cyan-700 hover:bg-slate-100 px-4 py-2"
+            >
               <span>Регистрация</span>
             </button>
           </div>

@@ -10,17 +10,15 @@ const Train = ({ name, description, date, exercises }: any) => {
     ) => {
       console.log(exercise);
       return (
-        <>
-          <div className=" flex flex-row gap-3">
-            <p>{index + 1}</p>
-            <Link className=" hover:underline" href={`./catalog/${exercise.id}`}>
-              <p>{exercise.name}</p>
-            </Link>
-            <p>
-              {exercise.sets} X {exercise.reps}
-            </p>
-          </div>
-        </>
+        <div key={exercise._id} className=" flex flex-row gap-3">
+          <p>{index + 1}</p>
+          <Link className=" hover:underline" href={`./catalog/${exercise.id}`}>
+            <p>{exercise.name}</p>
+          </Link>
+          <p>
+            {exercise.sets} X {exercise.reps}
+          </p>
+        </div>
       );
     }
   );

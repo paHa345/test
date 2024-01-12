@@ -1,5 +1,6 @@
 "use client";
 import { AppDispatch } from "@/app/store";
+import { appStateActions } from "@/app/store/appStateSlice";
 
 import { authActions, registerNewUser, IAuthSlice } from "@/app/store/authSlice";
 import React, { useState, useEffect } from "react";
@@ -56,6 +57,10 @@ const Registration = () => {
       }, 3000);
     }
   }, [registrationStatus]);
+
+  const signInnHandler = () => {
+    dispatch(appStateActions.showSignin());
+  };
 
   return (
     <div>
@@ -154,9 +159,19 @@ const Registration = () => {
               </h1>
             )}
           </div>
+          <div className=" flex justify-end mb-3">
+            <button
+              type="button"
+              onClick={signInnHandler}
+              className=" text-cyan-700 hover:bg-slate-100 px-4 py-2"
+            >
+              <span>На страницу входа</span>
+            </button>
+          </div>
 
           <div>
             <button
+              type="button"
               onClick={registrationUserHandler}
               className=" text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
             >

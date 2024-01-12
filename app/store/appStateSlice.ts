@@ -74,6 +74,7 @@ interface ICurrentMuscleGroup {
 
 export interface IAppSlice {
   appState: {
+    showSigninStatus: boolean;
     name: string;
     test: boolean;
     exercises: null | any;
@@ -92,6 +93,8 @@ export enum fetchStatus {
 }
 
 interface IAppState {
+  showSigninStatus: boolean;
+
   test: boolean;
   name: string;
   exercises: null | any;
@@ -104,6 +107,7 @@ interface IAppState {
 }
 
 export const initAppState: IAppState = {
+  showSigninStatus: true,
   test: true,
   name: "paHa345",
   exercises: null,
@@ -131,6 +135,12 @@ export const appStateSlice = createSlice({
     setCurrentMuscleGroup(state, action) {
       console.log(action.payload);
       state.currentMuscleGroup = action.payload;
+    },
+    showSignin(state) {
+      state.showSigninStatus = true;
+    },
+    showRegistration(state) {
+      state.showSigninStatus = false;
     },
   },
   extraReducers: (builder) => {
