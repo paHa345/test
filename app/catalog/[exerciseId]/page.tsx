@@ -24,6 +24,8 @@ export async function generateStaticParams() {
   }));
 }
 
+export const revalidate = 10;
+
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
   const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`);
   const exercise = await data.json();
