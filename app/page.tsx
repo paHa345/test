@@ -13,6 +13,8 @@ import LoadingCards from "./components/LoadingCardSection/LoadingCards";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const revalidate = 10;
+
 export default function Home() {
   // const [bestExercises, setBestExercises] = useState("");
 
