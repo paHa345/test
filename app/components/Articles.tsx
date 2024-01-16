@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 const Articles = async () => {
   const getAllArticles = async () => {
-    const response = await fetch("http://localhost:3000/api/exercises/allExercises");
+    const response = await fetch(`${process.env.HOST}/api/exercises/allExercises`);
     const exercises = await response.json();
     return exercises.result;
   };
