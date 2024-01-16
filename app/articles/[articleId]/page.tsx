@@ -8,8 +8,6 @@ export async function generateStaticParams() {
   }));
 }
 
-export const revalidate = 10;
-
 const article = async ({ params: { articleId } }: { params: { articleId: string } }) => {
   const getArticle = async () => {
     const data = await fetch(`${process.env.HOST}/api/exercises/${articleId}`);
@@ -19,6 +17,7 @@ const article = async ({ params: { articleId } }: { params: { articleId: string 
   const article = await getArticle();
 
   return <div>{article.result.description}</div>;
+  return <div>{articleId}</div>;
 };
 
 export default article;
