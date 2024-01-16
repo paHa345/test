@@ -17,18 +17,12 @@ import { IResponseOneExercise } from "../../types";
 //   }
 
 export async function generateStaticParams() {
-  const data = await fetch(`${process.env.HOST}/api/exercises/allExercises`, {
-    next: {
-      revalidate: 10,
-    },
-  });
+  const data = await fetch(`${process.env.HOST}/api/exercises/allExercises`);
   const exercises = await data.json();
   return exercises.result.map((exercise: any) => ({
     slug: exercise._id,
   }));
 }
-
-// export const revalidate = 10;
 
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
   const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`);
