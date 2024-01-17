@@ -1,12 +1,12 @@
 import React from "react";
 
-export async function generateStaticParams() {
-  const data = await fetch(`${process.env.HOST}/api/exercises/allExercises`);
-  const exercises = await data.json();
-  return exercises.result.map((exercise: any) => ({
-    slug: exercise._id,
-  }));
-}
+// export async function generateStaticParams() {
+//   const data = await fetch(`${process.env.HOST}/api/exercises/allExercises`);
+//   const exercises = await data.json();
+//   return exercises.result.map((exercise: any) => ({
+//     slug: exercise._id,
+//   }));
+// }
 
 const article = async ({ params: { articleId } }: { params: { articleId: string } }) => {
   const getArticle = async () => {

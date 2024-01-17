@@ -1,13 +1,14 @@
 import CatalogMain from "../components/CatalogSection/CatalogMain";
 import React from "react";
-import dynamic from "next/dynamic";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../utils/authOptions";
 
-const DynamicCatalogMain = dynamic(() => import("../components/CatalogSection/CatalogMain"));
-
-const catalog = () => {
+const catalog = async () => {
+  const session = await getServerSession(authOptions);
+  console.log(session?.user?.name);
   return (
     <div className="">
-      <DynamicCatalogMain></DynamicCatalogMain>
+      <CatalogMain></CatalogMain>
     </div>
   );
 };
