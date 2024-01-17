@@ -6,6 +6,7 @@ import { authOptions } from "../utils/authOptions";
 const catalog = async () => {
   const session = await getServerSession(authOptions);
   console.log(session?.user?.name);
+
   return (
     <div className="">
       <CatalogMain></CatalogMain>

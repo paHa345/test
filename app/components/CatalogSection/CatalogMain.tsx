@@ -49,8 +49,15 @@ const CatalogMain = () => {
     );
   });
 
+  const getAllExercises = async () => {
+    const response = await fetch("./api/exercises/allExercises");
+    const data = await response.json();
+    console.log(data.result);
+  };
+
   useEffect(() => {
     dispatch(setCurrentMuscleGroupAndSet({ en: "all", ru: "Все" }));
+    getAllExercises();
   }, []);
 
   return (
