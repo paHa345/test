@@ -8,7 +8,10 @@ export async function GET(req: NextRequest) {
   try {
     await connectMongoDB();
     const allExercises = await Exercise.find();
-    return NextResponse.json({ message: "Success", result: allExercises });
+    const response = NextResponse.json({ message: "Success", result: allExercises });
+    response.headers.set("Cache-Control", "no-store");
+
+    return response;
   } catch (error: any) {
     return NextResponse.json({ message: error?.message }, { status: 400 });
   }
