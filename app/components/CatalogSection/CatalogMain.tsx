@@ -50,7 +50,7 @@ const CatalogMain = () => {
   });
 
   const getAllExercises = async () => {
-    const response = await fetch("./api/exercises/allExercises", { next: { revalidate: 10 } });
+    const response = await fetch("./api/exercises/allExercises", { cache: "no-store" });
     const data = await response.json();
     console.log(data.result);
   };
