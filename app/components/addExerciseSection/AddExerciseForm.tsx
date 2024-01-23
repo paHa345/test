@@ -1,6 +1,48 @@
 "use client";
 
-import React, { useState } from "react";
+// import type { PutBlobResult } from "@vercel/blob";
+// import { useState, useRef } from "react";
+
+// export default function AddExerciseForm() {
+//   const inputFileRef = useRef<HTMLInputElement>(null);
+//   const [blob, setBlob] = useState<PutBlobResult | null>(null);
+//   return (
+//     <>
+//       <h1>Upload Your Avatar</h1>
+
+//       <form
+//         onSubmit={async (event) => {
+//           event.preventDefault();
+
+//           if (!inputFileRef.current?.files) {
+//             throw new Error("No file selected");
+//           }
+
+//           const file = inputFileRef.current.files[0];
+
+//           const response = await fetch(`/api/upload?filename=${file.name}`, {
+//             method: "POST",
+//             body: file,
+//           });
+
+//           const newBlob = (await response.json()) as PutBlobResult;
+
+//           setBlob(newBlob);
+//         }}
+//       >
+//         <input name="file" ref={inputFileRef} type="file" required />
+//         <button type="submit">Upload</button>
+//       </form>
+//       {blob && (
+//         <div>
+//           Blob url: <a href={blob.url}>{blob.url}</a>
+//         </div>
+//       )}
+//     </>
+//   );
+// }
+
+import React, { useRef, useState } from "react";
 import InputLabelEl from "./InputLabelEl";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +54,7 @@ import {
 import { AppDispatch } from "../../store";
 import AddButton from "./AddButton";
 import UploadImageForm from "./UploadImageForm";
+import type { PutBlobResult } from "@vercel/blob";
 
 const AddExerciseForm = () => {
   const exerciseFields = [
@@ -59,6 +102,11 @@ const AddExerciseForm = () => {
     },
   ];
 
+  const [file, setFile] = useState<File>();
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+  const [imageURL, setImageURL] = useState("");
+
   const addedExercise = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise
   );
@@ -86,29 +134,58 @@ const AddExerciseForm = () => {
     console.log(addedExercise);
     //добавляем загрузку изображения и далее берём его имя и загружаем его в упражнение
     await uploadImage();
-    dispatch(addExerciseAndImage(addedExercise));
+    console.log(blob?.url);
+
+    // await dispatch(addExerciseActions.changeUploadedImage(blob?.url));
+
+    await dispatch(addExerciseAndImage({ addedExercise: addedExercise, imageURL: imageURL }));
   };
 
   const addExerciseStatus: "ready" | "loading" | "resolve" | "error" = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.fetchAddExerciseStatus
   );
 
-  const [file, setFile] = useState<File>();
-
   const uploadImage = async () => {
-    if (!file) return;
-    try {
-      const data = new FormData();
-      data.append("file", file, `${image}`);
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-    } catch (error: any) {
-      console.log(error.message);
+    if (!inputFileRef.current?.files) {
+      throw new Error("No file selected");
     }
+
+    const file = inputFileRef.current.files[0];
+
+    const response = await fetch(`/api/upload?filename=${file.name}`, {
+      method: "POST",
+      body: file,
+    });
+
+    const newBlob = (await response.json()) as PutBlobResult;
+
+    console.log(newBlob.url);
+    setBlob(() => {
+      return newBlob;
+    });
+    setImageURL(() => {
+      return newBlob.url;
+    });
+    dispatch(addExerciseActions.changeUploadedImage(newBlob.url));
+
+    //это простой пример загрузки изображения на локальный сервер
+    //
+    // if (!file) return;
+
+    // try {
+    //   const data = new FormData();
+    //   data.append("file", file, `${image}`);
+    //   const res = await fetch("/api/upload", {
+    //     method: "POST",
+    //     body: data,
+    //   });
+
+    //   if (!res.ok) throw new Error(await res.text());
+    // } catch (error: any) {
+    //   console.log(error.message);
+    // }
+    //
+    //
   };
 
   return (
@@ -119,7 +196,13 @@ const AddExerciseForm = () => {
     </div> */}
 
         {exerciseInputEl}
-        <UploadImageForm file={file} setFile={setFile}></UploadImageForm>
+        <input name="file" ref={inputFileRef} type="file" required />
+        {blob && (
+          <div>
+            Blob url: <a href={blob.url}>{blob.url}</a>
+          </div>
+        )}
+        {/* <UploadImageForm file={file} setFile={setFile}></UploadImageForm> */}
         <button onClick={uploadImage}>Click</button>
       </div>
 

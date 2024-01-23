@@ -3,21 +3,25 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const addExerciseAndImage = createAsyncThunk(
   "addExerciseState/addExerciseAndImage",
-  async function (currentexercise: any, { rejectWithValue, dispatch }) {
+  async function (currentexercise: any, { rejectWithValue, dispatch, getState }) {
     try {
-      console.log(currentexercise);
+      const state: any = getState();
+      console.log(state.addExerciseState.currentAddedExercise);
+      dispatch(addExerciseActions.changeUploadedImage(currentexercise.imageURL));
       const req = await fetch("../api/exercises/addExercise", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify(currentexercise),
+        body: JSON.stringify(state.addExerciseState.currentAddedExercise),
       });
       // console.log(req);
       const data = await req.json();
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
+      // console.log(currentexercise.imageURL);
+      // dispatch(addExerciseActions.changeAddedExercise(currentexercise.imageURL));
       dispatch(addExerciseActions.clearAddexerciseForm());
       return data;
     } catch (error: any) {
@@ -138,6 +142,7 @@ export const addExerciseSlice = createSlice({
     },
     changeUploadedImage(state, action) {
       // state.currentAddedExercise.imageFile = action.payload;
+      console.log("first");
       console.log(action.payload);
       state.currentAddedExercise.image = String(action.payload);
     },

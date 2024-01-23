@@ -36,13 +36,17 @@ const ExerciseCardMain = ({
       </div>
       <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 ">
         <div className=" w-4/5 justify-self-center pb-5">
-          <Image
-            className=" w-full"
-            src={imageName}
-            alt={imageName}
-            width={200}
-            height={200}
-          ></Image>
+          {imageName.startsWith("https://") ? (
+            <img src={imageName} alt={imageName} />
+          ) : (
+            <Image
+              className=" w-full"
+              src={imageName}
+              alt={imageName}
+              width={200}
+              height={200}
+            ></Image>
+          )}
         </div>
         <div className=" self-center">
           <div className=" flex items-center justify-around">

@@ -43,13 +43,17 @@ const SmallExerciseCard = ({
           </div>
           <div className=" flex flex-row justify-center">
             <div className=" basis-3/4">
-              <Image
-                className=" w-full"
-                src={imageName}
-                alt={imageName}
-                width={60}
-                height={60}
-              ></Image>
+              {imageName.startsWith("https://") ? (
+                <img src={imageName} alt={imageName} />
+              ) : (
+                <Image
+                  className=" w-full"
+                  src={imageName}
+                  alt={imageName}
+                  width={60}
+                  height={60}
+                ></Image>
+              )}
             </div>
           </div>
         </Link>

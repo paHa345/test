@@ -1,8 +1,8 @@
-"use server";
 import { MongoClient } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 import { NextApiRequest, NextApiResponse } from "next";
+export const revalidate = 3600;
 
 // export async function GET(request: NextRequest) {
 //   return NextResponse.json({ success: true });

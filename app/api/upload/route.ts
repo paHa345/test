@@ -1,23 +1,32 @@
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
+import { put } from "@vercel/blob";
 
-export async function POST(request: NextRequest) {
-  const data = await request.formData();
-  const file: File | null = data.get("file") as unknown as File;
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  const { searchParams } = new URL(request.url);
+  const file = request.body || "";
+  const filename = searchParams.get("filename") || "654654";
 
-  if (!file) {
-    return NextResponse.json({ success: false });
-  }
+  const blob = await put(filename, file, {
+    access: "public",
+  });
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  return NextResponse.json(blob);
 
-  // With the file data in the buffer, you can do whatever you want with it.
-  // For this, we'll just write it to the filesystem in a new location
-  const path = join(`./public/${file.name}`);
-  await writeFile(path, buffer);
-  console.log(`open ${path} to see the uploaded file`);
+  // const data = await request.formData();
+  // const file: File | null = data.get("file") as unknown as File;
 
-  return NextResponse.json({ success: true });
+  // if (!file) {
+  //   return NextResponse.json({ success: false });
+  // }
+
+  // const bytes = await file.arrayBuffer();
+  // const buffer = Buffer.from(bytes);
+
+  // const path = join(`./public/${file.name}`);
+  // await writeFile(path, buffer);
+  // console.log(`open ${path} to see the uploaded file`);
+
+  // return NextResponse.json({ success: true });
 }
