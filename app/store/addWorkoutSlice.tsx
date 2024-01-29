@@ -1,11 +1,22 @@
 import { Date } from "mongoose";
 import { IOneExerciseTypes, exerciseTypes } from "../types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export const addWorkout = createAsyncThunk(
   "addWorkoutState/addWorkout",
   async function (currentWorkout: any, { rejectWithValue, dispatch }) {
     try {
+      const currentUserReq = await fetch("./../api/getUserByEmail");
+      const currentUser = await currentUserReq.json();
+      // типизировать ответ от сервера
+      console.log(currentUser.result._id);
+
+      // await dispatch(addWorkoutActions.setUserID(currentUser.result._id))
+
+      // const state: any = getState();
+
       const req = await fetch("./../api/workout/addNewWorkout", {
         method: "POST",
         headers: {
@@ -127,6 +138,9 @@ export const addWorkoutSlice = createSlice({
     },
     setAddedWorkoutId(state, action) {
       state.currentAddedWorkout.addedWorkoutId = action.payload;
+    },
+    setUserID(state, action) {
+      state.currentAddedWorkout.userId = action.payload;
     },
     resetCurrentWorkout(state) {
       state.currentAddedWorkout.description = "";

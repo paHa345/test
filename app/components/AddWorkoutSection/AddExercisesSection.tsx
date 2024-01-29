@@ -69,14 +69,14 @@ const AddExercisesSection = () => {
   });
   return (
     <>
-      <div>Выберете упражнение</div>
+      <div className=" text-2xl">Выберете упражнение</div>
       {fetchExercisesStatus === "loading" && (
         <div className=" grid grid-rows-3 gap-2">
           <SmallLoadingCards></SmallLoadingCards>
         </div>
       )}
       {fetchExercisesStatus === "resolve" && (
-        <div className=" overflow-auto h-96 grid gap-2">{exercises}</div>
+        <div className=" overflow-auto h-3/6 grid gap-2">{exercises}</div>
       )}
     </>
   );

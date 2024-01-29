@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   console.log(req.body);
+
   try {
     await connectMongoDB();
     const workout = await req.json();

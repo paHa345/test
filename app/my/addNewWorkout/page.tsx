@@ -12,9 +12,15 @@ import {
 import AddExercisesSection from "@/app/components/AddWorkoutSection/AddExercisesSection";
 import Link from "next/link";
 import { AppDispatch } from "@/app/store";
+import AddExerciseModal from "../../components/AddExerciseModalSection/AddExerciseModal";
+import { IAppSlice, appStateActions } from "@/app/store/appStateSlice";
+import { useSession } from "next-auth/react";
 
 const addNewWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const session = useSession();
+  console.log(session.data?.user?.email);
 
   const name = useSelector(
     (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.name
@@ -37,6 +43,14 @@ const addNewWorkout = () => {
   const id = useSelector(
     (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.addedWorkoutId
   );
+
+  const showAddExerciseModal = useSelector(
+    (state: IAppSlice) => state.appState.showAddExerciseModal
+  );
+
+  const showAddExerciseModalHandler = () => {
+    dispatch(appStateActions.showAddExerciseModal());
+  };
 
   const [onFocusStatus, setInFocusStatus] = useState({
     name: false,
@@ -63,14 +77,19 @@ const addNewWorkout = () => {
       : setInFocusStatus({ ...onFocusStatus, description: false });
   };
 
-  const addWorkoutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const addWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    const currentUserReq = await fetch("./../api/getUserByEmail");
+    // типизировать ответ от сервера
+    const currentUser = await currentUserReq.json();
+    console.log(currentUser.result._id);
     const currentWorkout = {
       name: name,
       comments: description,
       exercisesArr: addedExercises,
       date: workoutDate,
-      userId: "6555c1fbb3a7c3aad9047fb2",
+      userId: currentUser.result._id,
     };
     dispatch(addWorkout(currentWorkout));
   };
@@ -94,12 +113,6 @@ const addNewWorkout = () => {
     );
   };
 
-  const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(String(e.target.value));
-
-    dispatch(addWorkoutActions.setWorkoutDate(e.target.value));
-  };
-
   const addedExercisesElement =
     addedExercises.length === 0 ? (
       <h1>Не добавлено упражнений</h1>
@@ -112,13 +125,13 @@ const addNewWorkout = () => {
             </div>
             <div className=" w-1/5 flex flex-col justify-center">
               <label htmlFor="">Подходов</label>
-              <div className=" self-center">
+              <div className=" self-center border-current ">
                 <input
                   data-index={index}
                   data-exerciseid={addedExercise.id}
-                  className="w-4/5 border-neutral-800"
+                  className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeSetsHandler}
-                  type="text"
+                  type="number"
                   value={addedExercise.sets}
                 />
               </div>
@@ -129,9 +142,9 @@ const addNewWorkout = () => {
                 <input
                   data-index={index}
                   data-exerciseid={addedExercise.id}
-                  className="w-4/5 border-neutral-800"
+                  className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeRepsHandler}
-                  type="text"
+                  type="number"
                   value={addedExercise.reps}
                 />
               </div>
@@ -140,6 +153,13 @@ const addNewWorkout = () => {
         );
       })
     );
+
+  const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(String(e.target.value));
+
+    dispatch(addWorkoutActions.setWorkoutDate(e.target.value));
+  };
+
   return (
     <div className="  mx-auto py-8">
       <div>
@@ -210,8 +230,13 @@ const addNewWorkout = () => {
             <div>
               <h1>Упражнения</h1>
               {addedExercisesElement}
+              {showAddExerciseModal && <AddExerciseModal></AddExerciseModal>}
+              {!showAddExerciseModal && (
+                <button onClick={showAddExerciseModalHandler}>Выберете упражнения</button>
+              )}
             </div>
-            <AddExercisesSection></AddExercisesSection>
+            {/* <AddExercisesSection></AddExercisesSection> */}
+
             <div className=" py-4">
               {fetchAddWorkoutStatus === "loading" && (
                 <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">

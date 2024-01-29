@@ -23,7 +23,7 @@ const SmallLoadingCards = () => {
           <div className=" h-8 py-2 bg-mainColor rounded-md"></div>
         </div>
       </article>
-      <article className=" animate-pulse  transition-shadow px-1 py-1 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
+      {/* <article className=" animate-pulse  transition-shadow px-1 py-1 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
         <div className=" flex flex-col">
           <div>
             <div className=" space-x-4 flex flex-col gap-2">
@@ -62,7 +62,7 @@ const SmallLoadingCards = () => {
           </div>
           <div className=" h-8 py-2 bg-mainColor rounded-md"></div>
         </div>
-      </article>
+      </article> */}
     </>
   );
 };

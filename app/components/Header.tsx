@@ -3,8 +3,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faIdCard, faDumbbell, faMusic } from "@fortawesome/free-solid-svg-icons";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
+  const session = useSession();
+  console.log(session.data);
   return (
     <header className=" bg-mainColor  py-4 pb-16 md:pb-4">
       <nav className=" relative flex flex-row items-center justify-center mx-6 gap-5">
@@ -40,25 +43,30 @@ const Header = () => {
               <p className=" text-xs">Catalog</p>
             </Link>
           </div>
-          <div>
-            <Link
-              href="/my"
-              className=" text-2xl text-headerButtonColor hover:text-headerButtonHoverColor transition duration-800 ease-out "
-            >
-              <FontAwesomeIcon icon={faIdCard} />
-              <p className=" text-xs">User</p>
-            </Link>
-          </div>
-          <div>
-            {" "}
-            <Link
-              href="/login"
-              className=" text-2xl text-headerButtonColor hover:text-headerButtonHoverColor transition duration-800 ease-out "
-            >
-              <FontAwesomeIcon className="" icon={faUser} />
-              <p className=" text-xs">Login</p>
-            </Link>
-          </div>
+          {session.data && (
+            <div>
+              <Link
+                href="/my"
+                className=" text-2xl text-headerButtonColor hover:text-headerButtonHoverColor transition duration-800 ease-out "
+              >
+                <FontAwesomeIcon icon={faIdCard} />
+                <p className=" text-xs">User</p>
+              </Link>
+            </div>
+          )}
+
+          {!session.data && (
+            <div>
+              {" "}
+              <Link
+                href="/login"
+                className=" text-2xl text-headerButtonColor hover:text-headerButtonHoverColor transition duration-800 ease-out "
+              >
+                <FontAwesomeIcon className="" icon={faUser} />
+                <p className=" text-xs">Login</p>
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>
