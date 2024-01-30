@@ -15,6 +15,8 @@ import { AppDispatch } from "@/app/store";
 import AddExerciseModal from "../../components/AddExerciseModalSection/AddExerciseModal";
 import { IAppSlice, appStateActions } from "@/app/store/appStateSlice";
 import { useSession } from "next-auth/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const addNewWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -232,7 +234,15 @@ const addNewWorkout = () => {
               {addedExercisesElement}
               {showAddExerciseModal && <AddExerciseModal></AddExerciseModal>}
               {!showAddExerciseModal && (
-                <button onClick={showAddExerciseModalHandler}>Выберете упражнения</button>
+                <div className=" flex flex-col justify-center my-4">
+                  <h1 className=" mx-auto py-3"> Выберете упражнения </h1>
+                  <button
+                    className=" py-4 rounded-md px-2 bg-emerald-100 hover:bg-emerald-400 hover:text-white text-2xl "
+                    onClick={showAddExerciseModalHandler}
+                  >
+                    <FontAwesomeIcon icon={faPlus} />
+                  </button>
+                </div>
               )}
             </div>
             {/* <AddExercisesSection></AddExercisesSection> */}

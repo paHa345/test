@@ -8,10 +8,10 @@ export const addWorkout = createAsyncThunk(
   "addWorkoutState/addWorkout",
   async function (currentWorkout: any, { rejectWithValue, dispatch }) {
     try {
-      const currentUserReq = await fetch("./../api/getUserByEmail");
-      const currentUser = await currentUserReq.json();
-      // типизировать ответ от сервера
-      console.log(currentUser.result._id);
+      // const currentUserReq = await fetch("./../api/getUserByEmail");
+      // const currentUser = await currentUserReq.json();
+      // // типизировать ответ от сервера
+      // console.log(currentUser.result._id);
 
       // await dispatch(addWorkoutActions.setUserID(currentUser.result._id))
 

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AddExercisesSection from "@/app/components/AddWorkoutSection/AddExercisesSection";
 import { IAddWorkoutSlice, IAddedExercises, addWorkoutActions } from "@/app/store/addWorkoutSlice";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const AddExerciseModal = () => {
   const dispatch = useDispatch();
@@ -80,8 +82,12 @@ const AddExerciseModal = () => {
       <div className=" modal-wrapper">
         <div className="modal">
           <div className="modal-header">
-            <a onClick={hideAddExerciseModalHandler} href="">
-              X
+            <a
+              className=" bg hover:bg-slate-400 px-2 py-1 rounded-full  hover:border-slate-400 border-solid border-2  border-slate-200"
+              onClick={hideAddExerciseModalHandler}
+              href=""
+            >
+              <FontAwesomeIcon icon={faXmark} />
             </a>
           </div>
           <div className=" overflow-auto h-2/6">{addedExercisesElement}</div>
