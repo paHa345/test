@@ -112,7 +112,6 @@ export const addWorkoutSlice = createSlice({
       state.currentAddedWorkout.description = action.payload;
     },
     addExerciseToWorkout(state, action) {
-      console.log(action.payload);
       state.currentAddedWorkout.exercises.push({
         id: action.payload.id,
         sets: 0,
@@ -120,17 +119,20 @@ export const addWorkoutSlice = createSlice({
         name: action.payload.name,
       });
     },
+    deleteExerciseFromWorkout(state, action) {
+      state.currentAddedWorkout.exercises.splice(action.payload, 1);
+    },
     changeSetsAmount(state, action) {
-      const currentExerciseIndex = state.currentAddedWorkout.exercises.findIndex((el) => {
-        return el.id === action.payload.exerciseId;
-      });
-      state.currentAddedWorkout.exercises[currentExerciseIndex].sets = action.payload.value;
+      // const currentExerciseIndex = state.currentAddedWorkout.exercises.findIndex((el) => {
+      //   return el.id === action.payload.exerciseId;
+      // });
+      state.currentAddedWorkout.exercises[action.payload.index].sets = action.payload.value;
     },
     changeRepsAmount(state, action) {
-      const currentExerciseIndex = state.currentAddedWorkout.exercises.findIndex((el) => {
-        return el.id === action.payload.exerciseId;
-      });
-      state.currentAddedWorkout.exercises[currentExerciseIndex].reps = action.payload.value;
+      // const currentExerciseIndex = state.currentAddedWorkout.exercises.findIndex((el) => {
+      //   return el.id === action.payload.exerciseId;
+      // });
+      state.currentAddedWorkout.exercises[action.payload.index].reps = action.payload.value;
     },
     setWorkoutDate(state, action) {
       console.log(action.payload);

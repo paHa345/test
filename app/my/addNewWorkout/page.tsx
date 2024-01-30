@@ -16,7 +16,7 @@ import AddExerciseModal from "../../components/AddExerciseModalSection/AddExerci
 import { IAppSlice, appStateActions } from "@/app/store/appStateSlice";
 import { useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const addNewWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -82,7 +82,7 @@ const addNewWorkout = () => {
   const addWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const currentUserReq = await fetch("./../api/getUserByEmail");
+    const currentUserReq = await fetch("./../api/users/getUserByEmail");
     // типизировать ответ от сервера
     const currentUser = await currentUserReq.json();
     console.log(currentUser.result._id);
@@ -115,39 +115,61 @@ const addNewWorkout = () => {
     );
   };
 
+  const deleteExerciseFromWorkoutHandler = (e: React.MouseEvent<SVGSVGElement>) => {
+    dispatch(addWorkoutActions.deleteExerciseFromWorkout(e.currentTarget.dataset.number));
+  };
+
   const addedExercisesElement =
     addedExercises.length === 0 ? (
-      <h1>Не добавлено упражнений</h1>
+      <div className=" flex flex-col justify-center my-4 bg-slate-200 rounded-lg">
+        <h1 className=" mx-auto text-sm">Не добавлено упражнений</h1>
+      </div>
     ) : (
       addedExercises?.map((addedExercise: IAddedExercises, index) => {
         return (
-          <div className="flex flex-row" key={`${addedExercise.id}_${index}`}>
+          <div
+            className="flex flex-row border-solid border-gray-200 rounded-md border-2 px-3 py-3 shadow-cardElementShadow"
+            key={`${addedExercise.id}_${index}`}
+          >
             <div className=" w-3/5">
-              <Link href={`../catalog/${addedExercise.id}`}>{addedExercise.name}</Link>
+              <Link className=" hover:underline" href={`../catalog/${addedExercise.id}`}>
+                {addedExercise.name}
+              </Link>
             </div>
-            <div className=" w-1/5 flex flex-col justify-center">
-              <label htmlFor="">Подходов</label>
-              <div className=" self-center border-current ">
-                <input
-                  data-index={index}
-                  data-exerciseid={addedExercise.id}
-                  className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
-                  onChange={changeSetsHandler}
-                  type="number"
-                  value={addedExercise.sets}
-                />
+            <div className=" w-2/5 flex flex-col">
+              <div className=" flex flex-col justify-center">
+                <label htmlFor="">Подходов</label>
+                <div className=" self-center border-current ">
+                  <input
+                    data-index={index}
+                    data-exerciseid={addedExercise.id}
+                    className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+                    onChange={changeSetsHandler}
+                    type="number"
+                    value={addedExercise.sets}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col justify-center">
+                <label htmlFor="">Повторений</label>
+                <div className=" self-center">
+                  <input
+                    data-index={index}
+                    data-exerciseid={addedExercise.id}
+                    className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+                    onChange={changeRepsHandler}
+                    type="number"
+                    value={addedExercise.reps}
+                  />
+                </div>
               </div>
             </div>
-            <div className=" w-1/5">
-              <label htmlFor="">Повторений</label>
-              <div className=" self-center">
-                <input
-                  data-index={index}
-                  data-exerciseid={addedExercise.id}
-                  className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
-                  onChange={changeRepsHandler}
-                  type="number"
-                  value={addedExercise.reps}
+            <div className=" w-8 ">
+              <div className=" hover:bg-slate-400 px-2 py-1 rounded-full  hover:border-slate-400 border-solid border-2  border-slate-200">
+                <FontAwesomeIcon
+                  data-number={index}
+                  icon={faXmark}
+                  onClick={deleteExerciseFromWorkoutHandler}
                 />
               </div>
             </div>
@@ -230,7 +252,9 @@ const addNewWorkout = () => {
             </div>
 
             <div>
-              <h1>Упражнения</h1>
+              <div className=" flex flex-col justify-center my-4">
+                <h1 className=" mx-auto py-3">Упражнения</h1>
+              </div>
               {addedExercisesElement}
               {showAddExerciseModal && <AddExerciseModal></AddExerciseModal>}
               {!showAddExerciseModal && (

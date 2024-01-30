@@ -9,7 +9,7 @@ import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const AddExerciseModal = () => {
   const dispatch = useDispatch();
-  const hideAddExerciseModalHandler = (e: any) => {
+  const hideAddExerciseModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     dispatch(appStateActions.hideAddExerciseModal());
   };
