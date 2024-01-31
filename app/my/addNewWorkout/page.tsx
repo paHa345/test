@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +22,7 @@ const addNewWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const session = useSession();
-  console.log(session.data?.user?.email);
+  // console.log(session.data?.user?.email);
 
   const name = useSelector(
     (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.name
@@ -49,6 +49,17 @@ const addNewWorkout = () => {
   const showAddExerciseModal = useSelector(
     (state: IAppSlice) => state.appState.showAddExerciseModal
   );
+
+  useEffect(() => {
+    // если fetchAddWorkoutStatus === error или resolve, то
+    // зурастить таймер, который через 3 сек переключит fetchAddWorkoutStatus
+    // на ready с помощью dispatch addWorkoutSlice action
+    if (fetchAddWorkoutStatus === "resolve" || fetchAddWorkoutStatus === "error") {
+      setTimeout(() => {
+        dispatch(addWorkoutActions.setFetchAddWorkoutStatusToReady());
+      }, 3000);
+    }
+  }, [fetchAddWorkoutStatus]);
 
   const showAddExerciseModalHandler = () => {
     dispatch(appStateActions.showAddExerciseModal());
@@ -81,6 +92,7 @@ const addNewWorkout = () => {
 
   const addWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    await dispatch(addWorkoutActions.setFetchAddWorkoutStatusToLoading());
 
     const currentUserReq = await fetch("./../api/users/getUserByEmail");
     // типизировать ответ от сервера
@@ -179,8 +191,7 @@ const addNewWorkout = () => {
     );
 
   const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(String(e.target.value));
-
+    // console.log(String(e.target.value));
     dispatch(addWorkoutActions.setWorkoutDate(e.target.value));
   };
 

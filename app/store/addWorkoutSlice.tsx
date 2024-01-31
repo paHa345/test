@@ -144,6 +144,12 @@ export const addWorkoutSlice = createSlice({
     setUserID(state, action) {
       state.currentAddedWorkout.userId = action.payload;
     },
+    setFetchAddWorkoutStatusToReady(state) {
+      state.fetchAddWorkoutStatus = addWorkoutFetchStatus.Ready;
+    },
+    setFetchAddWorkoutStatusToLoading(state) {
+      state.fetchAddWorkoutStatus = addWorkoutFetchStatus.Loading;
+    },
     resetCurrentWorkout(state) {
       state.currentAddedWorkout.description = "";
       state.currentAddedWorkout.name = "";
