@@ -1,3 +1,4 @@
+import { CLIENT_RENEG_LIMIT } from "tls";
 import { IOneExerciseTypes, exerciseTypes } from "../types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -27,10 +28,11 @@ export const addExerciseAndImage = createAsyncThunk(
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify({ workoutsArr: addedExercise.result._id }),
+        body: JSON.stringify({ exercisesArr: addedExercise.result._id }),
       });
 
-      const updatedUser = updatedUserReq.json();
+      const updatedUser = await updatedUserReq.json();
+      console.log(updatedUser)
 
       dispatch(addExerciseActions.clearAddexerciseForm());
       return addedExercise;

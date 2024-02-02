@@ -115,7 +115,7 @@ const AddExerciseForm = () => {
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise.image
   );
   const dispatch = useDispatch<AppDispatch>();
-  const uploadImageDispatch = useDispatch();
+  // const uploadImageDispatch = useDispatch();
 
   const exerciseInputEl = exerciseFields.map((el) => {
     return (
