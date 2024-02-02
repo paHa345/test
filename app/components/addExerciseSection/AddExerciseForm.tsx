@@ -136,6 +136,8 @@ const AddExerciseForm = () => {
     await uploadImage();
     console.log(blob?.url);
 
+    await addCurrentUserIDToExercise();
+
     // await dispatch(addExerciseActions.changeUploadedImage(blob?.url));
 
     await dispatch(addExerciseAndImage({ addedExercise: addedExercise, imageURL: imageURL }));
@@ -144,6 +146,13 @@ const AddExerciseForm = () => {
   const addExerciseStatus: "ready" | "loading" | "resolve" | "error" = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.fetchAddExerciseStatus
   );
+
+  const addCurrentUserIDToExercise = async () => {
+    const currentUserReq = await fetch("/api/users/getUserByEmail");
+    const currentUser = await currentUserReq.json();
+    console.log(currentUser.result._id);
+    dispatch(addExerciseActions.setCreatedUserID(currentUser.result._id));
+  };
 
   const uploadImage = async () => {
     if (!inputFileRef.current?.files) {

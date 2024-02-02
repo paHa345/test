@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Workout from "./WorkoutModel";
 import { IUserSchema } from "../types";
+import Exercise from "./ExerciseModel";
 
 const userSchema = new mongoose.Schema<IUserSchema>({
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -12,6 +13,7 @@ const userSchema = new mongoose.Schema<IUserSchema>({
     maxlength: 200,
   },
   workoutsArr: [{ type: mongoose.Types.ObjectId, ref: Workout, required: false }],
+  exercisesArr: [{ type: mongoose.Types.ObjectId, ref: Exercise, required: false }],
 });
 
 const User =

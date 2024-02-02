@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 
 const Header = () => {
   const session = useSession();
-  console.log(session.data);
   return (
     <header className=" bg-mainColor  py-4 pb-16 md:pb-4">
       <nav className=" relative flex flex-row items-center justify-center mx-6 gap-5">

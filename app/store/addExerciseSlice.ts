@@ -6,7 +6,9 @@ export const addExerciseAndImage = createAsyncThunk(
   async function (currentexercise: any, { rejectWithValue, dispatch, getState }) {
     try {
       const state: any = getState();
-      console.log(state.addExerciseState.currentAddedExercise);
+      // console.log(state.addExerciseState.currentAddedExercise);
+      console.log(state);
+
       dispatch(addExerciseActions.changeUploadedImage(currentexercise.imageURL));
       const req = await fetch("../api/exercises/addExercise", {
         method: "POST",
@@ -15,15 +17,23 @@ export const addExerciseAndImage = createAsyncThunk(
         },
         body: JSON.stringify(state.addExerciseState.currentAddedExercise),
       });
-      // console.log(req);
-      const data = await req.json();
+      const addedExercise = await req.json();
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
-      // console.log(currentexercise.imageURL);
-      // dispatch(addExerciseActions.changeAddedExercise(currentexercise.imageURL));
+
+      const updatedUserReq = await fetch("../api/users/addExerciseToUser", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ workoutsArr: addedExercise.result._id }),
+      });
+
+      const updatedUser = updatedUserReq.json();
+
       dispatch(addExerciseActions.clearAddexerciseForm());
-      return data;
+      return addedExercise;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -89,7 +99,7 @@ export const initAddExerciseState: IAddExerciseState = {
     mainGroupRu: null,
     id: null,
 
-    createdUserId: "6555c1fbb3a7c3aad9047fb2",
+    createdUserId: "",
   },
   fetchAddExerciseStatus: addExerciseFetchStatus.Ready,
 };
@@ -145,6 +155,10 @@ export const addExerciseSlice = createSlice({
       console.log("first");
       console.log(action.payload);
       state.currentAddedExercise.image = String(action.payload);
+    },
+
+    setCreatedUserID(state, action) {
+      state.currentAddedExercise.createdUserId = action.payload;
     },
 
     clearAddexerciseForm(state) {
