@@ -1,48 +1,6 @@
 "use client";
 
-// import type { PutBlobResult } from "@vercel/blob";
-// import { useState, useRef } from "react";
-
-// export default function AddExerciseForm() {
-//   const inputFileRef = useRef<HTMLInputElement>(null);
-//   const [blob, setBlob] = useState<PutBlobResult | null>(null);
-//   return (
-//     <>
-//       <h1>Upload Your Avatar</h1>
-
-//       <form
-//         onSubmit={async (event) => {
-//           event.preventDefault();
-
-//           if (!inputFileRef.current?.files) {
-//             throw new Error("No file selected");
-//           }
-
-//           const file = inputFileRef.current.files[0];
-
-//           const response = await fetch(`/api/upload?filename=${file.name}`, {
-//             method: "POST",
-//             body: file,
-//           });
-
-//           const newBlob = (await response.json()) as PutBlobResult;
-
-//           setBlob(newBlob);
-//         }}
-//       >
-//         <input name="file" ref={inputFileRef} type="file" required />
-//         <button type="submit">Upload</button>
-//       </form>
-//       {blob && (
-//         <div>
-//           Blob url: <a href={blob.url}>{blob.url}</a>
-//         </div>
-//       )}
-//     </>
-//   );
-// }
-
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputLabelEl from "./InputLabelEl";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -55,6 +13,7 @@ import { AppDispatch } from "../../store";
 import AddButton from "./AddButton";
 import UploadImageForm from "./UploadImageForm";
 import type { PutBlobResult } from "@vercel/blob";
+import ExerciseName from "./ExerciseName";
 
 const AddExerciseForm = () => {
   const exerciseFields = [
@@ -131,10 +90,11 @@ const AddExerciseForm = () => {
   });
 
   const addExerciseButtonHandler = async () => {
-    console.log(addedExercise);
+    // console.log(addedExercise);
+    dispatch(addExerciseActions.setAddExerciseStatusToLoading());
     //добавляем загрузку изображения и далее берём его имя и загружаем его в упражнение
     await uploadImage();
-    console.log(blob?.url);
+    // console.log(blob?.url);
 
     await addCurrentUserIDToExercise();
 
@@ -197,27 +157,45 @@ const AddExerciseForm = () => {
     //
   };
 
+  useEffect(() => {
+    if (addExerciseStatus === "resolve" || addExerciseStatus === "error") {
+      setTimeout(() => {
+        dispatch(addExerciseActions.setAddExerciseStatusToReady());
+      }, 3000);
+    }
+  }, [addExerciseStatus]);
+
   return (
     <>
+      {/* <ExerciseName></ExerciseName> */}
       <div className=" pt-10 pb-10">
-        {/* <div className="pb-6">
-        <h1 className=" text-center text-2xl font-bold">Регистрация в личном кабинете</h1>
-    </div> */}
-
         {exerciseInputEl}
         <input name="file" ref={inputFileRef} type="file" required />
-        {blob && (
+        {/* {blob && (
           <div>
             Blob url: <a href={blob.url}>{blob.url}</a>
           </div>
-        )}
+        )} */}
         {/* <UploadImageForm file={file} setFile={setFile}></UploadImageForm> */}
-        <button onClick={uploadImage}>Click</button>
+        {/* <button onClick={uploadImage}>Click</button> */}
       </div>
 
-      {addExerciseStatus === "loading" && <p>Loading</p>}
-      {addExerciseStatus === "resolve" && <p>Resolve</p>}
-      {addExerciseStatus === "error" && <p>Error</p>}
+      {/* {addExerciseStatus === "ready" && (
+        <h1 className=" my-3 text-center px-3 rounded-md py-3 bg-cyan-200">Загрузка тренировки</h1>
+      )} */}
+      {addExerciseStatus === "loading" && (
+        <h1 className=" my-3 text-center px-3 rounded-md py-3 bg-cyan-200">Загрузка упражнения</h1>
+      )}
+      {addExerciseStatus === "resolve" && (
+        <h1 className=" my-3 text-center px-3 rounded-md py-3 bg-green-200">
+          Упражнение успешно загружено
+        </h1>
+      )}
+      {addExerciseStatus === "error" && (
+        <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+          Ошибка загрузки. Повторите попытку позже
+        </h1>
+      )}
       <div className=" flex justify-center pb-20 ">
         <button onClick={addExerciseButtonHandler} className=" self-center buttonStandart">
           Добавить упражнение

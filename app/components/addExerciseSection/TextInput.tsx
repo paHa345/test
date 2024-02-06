@@ -18,12 +18,12 @@ const TextInput = ({
   const clickHand = () => {};
   return (
     <>
-      <div onClick={clickHand}>
+      <div onClick={clickHand} className=" mx-2">
         <input
           onFocus={focusElHandler}
           onBlur={focusOutElHandler}
           onChange={changeNameHandler}
-          className=" w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+          className=" px-2  w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
           id={nameEn}
           type="text"
           value={elementValue}

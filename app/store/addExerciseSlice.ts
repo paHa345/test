@@ -32,7 +32,7 @@ export const addExerciseAndImage = createAsyncThunk(
       });
 
       const updatedUser = await updatedUserReq.json();
-      console.log(updatedUser)
+      console.log(updatedUser);
 
       dispatch(addExerciseActions.clearAddexerciseForm());
       return addedExercise;
@@ -53,7 +53,7 @@ export interface IAddExerciseSlice {
   addExerciseState: {
     currentAddedExercise: {
       id: string | null;
-      name: string | null;
+      name: string;
       type: "base" | "isolated" | null;
       muscleGroups: String[] | [];
       video: string | null;
@@ -73,7 +73,7 @@ export interface IAddExerciseSlice {
 interface IAddExerciseState {
   currentAddedExercise: {
     id: string | null;
-    name: string | null;
+    name: string;
     type: "base" | "isolated" | null;
     muscleGroups: String[] | [];
     video: string | null;
@@ -110,6 +110,9 @@ export const addExerciseSlice = createSlice({
   name: "addExerciseState",
   initialState: initAddExerciseState,
   reducers: {
+    setName(state, action) {
+      state.currentAddedExercise.name = action.payload;
+    },
     changeAddedExercise(state, action) {
       console.log(action.payload.value);
       console.log(action.payload.id);
@@ -161,6 +164,12 @@ export const addExerciseSlice = createSlice({
 
     setCreatedUserID(state, action) {
       state.currentAddedExercise.createdUserId = action.payload;
+    },
+    setAddExerciseStatusToLoading(state) {
+      state.fetchAddExerciseStatus = addExerciseFetchStatus.Loading;
+    },
+    setAddExerciseStatusToReady(state) {
+      state.fetchAddExerciseStatus = addExerciseFetchStatus.Ready;
     },
 
     clearAddexerciseForm(state) {

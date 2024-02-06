@@ -12,12 +12,12 @@ const TextArea = ({
 }: any) => {
   return (
     <>
-      <div onClick={clickHandler}>
+      <div onClick={clickHandler} className=" mx-2">
         <textarea
           onFocus={focusElHandler}
           onBlur={focusOutElHandler}
           onChange={changeTextareaNameHandler}
-          className=" w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+          className="px-2  w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
           id={nameEn}
           value={elementValue}
           rows={5}

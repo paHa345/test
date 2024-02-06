@@ -14,15 +14,17 @@ const Select = ({ nameEn, nameRu, optionsArr, type, selectElHandler }: any) => {
 
   return (
     <>
-      <label className=" px-5" htmlFor={nameEn}>
-        {nameRu}
-      </label>
+      <div className="px-2 flex justify-center py-5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200">
+        <label className=" px-5 " htmlFor={nameEn}>
+          {nameRu}
+        </label>
 
-      <select onChange={selectElHandler} name={nameEn} id={nameEn}>
-        <option value={"NOT"}>Выберете значение</option>
+        <select onChange={selectElHandler} name={nameEn} id={nameEn}>
+          <option value={"NOT"}>Выберете значение</option>
 
-        {selectEl}
-      </select>
+          {selectEl}
+        </select>
+      </div>
     </>
   );
 };
