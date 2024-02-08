@@ -84,6 +84,7 @@ export interface IAppSlice {
     currentMuscleGroup: ICurrentMuscleGroup;
     currentExercisesByGroup: IExercise[];
     showAddExerciseModal: boolean;
+    editWorkoutsStatus: boolean;
   };
 }
 
@@ -106,6 +107,7 @@ interface IAppState {
   currentMuscleGroup: ICurrentMuscleGroup;
   currentExercisesByGroup: IExercise[];
   showAddExerciseModal: boolean;
+  editWorkoutsStatus: boolean;
 }
 
 export const initAppState: IAppState = {
@@ -120,6 +122,7 @@ export const initAppState: IAppState = {
   currentMuscleGroup: { en: "all", ru: "Все" },
   currentExercisesByGroup: [],
   showAddExerciseModal: false,
+  editWorkoutsStatus: false,
 };
 
 export const appStateSlice = createSlice({
@@ -150,6 +153,12 @@ export const appStateSlice = createSlice({
     },
     hideAddExerciseModal(state) {
       state.showAddExerciseModal = false;
+    },
+    startEditWorkouts(state) {
+      state.editWorkoutsStatus = true;
+    },
+    stopEditWorkouts(state) {
+      state.editWorkoutsStatus = false;
     },
   },
   extraReducers: (builder) => {

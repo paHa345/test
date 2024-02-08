@@ -10,17 +10,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { IUserSlice, getUserWorkouts, userActions } from "@/app/store/userSlice";
 import { IWorkout } from "@/app/types";
 import { AppDispatch } from "@/app/store";
-import { IAppSlice, setCurrentUserWorkouts } from "@/app/store/appStateSlice";
+import {
+  IAppSlice,
+  appStateActions,
+  appStateSlice,
+  setCurrentUserWorkouts,
+} from "@/app/store/appStateSlice";
 import LoadingCards from "../LoadingCardSection/LoadingCards";
 import WorkoutLoadingCards from "../LoadingCardSection/WorkoutLoadingCards";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
+import EditWorkoutModal from "../EditWorkoutSection/EditWorkoutModal";
+import EditedWorkout from "../EditWorkoutSection/EditedWorkout";
 
 const MyPage = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch<AppDispatch>();
 
+  const editedWorkout = useSelector(
+    (state: IUserSlice) => state.userState.currentUser.editedWorkout
+  );
+
   const workouts = useSelector((state: IUserSlice) => state.userState.currentUser.workoutsArr);
 
-  console.log(workouts);
+  const editWorkoutStatus = useSelector((state: IAppSlice) => state.appState.editWorkoutsStatus);
+  // console.log(workouts);
 
   const loadWorkoutsStatus = useSelector(
     (state: IAppSlice) => state.appState.fetchUserWorkoutsStatus
@@ -36,18 +50,57 @@ const MyPage = () => {
   //   console.log(workouts);
   // };
 
-  const arr = ["10", "11", "12"];
+  const startEditWorkoutsHandler = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    console.log(e.currentTarget.dataset.workoutid);
+    await dispatch(userActions.setEditedWorkout(String(e.currentTarget.dataset.workoutid)));
+    dispatch(appStateActions.startEditWorkouts());
+  };
+
+  const stopEditWorkoutHandler = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    await dispatch(userActions.resetEditedWorkout());
+    dispatch(appStateActions.stopEditWorkouts());
+  };
+
   const workoutsEl = workouts.map((workout: IWorkout, index: number) => {
     return (
       <div key={index}>
-        <div>
-          <Train
-            name={workout.name}
-            description={workout.comments}
-            date={workout.date}
-            exercises={workout.exercisesArr}
-          ></Train>
+        <div className=" flex justify-end">
+          {!editWorkoutStatus && (
+            <a onClick={startEditWorkoutsHandler} href="" data-workoutid={workout._id}>
+              <FontAwesomeIcon icon={faPencil} />
+            </a>
+          )}
+          {editedWorkout._id === workout._id && editWorkoutStatus && (
+            <a onClick={stopEditWorkoutHandler} href="" data-workoutid={workout._id}>
+              <FontAwesomeIcon icon={faXmark} />
+            </a>
+          )}
         </div>
+        {editedWorkout._id === workout._id && editWorkoutStatus && <EditedWorkout></EditedWorkout>}
+        {editedWorkout._id !== workout._id && (
+          <div>
+            <Train
+              name={workout.name}
+              description={workout.comments}
+              date={workout.date}
+              exercises={workout.exercisesArr}
+            ></Train>
+          </div>
+        )}
+        {/* {editedWorkout._id === workout._id ? (
+          <div>Edited el</div>
+        ) : (
+          <div>
+            <Train
+              name={workout.name}
+              description={workout.comments}
+              date={workout.date}
+              exercises={workout.exercisesArr}
+            ></Train>
+          </div>
+        )} */}
       </div>
     );
   });
@@ -103,9 +156,10 @@ const MyPage = () => {
         {loadWorkoutsStatus === "error" && (
           <h1>"Не удалоcь загрузить список тренировок, повторите попытку позже"</h1>
         )}
+        {/* {editWorkoutStatus && <EditWorkoutModal></EditWorkoutModal>} */}
 
         <div className=" flex flex-col gap-5 pb-7">
-          {loadWorkoutsStatus === "resolve" && workoutsEl}
+          {loadWorkoutsStatus === "resolve" && <div>{workoutsEl}</div>}
           {/* <Train></Train>
           <Train></Train> */}
         </div>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IResponseUser } from "../types";
+import { IResponseUser, IWorkout } from "../types";
 
 export const getUserWorkouts = createAsyncThunk(
   "appState/getUserWorkouts",
@@ -31,7 +31,8 @@ export interface IUserSlice {
     getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
     currentUser: {
       name: string;
-      workoutsArr: [];
+      workoutsArr: IWorkout[];
+      editedWorkout: IWorkout;
     };
   };
 }
@@ -40,7 +41,8 @@ interface userState {
   getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
   currentUser: {
     name: string;
-    workoutsArr: [];
+    workoutsArr: IWorkout[];
+    editedWorkout: IWorkout;
   };
 }
 
@@ -49,6 +51,14 @@ export const initUserState: userState = {
   currentUser: {
     name: "paHa345",
     workoutsArr: [],
+    editedWorkout: {
+      name: "Init",
+      _id: "init",
+      date: new Date(),
+      comments: "init",
+      userId: "init",
+      exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
+    },
   },
 };
 
@@ -57,8 +67,28 @@ export const userSlice = createSlice({
   initialState: initUserState,
   reducers: {
     setCurrentUserWorkout(state, action) {
-      console.log("asdhgaus");
       state.currentUser.workoutsArr = action.payload;
+    },
+    setEditedWorkout(state, action) {
+      // console.log(action.payload);
+      const editedWorkout = state.currentUser.workoutsArr.find((workout) => {
+        return workout._id === action.payload;
+      });
+      // console.log(editedWorkout);
+      if (editedWorkout) {
+        state.currentUser.editedWorkout = editedWorkout;
+      }
+    },
+    resetEditedWorkout(state) {
+      const initEditWorkout: IWorkout = {
+        name: "Init",
+        _id: "init",
+        date: new Date(),
+        comments: "init",
+        userId: "init",
+        exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
+      };
+      state.currentUser.editedWorkout = initEditWorkout;
     },
   },
   extraReducers(builder) {

@@ -13,6 +13,10 @@ const store = configureStore({
     authState: authSlice.reducer,
     userState: userSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

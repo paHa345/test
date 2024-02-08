@@ -8,7 +8,6 @@ const Train = ({ name, description, date, exercises }: any) => {
       exercise: { id: number; name: string; reps: number; sets: number; _id: number },
       index: number
     ) => {
-      console.log(exercise);
       return (
         <div key={exercise._id} className=" flex flex-row gap-3">
           <p>{index + 1}</p>
