@@ -13,34 +13,35 @@ import { useDispatch, useSelector } from "react-redux";
 import AddExerciseModal from "../AddExerciseModalSection/AddExerciseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { IUserSlice, userActions } from "@/app/store/userSlice";
+import EditWorkoutAddExerciseModal from "./EditWorkoutAddExerciseModal";
 
 const EditedWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const session = useSession();
-  // console.log(session.data?.user?.email);
 
-  const name = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.name
-  );
+  const name = useSelector((state: IUserSlice) => state.userState.currentUser.editedWorkout.name);
   const description = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.description
+    (state: IUserSlice) => state.userState.currentUser.editedWorkout.comments
   );
 
   const addedExercises = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.exercises
+    (state: IUserSlice) => state.userState.currentUser.editedWorkout.exercisesArr
   );
 
   const workoutDate = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.workoutDate
+    (state: IUserSlice) => state.userState.currentUser.editedWorkout.date
   );
+
+  var curr = new Date(workoutDate);
+  var date = curr.toISOString().substring(0, 10);
+
   const fetchAddWorkoutStatus = useSelector(
     (state: IAddWorkoutSlice) => state.addWorkoutState.fetchAddWorkoutStatus
   );
 
-  const id = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.currentAddedWorkout.addedWorkoutId
-  );
+  const id = useSelector((state: IUserSlice) => state.userState.currentUser.editedWorkout._id);
 
   const showAddExerciseModal = useSelector(
     (state: IAppSlice) => state.appState.showAddExerciseModal
@@ -67,11 +68,11 @@ const EditedWorkout = () => {
   });
 
   const changeNameHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    dispatch(addWorkoutActions.setName(e.currentTarget.value));
+    dispatch(userActions.setEditedWorkoutName(e.currentTarget.value));
   };
 
   const changeDescriptionHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    dispatch(addWorkoutActions.setDescription(e.currentTarget.value));
+    dispatch(userActions.setEditedWorkoutComments(e.currentTarget.value));
   };
 
   const focusElHandler = (e: React.FocusEvent<HTMLElement>) => {
@@ -106,7 +107,7 @@ const EditedWorkout = () => {
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
-      addWorkoutActions.changeSetsAmount({
+      userActions.changeSetsAmount({
         value: e.target.value,
         exerciseId: e.target.dataset.exerciseid,
         index: e.target.dataset.index,
@@ -115,7 +116,7 @@ const EditedWorkout = () => {
   };
   const changeRepsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
-      addWorkoutActions.changeRepsAmount({
+      userActions.changeSetsAmount({
         value: e.target.value,
         exerciseId: e.target.dataset.exerciseid,
         index: e.target.dataset.index,
@@ -124,7 +125,7 @@ const EditedWorkout = () => {
   };
 
   const deleteExerciseFromWorkoutHandler = (e: React.MouseEvent<SVGSVGElement>) => {
-    dispatch(addWorkoutActions.deleteExerciseFromWorkout(e.currentTarget.dataset.number));
+    dispatch(userActions.deleteExerciseFromEditedWorkout(e.currentTarget.dataset.number));
   };
 
   const addedExercisesElement =
@@ -195,7 +196,7 @@ const EditedWorkout = () => {
     <div className="  mx-auto py-8">
       <div>
         <div className="pb-6">
-          <h1 className=" text-center text-2xl font-bold">Добавить новую тренировку</h1>
+          <h1 className=" text-center text-2xl font-bold">Редактировать тренировку</h1>
         </div>
 
         <div className=" shadow-exerciseCardHowerShadow p-3 max-w-xl mx-auto rounded-md border-solid border-2 border-stone-500">
@@ -255,6 +256,7 @@ const EditedWorkout = () => {
                 onChange={changeDateHandler}
                 id="workoutDate"
                 type="date"
+                value={date}
               />
             </div>
 
@@ -263,7 +265,7 @@ const EditedWorkout = () => {
                 <h1 className=" mx-auto py-3">Упражнения</h1>
               </div>
               {addedExercisesElement}
-              {showAddExerciseModal && <AddExerciseModal></AddExerciseModal>}
+              {showAddExerciseModal && <EditWorkoutAddExerciseModal></EditWorkoutAddExerciseModal>}
               {!showAddExerciseModal && (
                 <div className=" flex flex-col justify-center my-4">
                   <h1 className=" mx-auto py-3"> Выберете упражнения </h1>
@@ -304,7 +306,7 @@ const EditedWorkout = () => {
                   className=" my-8 py-2 text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
                 >
                   {" "}
-                  Добавить тренировку
+                  Обновить тренировку
                 </button>
               )}
             </div>

@@ -22,7 +22,7 @@ export interface IWorkout {
   comments: string;
   date: Date;
   userId: string;
-  name?: string;
+  name: string;
   exercisesArr: [{ name: string; id: string; reps: number; sets: number }];
 }
 

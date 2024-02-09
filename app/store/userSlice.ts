@@ -79,6 +79,19 @@ export const userSlice = createSlice({
         state.currentUser.editedWorkout = editedWorkout;
       }
     },
+    setEditedWorkoutName(state, action) {
+      state.currentUser.editedWorkout.name = action.payload;
+    },
+    setEditedWorkoutComments(state, action) {},
+    setEditedWorkoutDate(state, action) {},
+    changeSetsAmount(state, action) {
+      state.currentUser.editedWorkout.exercisesArr[action.payload.index].sets =
+        action.payload.value;
+    },
+    changeRepsAmount(state, action) {
+      state.currentUser.editedWorkout.exercisesArr[action.payload.index].reps =
+        action.payload.value;
+    },
     resetEditedWorkout(state) {
       const initEditWorkout: IWorkout = {
         name: "Init",
@@ -89,6 +102,9 @@ export const userSlice = createSlice({
         exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
       };
       state.currentUser.editedWorkout = initEditWorkout;
+    },
+    deleteExerciseFromEditedWorkout(state, action) {
+      state.currentUser.editedWorkout.exercisesArr.splice(action.payload, 1);
     },
   },
   extraReducers(builder) {
