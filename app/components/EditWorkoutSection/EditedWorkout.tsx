@@ -75,6 +75,11 @@ const EditedWorkout = () => {
     dispatch(userActions.setEditedWorkoutComments(e.currentTarget.value));
   };
 
+  const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(String(e.target.value));
+    dispatch(userActions.setEditedWorkoutDate(e.target.value));
+  };
+
   const focusElHandler = (e: React.FocusEvent<HTMLElement>) => {
     e.target.id === "name"
       ? setInFocusStatus({ ...onFocusStatus, name: true })
@@ -87,7 +92,7 @@ const EditedWorkout = () => {
       : setInFocusStatus({ ...onFocusStatus, description: false });
   };
 
-  const addWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const editWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     await dispatch(addWorkoutActions.setFetchAddWorkoutStatusToLoading());
 
@@ -116,7 +121,7 @@ const EditedWorkout = () => {
   };
   const changeRepsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
-      userActions.changeSetsAmount({
+      userActions.changeRepsAmount({
         value: e.target.value,
         exerciseId: e.target.dataset.exerciseid,
         index: e.target.dataset.index,
@@ -186,11 +191,6 @@ const EditedWorkout = () => {
         );
       })
     );
-
-  const changeDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(String(e.target.value));
-    dispatch(addWorkoutActions.setWorkoutDate(e.target.value));
-  };
 
   return (
     <div className="  mx-auto py-8">
@@ -302,7 +302,7 @@ const EditedWorkout = () => {
                 <button className=" animate-pulse w-2/5 h-8  my-8 py-2 text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"></button>
               ) : (
                 <button
-                  onClick={addWorkoutHandler}
+                  onClick={editWorkoutHandler}
                   className=" my-8 py-2 text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
                 >
                   {" "}

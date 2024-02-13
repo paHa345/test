@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IUserSlice, userActions } from "@/app/store/userSlice";
+import AddExerciseToEditedWorkout from "./AddExerciseToEditedWorkout";
 
 const EditWorkoutAddExerciseModal = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const EditWorkoutAddExerciseModal = () => {
           </div>
           <div className=" overflow-auto h-2/6">{addedExercisesElement}</div>
 
-          <AddExercisesSection></AddExercisesSection>
+          <AddExerciseToEditedWorkout></AddExerciseToEditedWorkout>
           <div className="modal-body"></div>
         </div>
       </div>
