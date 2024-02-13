@@ -27,7 +27,7 @@ const AddExerciseToEditedWorkout = () => {
 
   const addExerciseHandler = function (this: IExercise) {
     console.log(this);
-    dispatch(userActions.addExerciseToEditedWorkout({ id: this._id, name: this.name }));
+    // dispatch(userActions.addExerciseToEditedWorkout({ id: this._id, name: this.name }));
   };
 
   const exercises = currentExercises?.map((exercise: IExercise, index) => {
