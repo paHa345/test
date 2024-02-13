@@ -1,4 +1,5 @@
 import { connectMongoDB } from "@/app/libs/MongoConnect";
+import User from "@/app/models/UserModel";
 import Workout from "@/app/models/WorkoutModel";
 import { authOptions } from "@/app/utils/authOptions";
 import { getServerSession } from "next-auth";
@@ -16,11 +17,18 @@ export async function PUT(req: NextRequest) {
 
   try {
     await connectMongoDB();
-    const workout = await req.json();
+    const body = await req.json();
+    console.log(body);
 
-    const addedWorkout = await Workout.create(workout);
+    const currentUser = await User.findOne({ email: session?.user?.email });
 
-    return NextResponse.json({ message: "sucess", result: addedWorkout });
+    if (String(currentUser._id) !== String(body.userId)) {
+      throw new Error("Нет прав для редактирования данного упражнения");
+    }
+
+    const editedWorkout = await Workout.findOneAndReplace({ _id: body._id }, body);
+
+    return NextResponse.json({ message: "sucess", result: editedWorkout });
   } catch (error: any) {
     return NextResponse.json({ message: error?.message }, { status: 400 });
   }

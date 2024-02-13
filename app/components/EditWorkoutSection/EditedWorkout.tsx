@@ -41,6 +41,10 @@ const EditedWorkout = () => {
     (state: IAddWorkoutSlice) => state.addWorkoutState.fetchAddWorkoutStatus
   );
 
+  const editedWorkoutUserId = useSelector(
+    (state: IUserSlice) => state.userState.currentUser.editedWorkout.userId
+  );
+
   const id = useSelector((state: IUserSlice) => state.userState.currentUser.editedWorkout._id);
 
   const showAddExerciseModal = useSelector(
@@ -94,20 +98,29 @@ const EditedWorkout = () => {
 
   const editWorkoutHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    await dispatch(addWorkoutActions.setFetchAddWorkoutStatusToLoading());
+    // await dispatch(addWorkoutActions.setFetchAddWorkoutStatusToLoading());
 
-    const currentUserReq = await fetch("./../api/users/getUserByEmail");
+    // const currentUserReq = await fetch("./../api/users/getUserByEmail");
     // типизировать ответ от сервера
-    const currentUser = await currentUserReq.json();
-    console.log(currentUser.result._id);
-    const currentWorkout = {
+    // const currentUser = await currentUserReq.json();
+    // console.log(currentUser.result._id);
+    const editedWorkout = {
       name: name,
       comments: description,
       exercisesArr: addedExercises,
-      date: workoutDate,
-      userId: currentUser.result._id,
+      date: new Date(workoutDate),
+      userId: editedWorkoutUserId,
+      _id: id,
     };
-    dispatch(addWorkout(currentWorkout));
+    console.log(editedWorkout);
+    const req = await fetch("./api/workout/editWorkout", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(editedWorkout),
+    });
+    // dispatch(addWorkout(currentWorkout));
   };
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

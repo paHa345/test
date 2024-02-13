@@ -20,6 +20,10 @@ export const getUserWorkouts = createAsyncThunk(
   }
 );
 
+// export const editWorkoutAndSet = createAsyncThunk(
+
+// )
+
 export enum fetchCurrentUserWorkoutsStatus {
   Loading = "loading",
   Resolve = "resolve",
@@ -82,8 +86,12 @@ export const userSlice = createSlice({
     setEditedWorkoutName(state, action) {
       state.currentUser.editedWorkout.name = action.payload;
     },
-    setEditedWorkoutComments(state, action) {},
-    setEditedWorkoutDate(state, action) {},
+    setEditedWorkoutComments(state, action) {
+      state.currentUser.editedWorkout.comments = action.payload;
+    },
+    setEditedWorkoutDate(state, action) {
+      state.currentUser.editedWorkout.date = action.payload;
+    },
     changeSetsAmount(state, action) {
       state.currentUser.editedWorkout.exercisesArr[action.payload.index].sets =
         action.payload.value;
@@ -91,6 +99,16 @@ export const userSlice = createSlice({
     changeRepsAmount(state, action) {
       state.currentUser.editedWorkout.exercisesArr[action.payload.index].reps =
         action.payload.value;
+    },
+    addExerciseToEditedWorkout(state, action) {
+      if (state.currentUser.editedWorkout.exercisesArr.length) {
+        state.currentUser.editedWorkout.exercisesArr.push({
+          id: action.payload.id,
+          sets: 0,
+          reps: 0,
+          name: action.payload.name,
+        });
+      }
     },
     resetEditedWorkout(state) {
       const initEditWorkout: IWorkout = {
@@ -106,6 +124,7 @@ export const userSlice = createSlice({
     deleteExerciseFromEditedWorkout(state, action) {
       state.currentUser.editedWorkout.exercisesArr.splice(action.payload, 1);
     },
+    updateWorkoutToEdited(state, action) {},
   },
   extraReducers(builder) {
     builder.addCase(getUserWorkouts.pending, (state, action) => {
