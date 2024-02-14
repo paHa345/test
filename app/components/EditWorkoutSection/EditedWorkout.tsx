@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IUserSlice, userActions } from "@/app/store/userSlice";
 import EditWorkoutAddExerciseModal from "./EditWorkoutAddExerciseModal";
+import { IWorkout } from "@/app/types";
 
 const EditedWorkout = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -104,7 +105,7 @@ const EditedWorkout = () => {
     // типизировать ответ от сервера
     // const currentUser = await currentUserReq.json();
     // console.log(currentUser.result._id);
-    const editedWorkout = {
+    const editedWorkout: IWorkout = {
       name: name,
       comments: description,
       exercisesArr: addedExercises,
@@ -121,6 +122,7 @@ const EditedWorkout = () => {
       body: JSON.stringify(editedWorkout),
     });
     // dispatch(addWorkout(currentWorkout));
+    dispatch(userActions.updateWorkoutToEdited(editedWorkout));
   };
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

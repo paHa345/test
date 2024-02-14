@@ -124,7 +124,22 @@ export const userSlice = createSlice({
     deleteExerciseFromEditedWorkout(state, action) {
       state.currentUser.editedWorkout.exercisesArr.splice(action.payload, 1);
     },
-    updateWorkoutToEdited(state, action) {},
+    updateWorkoutToEdited(
+      state,
+      action: {
+        payload: IWorkout;
+        type: string;
+      }
+    ) {
+      console.log(action.payload);
+      state.currentUser.workoutsArr = state.currentUser.workoutsArr.map((workout: IWorkout) => {
+        if (workout._id === action.payload._id) {
+          return action.payload;
+        } else {
+          return workout;
+        }
+      });
+    },
   },
   extraReducers(builder) {
     builder.addCase(getUserWorkouts.pending, (state, action) => {

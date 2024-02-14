@@ -52,7 +52,6 @@ const MyPage = () => {
 
   const startEditWorkoutsHandler = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.dataset.workoutid);
     await dispatch(userActions.setEditedWorkout(String(e.currentTarget.dataset.workoutid)));
     dispatch(appStateActions.startEditWorkouts());
   };
