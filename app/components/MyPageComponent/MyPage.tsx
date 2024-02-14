@@ -85,6 +85,7 @@ const MyPage = () => {
               description={workout.comments}
               date={workout.date}
               exercises={workout.exercisesArr}
+              workoutid={workout._id}
             ></Train>
           </div>
         )}

@@ -1,8 +1,9 @@
 import { IExercise } from "@/app/types";
 import Link from "next/link";
 import React from "react";
+import Exercise from "./Exercise";
 
-const Train = ({ name, description, date, exercises }: any) => {
+const Train = ({ name, description, date, exercises, workoutid }: any) => {
   const workoutDate = new Date(date).toLocaleString("ru-RU", {
     year: "numeric",
     month: "short",
@@ -15,7 +16,11 @@ const Train = ({ name, description, date, exercises }: any) => {
       index: number
     ) => {
       return (
-        <div key={exercise._id} className=" flex flex-row gap-3" data-exerciseid={exercise._id}>
+        <div
+          key={`${exercise.id}_${index}`}
+          className=" flex flex-row gap-3"
+          data-exerciseid={exercise.id}
+        >
           <p>{index + 1}</p>
           <Link className=" hover:underline" href={`./catalog/${exercise.id}`}>
             <p>{exercise.name}</p>

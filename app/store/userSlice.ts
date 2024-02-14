@@ -11,7 +11,6 @@ export const getUserWorkouts = createAsyncThunk(
         throw new Error("Ошибка сервера");
       }
       const user: IResponseUser = await req.json();
-      console.log(user);
       dispatch(userActions.setCurrentUserWorkout(user.result.workoutsArr));
       return user.result.workoutsArr;
     } catch (error: any) {
