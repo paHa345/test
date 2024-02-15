@@ -5,7 +5,6 @@ export const getUserWorkouts = createAsyncThunk(
   "appState/getUserWorkouts",
   async function (_, { rejectWithValue, dispatch }) {
     try {
-      console.log("GET");
       const req = await fetch("../api/workout/getCurrentUserWorkouts");
       if (!req.ok) {
         throw new Error("Ошибка сервера");
@@ -19,11 +18,31 @@ export const getUserWorkouts = createAsyncThunk(
   }
 );
 
-// export const editWorkoutAndSet = createAsyncThunk(
-
-// )
+export const editWorkoutAndUpdate = createAsyncThunk(
+  "appState/editWorkoutAndUpdate",
+  async function (editedWorkout: IWorkout, { rejectWithValue, dispatch }) {
+    try {
+      const req = await fetch("./api/workout/editWorkout", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(editedWorkout),
+      });
+      if (!req.ok) {
+        throw new Error("Ошибка сервера");
+      }
+      const editWorkout = await req.json();
+      dispatch(userActions.updateWorkoutToEdited(editedWorkout));
+      return editWorkout.result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export enum fetchCurrentUserWorkoutsStatus {
+  Ready = "ready",
   Loading = "loading",
   Resolve = "resolve",
   Error = "error",
@@ -32,6 +51,7 @@ export enum fetchCurrentUserWorkoutsStatus {
 export interface IUserSlice {
   userState: {
     getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
+    editWorkoutStatus: fetchCurrentUserWorkoutsStatus;
     currentUser: {
       name: string;
       workoutsArr: IWorkout[];
@@ -42,6 +62,8 @@ export interface IUserSlice {
 
 interface userState {
   getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
+  editWorkoutStatus: fetchCurrentUserWorkoutsStatus;
+
   currentUser: {
     name: string;
     workoutsArr: IWorkout[];
@@ -51,6 +73,8 @@ interface userState {
 
 export const initUserState: userState = {
   getWorkoutsStatus: fetchCurrentUserWorkoutsStatus.Loading,
+  editWorkoutStatus: fetchCurrentUserWorkoutsStatus.Ready,
+
   currentUser: {
     name: "paHa345",
     workoutsArr: [],
@@ -144,11 +168,20 @@ export const userSlice = createSlice({
     builder.addCase(getUserWorkouts.pending, (state, action) => {
       state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Loading;
     });
+    builder.addCase(editWorkoutAndUpdate.pending, (state, action) => {
+      state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Loading;
+    });
     builder.addCase(getUserWorkouts.fulfilled, (state, action) => {
       state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Resolve;
     });
+    builder.addCase(editWorkoutAndUpdate.fulfilled, (state, action) => {
+      state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Resolve;
+    });
     builder.addCase(getUserWorkouts.rejected, (state, action) => {
-      state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Resolve;
+      state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Error;
+    });
+    builder.addCase(editWorkoutAndUpdate.rejected, (state, action) => {
+      state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Error;
     });
   },
 });

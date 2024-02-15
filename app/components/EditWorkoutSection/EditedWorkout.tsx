@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddExerciseModal from "../AddExerciseModalSection/AddExerciseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { IUserSlice, userActions } from "@/app/store/userSlice";
+import { IUserSlice, editWorkoutAndUpdate, userActions } from "@/app/store/userSlice";
 import EditWorkoutAddExerciseModal from "./EditWorkoutAddExerciseModal";
 import { IWorkout } from "@/app/types";
 
@@ -38,9 +38,7 @@ const EditedWorkout = () => {
   var curr = new Date(workoutDate);
   var date = curr.toISOString().substring(0, 10);
 
-  const fetchAddWorkoutStatus = useSelector(
-    (state: IAddWorkoutSlice) => state.addWorkoutState.fetchAddWorkoutStatus
-  );
+  const updateWorkoutStatus = useSelector((state: IUserSlice) => state.userState.editWorkoutStatus);
 
   const editedWorkoutUserId = useSelector(
     (state: IUserSlice) => state.userState.currentUser.editedWorkout.userId
@@ -56,12 +54,12 @@ const EditedWorkout = () => {
     // если fetchAddWorkoutStatus === error или resolve, то
     // зурастить таймер, который через 3 сек переключит fetchAddWorkoutStatus
     // на ready с помощью dispatch addWorkoutSlice action
-    if (fetchAddWorkoutStatus === "resolve" || fetchAddWorkoutStatus === "error") {
+    if (updateWorkoutStatus === "resolve" || updateWorkoutStatus === "error") {
       setTimeout(() => {
         dispatch(addWorkoutActions.setFetchAddWorkoutStatusToReady());
       }, 3000);
     }
-  }, [fetchAddWorkoutStatus]);
+  }, [updateWorkoutStatus]);
 
   const showAddExerciseModalHandler = () => {
     dispatch(appStateActions.showAddExerciseModal());
@@ -113,16 +111,18 @@ const EditedWorkout = () => {
       userId: editedWorkoutUserId,
       _id: id,
     };
-    console.log(editedWorkout);
-    const req = await fetch("./api/workout/editWorkout", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(editedWorkout),
-    });
-    // dispatch(addWorkout(currentWorkout));
-    dispatch(userActions.updateWorkoutToEdited(editedWorkout));
+    // console.log(editedWorkout);
+    // const req = await fetch("./api/workout/editWorkout", {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json;charset=utf-8",
+    //   },
+    //   body: JSON.stringify(editedWorkout),
+    // });
+    // // dispatch(addWorkout(currentWorkout));
+    // dispatch(userActions.updateWorkoutToEdited(editedWorkout));
+
+    dispatch(editWorkoutAndUpdate(editedWorkout));
   };
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -296,24 +296,24 @@ const EditedWorkout = () => {
             {/* <AddExercisesSection></AddExercisesSection> */}
 
             <div className=" py-4">
-              {fetchAddWorkoutStatus === "loading" && (
+              {updateWorkoutStatus === "loading" && (
                 <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
-                  Загрузка тренировки
+                  Обновление тренировки
                 </h1>
               )}
-              {fetchAddWorkoutStatus === "resolve" && (
+              {updateWorkoutStatus === "resolve" && (
                 <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
-                  Тренировка успешно загружена
+                  Тренировка успешно обновлена
                 </h1>
               )}
-              {fetchAddWorkoutStatus === "error" && (
+              {updateWorkoutStatus === "error" && (
                 <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
-                  Ошибка загрузки. Повторите попытку позже
+                  Ошибка Обновления. Повторите попытку позже
                 </h1>
               )}
             </div>
             <div className=" flex justify-center">
-              {fetchAddWorkoutStatus === "loading" ? (
+              {updateWorkoutStatus === "loading" ? (
                 <button className=" animate-pulse w-2/5 h-8  my-8 py-2 text-slate-50 font-bold shadow-exerciseCardHowerShadow min-w-max px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"></button>
               ) : (
                 <button
