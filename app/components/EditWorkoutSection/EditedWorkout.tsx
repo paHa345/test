@@ -56,7 +56,7 @@ const EditedWorkout = () => {
     // на ready с помощью dispatch addWorkoutSlice action
     if (updateWorkoutStatus === "resolve" || updateWorkoutStatus === "error") {
       setTimeout(() => {
-        dispatch(addWorkoutActions.setFetchAddWorkoutStatusToReady());
+        dispatch(userActions.setFetchAddWorkoutStatusToReady());
       }, 3000);
     }
   }, [updateWorkoutStatus]);

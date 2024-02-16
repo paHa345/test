@@ -131,6 +131,10 @@ export const userSlice = createSlice({
           reps: 0,
           name: action.payload.name,
         });
+      } else {
+        state.currentUser.editedWorkout.exercisesArr = [
+          { id: action.payload.id, sets: 0, reps: 0, name: action.payload.name },
+        ];
       }
     },
     resetEditedWorkout(state) {
@@ -162,6 +166,12 @@ export const userSlice = createSlice({
           return workout;
         }
       });
+    },
+    setFetchAddWorkoutStatusToReady(state) {
+      state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Ready;
+    },
+    setFetchAddWorkoutStatusToLoading(state) {
+      state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Loading;
     },
   },
   extraReducers(builder) {
