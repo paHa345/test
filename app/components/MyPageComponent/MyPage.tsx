@@ -19,7 +19,7 @@ import {
 import LoadingCards from "../LoadingCardSection/LoadingCards";
 import WorkoutLoadingCards from "../LoadingCardSection/WorkoutLoadingCards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
 import EditWorkoutModal from "../EditWorkoutSection/EditWorkoutModal";
 import EditedWorkout from "../EditWorkoutSection/EditedWorkout";
 
@@ -62,14 +62,29 @@ const MyPage = () => {
     dispatch(appStateActions.stopEditWorkouts());
   };
 
+  const deleteWorkoutHandler = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    console.log(e.currentTarget.dataset.workoutid);
+  };
+
   const workoutsEl = workouts.map((workout: IWorkout, index: number) => {
     return (
       <div key={index}>
         <div className=" flex justify-end">
           {!editWorkoutStatus && (
-            <a onClick={startEditWorkoutsHandler} href="" data-workoutid={workout._id}>
-              <FontAwesomeIcon icon={faPencil} />
-            </a>
+            <>
+              <a
+                className=" px-8"
+                onClick={startEditWorkoutsHandler}
+                href=""
+                data-workoutid={workout._id}
+              >
+                <FontAwesomeIcon icon={faPencil} />
+              </a>
+              <a className=" " onClick={deleteWorkoutHandler} href="" data-workoutid={workout._id}>
+                <FontAwesomeIcon icon={faTrash} />
+              </a>
+            </>
           )}
           {editedWorkout._id === workout._id && editWorkoutStatus && (
             <a onClick={stopEditWorkoutHandler} href="" data-workoutid={workout._id}>

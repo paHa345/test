@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddExerciseModal from "../AddExerciseModalSection/AddExerciseModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { IUserSlice, editWorkoutAndUpdate, userActions } from "@/app/store/userSlice";
 import EditWorkoutAddExerciseModal from "./EditWorkoutAddExerciseModal";
 import { IWorkout } from "@/app/types";
