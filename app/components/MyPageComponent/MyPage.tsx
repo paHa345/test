@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Train from "./../TrainSection/Train";
@@ -22,10 +22,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
 import EditWorkoutModal from "../EditWorkoutSection/EditWorkoutModal";
 import EditedWorkout from "../EditWorkoutSection/EditedWorkout";
+import DeleteWorkoutModal from "../DeleteWorkoutSection/DeleteWorkoutModal";
 
 const MyPage = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch<AppDispatch>();
+
+  const [deletedWorkoutId, setDeletedWorkoutId] = useState("");
 
   const editedWorkout = useSelector(
     (state: IUserSlice) => state.userState.currentUser.editedWorkout
@@ -35,6 +38,8 @@ const MyPage = () => {
 
   const editWorkoutStatus = useSelector((state: IAppSlice) => state.appState.editWorkoutsStatus);
   // console.log(workouts);
+
+  const deleteWorkoutStatus = useSelector((state: IAppSlice) => state.appState.deleteWorkoutStatus);
 
   const loadWorkoutsStatus = useSelector(
     (state: IAppSlice) => state.appState.fetchUserWorkoutsStatus
@@ -64,7 +69,10 @@ const MyPage = () => {
 
   const deleteWorkoutHandler = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.dataset.workoutid);
+    // console.log(e.currentTarget.dataset.workoutid);
+    // dispatch(userActions.deleteWorkoutfromUser(e.currentTarget.dataset.workoutid));
+    setDeletedWorkoutId(String(e.currentTarget.dataset.workoutid));
+    dispatch(appStateActions.startDeleteWorkout());
   };
 
   const workoutsEl = workouts.map((workout: IWorkout, index: number) => {
@@ -137,6 +145,10 @@ const MyPage = () => {
 
   return (
     <>
+      {deleteWorkoutStatus && (
+        <DeleteWorkoutModal deletedWorkoutId={deletedWorkoutId}></DeleteWorkoutModal>
+      )}
+
       <section className=" container mx-auto">
         <div>
           <h1 className=" text-right text-4xl font-bold py-10">

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IResponseUser, IWorkout } from "../types";
+import { appStateSlice } from "./appStateSlice";
 
 export const getUserWorkouts = createAsyncThunk(
   "appState/getUserWorkouts",
@@ -41,6 +42,40 @@ export const editWorkoutAndUpdate = createAsyncThunk(
   }
 );
 
+export const deleteWorkoutAndUpdateState = createAsyncThunk(
+  "appState/deleteWorkoutAndUpdateState",
+  async function (deletedWorkoutId: string, { rejectWithValue, dispatch }) {
+    try {
+      const deleteWorkoutFromUserReq = await fetch("/api/users/deleteWorkoutFromUser", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ workoutId: deletedWorkoutId }),
+      });
+
+      if (!deleteWorkoutFromUserReq.ok) {
+        throw new Error("Ошибка сервера");
+      }
+
+      const deletedWorkoutReq = await fetch(`./api/workout/${deletedWorkoutId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+      });
+
+      if (!deletedWorkoutReq.ok) {
+        throw new Error("Ошибка сервера");
+      }
+
+      await dispatch(userActions.deleteWorkoutfromUser(deletedWorkoutId));
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export enum fetchCurrentUserWorkoutsStatus {
   Ready = "ready",
   Loading = "loading",
@@ -52,6 +87,7 @@ export interface IUserSlice {
   userState: {
     getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
     editWorkoutStatus: fetchCurrentUserWorkoutsStatus;
+    deleteWorkoutStatus: fetchCurrentUserWorkoutsStatus;
     currentUser: {
       name: string;
       workoutsArr: IWorkout[];
@@ -63,6 +99,7 @@ export interface IUserSlice {
 interface userState {
   getWorkoutsStatus: fetchCurrentUserWorkoutsStatus;
   editWorkoutStatus: fetchCurrentUserWorkoutsStatus;
+  deleteWorkoutStatus: fetchCurrentUserWorkoutsStatus;
 
   currentUser: {
     name: string;
@@ -74,6 +111,7 @@ interface userState {
 export const initUserState: userState = {
   getWorkoutsStatus: fetchCurrentUserWorkoutsStatus.Loading,
   editWorkoutStatus: fetchCurrentUserWorkoutsStatus.Ready,
+  deleteWorkoutStatus: fetchCurrentUserWorkoutsStatus.Ready,
 
   currentUser: {
     name: "paHa345",
@@ -151,6 +189,19 @@ export const userSlice = createSlice({
     deleteExerciseFromEditedWorkout(state, action) {
       state.currentUser.editedWorkout.exercisesArr.splice(action.payload, 1);
     },
+    deleteWorkoutfromUser(state, action) {
+      const workoutIndex = state.currentUser.workoutsArr.findIndex((workout: IWorkout) => {
+        return workout._id === action.payload;
+      });
+      console.log(workoutIndex);
+
+      state.currentUser.workoutsArr.splice(workoutIndex, 1);
+
+      // if(updatedWorkoutArr.length > 0 && updatedWorkoutArr){
+      //   state.currentUser.workoutsArr = updatedWorkoutArr
+
+      // }
+    },
     updateWorkoutToEdited(
       state,
       action: {
@@ -158,7 +209,6 @@ export const userSlice = createSlice({
         type: string;
       }
     ) {
-      console.log(action.payload);
       state.currentUser.workoutsArr = state.currentUser.workoutsArr.map((workout: IWorkout) => {
         if (workout._id === action.payload._id) {
           return action.payload;
@@ -181,17 +231,26 @@ export const userSlice = createSlice({
     builder.addCase(editWorkoutAndUpdate.pending, (state, action) => {
       state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Loading;
     });
+    builder.addCase(deleteWorkoutAndUpdateState.pending, (state, action) => {
+      state.deleteWorkoutStatus = fetchCurrentUserWorkoutsStatus.Loading;
+    });
     builder.addCase(getUserWorkouts.fulfilled, (state, action) => {
       state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Resolve;
     });
     builder.addCase(editWorkoutAndUpdate.fulfilled, (state, action) => {
       state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Resolve;
     });
+    builder.addCase(deleteWorkoutAndUpdateState.fulfilled, (state, action) => {
+      state.deleteWorkoutStatus = fetchCurrentUserWorkoutsStatus.Resolve;
+    });
     builder.addCase(getUserWorkouts.rejected, (state, action) => {
       state.getWorkoutsStatus = fetchCurrentUserWorkoutsStatus.Error;
     });
     builder.addCase(editWorkoutAndUpdate.rejected, (state, action) => {
       state.editWorkoutStatus = fetchCurrentUserWorkoutsStatus.Error;
+    });
+    builder.addCase(deleteWorkoutAndUpdateState.rejected, (state, action) => {
+      state.deleteWorkoutStatus = fetchCurrentUserWorkoutsStatus.Error;
     });
   },
 });
