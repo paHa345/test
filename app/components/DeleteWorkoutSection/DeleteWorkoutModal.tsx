@@ -37,18 +37,16 @@ const DeleteWorkoutModal = ({ deletedWorkoutId }: any) => {
           </div>
           <div className=" py-4">
             {deleteWorkoutStatus === "loading" && (
-              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
-                Обновление тренировки
-              </h1>
+              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">Удаление тренировки</h1>
             )}
             {deleteWorkoutStatus === "resolve" && (
               <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
-                Тренировка успешно обновлена
+                Тренировка успешно удалена
               </h1>
             )}
             {deleteWorkoutStatus === "error" && (
               <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
-                Ошибка Обновления. Повторите попытку позже
+                Ошибка удаления. Повторите попытку позже
               </h1>
             )}
           </div>
