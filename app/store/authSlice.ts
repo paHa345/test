@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
-import { signIn } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { signIn, useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
+import { authOptions } from "../utils/authOptions";
+import { userActions } from "./userSlice";
 
 export const loginUser = createAsyncThunk(
   "authState/loginUser",
@@ -15,7 +18,14 @@ export const loginUser = createAsyncThunk(
       //     //   router.replace("/my");
       //     redirect("my");
       //   }
+
       console.log(result);
+
+      const currentUser = await fetch("./api/users/getUserByEmail");
+      const data = await currentUser.json();
+      console.log(data);
+      dispatch(userActions.setCurrentUserId(data.result._id));
+
       if (result?.error) {
         dispatch(authActions.setLoginUserErrorMessage(result));
         throw new Error(`${result.error}`);

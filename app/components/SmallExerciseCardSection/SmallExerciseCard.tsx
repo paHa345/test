@@ -1,9 +1,34 @@
-import { IExercise } from "../../types";
+import { useSession } from "next-auth/react";
+import { IExercise, IUser } from "../../types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { IUserSlice } from "@/app/store/userSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Exercise from "../TrainSection/Exercise";
+import { appStateActions } from "@/app/store/appStateSlice";
+
+export interface ISmallExerciseProps {
+  _id: string | undefined;
+  id: string | undefined;
+  name: string | undefined;
+  image?: string | undefined;
+  isBest: boolean | undefined;
+  type: string | undefined;
+  raiting: number | undefined;
+  video: string | undefined;
+  description: string | undefined;
+  muscleGroups: string[] | undefined;
+  mainGroup: string | undefined;
+  mainGroupRu: string | undefined;
+  createdUserId?: string | undefined;
+  isCurrentUser: boolean;
+}
 
 const SmallExerciseCard = ({
+  createdUserId,
   name,
   _id,
   id,
@@ -11,11 +36,11 @@ const SmallExerciseCard = ({
   isBest,
   type,
   raiting,
-
+  isCurrentUser,
   muscleGroups,
   mainGroup,
   mainGroupRu,
-}: IExercise) => {
+}: ISmallExerciseProps) => {
   const muscleGroupsEl = muscleGroups?.map((el) => {
     return (
       <li key={el} className=" list-none pl-9">
@@ -24,10 +49,43 @@ const SmallExerciseCard = ({
     );
   });
 
+  const currentUser = useSelector((state: IUserSlice) => state.userState.currentUser);
+  const dispatch = useDispatch();
+
+  const startEditExercisesHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    console.log(e.currentTarget.dataset.exerciseid);
+  };
+
+  const deleteExerciseHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    console.log("Delete Exercise");
+    dispatch(appStateActions.startDeleteExercise());
+  };
+
   const imageName = image || "";
 
   return (
     <article className="  transition-shadow px-5 py-5 bg-gradient-to-tr from-secoundaryColor to-slate-200 rounded-lg shadow-exerciseCardShadow hover:shadow-exerciseCardHowerShadow">
+      <div>
+        <h1>
+          {isCurrentUser && (
+            <div className=" flex justify-end">
+              <a
+                className=" px-8"
+                onClick={startEditExercisesHandler}
+                href=""
+                data-exerciseid={_id}
+              >
+                <FontAwesomeIcon icon={faPencil} />
+              </a>
+              <a onClick={deleteExerciseHandler} href="" data-exerciseid={_id}>
+                <FontAwesomeIcon icon={faTrash} />
+              </a>
+            </div>
+          )}
+        </h1>
+      </div>
       <div className=" flex flex-col">
         <Link href={`./catalog/${_id}`}>
           <div className=" flex flex-col gap-2 mb-3">

@@ -85,6 +85,7 @@ export interface IAppSlice {
     showAddExerciseModal: boolean;
     editWorkoutsStatus: boolean;
     deleteWorkoutStatus: boolean;
+    deleteExerciseStatus: boolean;
   };
 }
 
@@ -109,6 +110,7 @@ interface IAppState {
   showAddExerciseModal: boolean;
   editWorkoutsStatus: boolean;
   deleteWorkoutStatus: boolean;
+  deleteExerciseStatus: boolean;
 }
 
 export const initAppState: IAppState = {
@@ -125,6 +127,7 @@ export const initAppState: IAppState = {
   showAddExerciseModal: false,
   editWorkoutsStatus: false,
   deleteWorkoutStatus: false,
+  deleteExerciseStatus: false,
 };
 
 export const appStateSlice = createSlice({
@@ -167,6 +170,12 @@ export const appStateSlice = createSlice({
     },
     stopDeleteWorkout(state) {
       state.deleteWorkoutStatus = false;
+    },
+    startDeleteExercise(state) {
+      state.deleteExerciseStatus = true;
+    },
+    stopDeleteExercise(state) {
+      state.deleteExerciseStatus = false;
     },
   },
   extraReducers: (builder) => {

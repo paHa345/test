@@ -90,6 +90,7 @@ export interface IUserSlice {
     deleteWorkoutStatus: fetchCurrentUserWorkoutsStatus;
     currentUser: {
       name: string;
+      id: string;
       workoutsArr: IWorkout[];
       editedWorkout: IWorkout;
     };
@@ -103,6 +104,7 @@ interface userState {
 
   currentUser: {
     name: string;
+    id: string;
     workoutsArr: IWorkout[];
     editedWorkout: IWorkout;
   };
@@ -115,6 +117,7 @@ export const initUserState: userState = {
 
   currentUser: {
     name: "paHa345",
+    id: "",
     workoutsArr: [],
     editedWorkout: {
       name: "Init",
@@ -131,6 +134,12 @@ export const userSlice = createSlice({
   name: "userState",
   initialState: initUserState,
   reducers: {
+    setCurrentUserId(state, action) {
+      state.currentUser.id = action.payload;
+    },
+    setEditedWorkoutName(state, action) {
+      state.currentUser.editedWorkout.name = action.payload;
+    },
     setCurrentUserWorkout(state, action) {
       state.currentUser.workoutsArr = action.payload;
     },
@@ -144,7 +153,7 @@ export const userSlice = createSlice({
         state.currentUser.editedWorkout = editedWorkout;
       }
     },
-    setEditedWorkoutName(state, action) {
+    setEditedWorkoutId(state, action) {
       state.currentUser.editedWorkout.name = action.payload;
     },
     setEditedWorkoutComments(state, action) {

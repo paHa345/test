@@ -15,6 +15,7 @@ export interface IExercise {
   muscleGroups: string[] | undefined;
   mainGroup: string | undefined;
   mainGroupRu: string | undefined;
+  createdUserId?: string | undefined;
 }
 
 export interface IWorkout {

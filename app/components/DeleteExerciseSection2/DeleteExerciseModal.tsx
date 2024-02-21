@@ -4,16 +4,16 @@ import { IUserSlice, deleteWorkoutAndUpdateState } from "@/app/store/userSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const DeleteWorkoutModal = ({ deletedWorkoutId }: any) => {
+const DeleteExerciseModal = ({ deletedWorkoutId }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const deleteWorkoutHandler = async () => {
-    await dispatch(deleteWorkoutAndUpdateState(deletedWorkoutId));
-    dispatch(appStateActions.stopDeleteWorkout());
+  const deleteExerciseHandler = async () => {
+    // await dispatch(deleteWorkoutAndUpdateState(deletedWorkoutId));
+    // dispatch(appStateActions.stopDeleteWorkout());
   };
 
-  const stopDeleteWorkout = () => {
-    dispatch(appStateActions.stopDeleteWorkout());
+  const stopDeleteExercise = () => {
+    dispatch(appStateActions.stopDeleteExercise());
   };
 
   const deleteWorkoutStatus = useSelector(
@@ -25,23 +25,23 @@ const DeleteWorkoutModal = ({ deletedWorkoutId }: any) => {
       <div className=" delete-modal-wrapper">
         <div className="modal">
           <div className="delete-modal-header">
-            <h1>{`Удалить тренировку`}</h1>
+            <h1>{`Удалить упражнение`}</h1>
           </div>
           <div className=" flex flex-col sm:flex-row justify-center gap-5 ">
-            <button onClick={deleteWorkoutHandler} className=" buttonStandart">
-              Удалить тренировку{" "}
+            <button onClick={deleteExerciseHandler} className=" buttonStandart">
+              Удалить упражнение{" "}
             </button>
-            <button className="delete-buttonStandart" onClick={stopDeleteWorkout}>
+            <button className="delete-buttonStandart" onClick={stopDeleteExercise}>
               Отмена
             </button>
           </div>
           <div className=" py-4">
             {deleteWorkoutStatus === "loading" && (
-              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">Удаление тренировки</h1>
+              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">Удаление упражнения</h1>
             )}
             {deleteWorkoutStatus === "resolve" && (
               <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
-                Тренировка успешно удалена
+                Упражнение успешно удалено
               </h1>
             )}
             {deleteWorkoutStatus === "error" && (
@@ -58,4 +58,4 @@ const DeleteWorkoutModal = ({ deletedWorkoutId }: any) => {
   );
 };
 
-export default DeleteWorkoutModal;
+export default DeleteExerciseModal;

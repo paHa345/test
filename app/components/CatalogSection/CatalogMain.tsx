@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IAppSlice, appStateActions, setCurrentMuscleGroupAndSet } from "../../store/appStateSlice";
 import { AppDispatch } from "../../store";
 import LoadingCards from "../LoadingCardSection/LoadingCards";
+import { IUserSlice, userActions } from "@/app/store/userSlice";
 
 const CatalogMain = () => {
   const muscleGroups = [
@@ -55,7 +56,14 @@ const CatalogMain = () => {
     console.log(data.result);
   };
 
+  const setCurrentUserId = async () => {
+    const currentUser = await fetch("./api/users/getUserByEmail");
+    const data = await currentUser.json();
+    dispatch(userActions.setCurrentUserId(data?.result?._id));
+  };
+
   useEffect(() => {
+    setCurrentUserId();
     dispatch(setCurrentMuscleGroupAndSet({ en: "all", ru: "Все" }));
     getAllExercises();
   }, []);

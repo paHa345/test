@@ -1,7 +1,7 @@
 "use client";
 
 import { IAuthSlice, authActions, loginUser } from "@/app/store/authSlice";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
