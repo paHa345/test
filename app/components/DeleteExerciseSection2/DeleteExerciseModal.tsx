@@ -4,7 +4,7 @@ import { IUserSlice, deleteWorkoutAndUpdateState } from "@/app/store/userSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const DeleteExerciseModal = ({ deletedWorkoutId }: any) => {
+const DeleteExerciseModal = ({ deletedExerciseId }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const deleteExerciseHandler = async () => {

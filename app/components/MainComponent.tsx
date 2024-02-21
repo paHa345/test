@@ -5,14 +5,17 @@ import SmallExerciseCard from "./SmallExerciseCardSection/SmallExerciseCard";
 import { useSelector } from "react-redux";
 import { IAppSlice } from "../store/appStateSlice";
 import { IExercise } from "../types";
+import { IUserSlice } from "../store/userSlice";
 
 const MainComponent = () => {
   const bestExercises = useSelector((state: IAppSlice) => state.appState.exercises);
+  const userId = useSelector((state: IUserSlice) => state.userState.currentUser.id);
 
   const bestExercisesCard = bestExercises.map((exercise: IExercise) => {
     return (
       <div key={exercise._id}>
         <SmallExerciseCard
+          isCurrentUser={userId === exercise.createdUserId ? true : false}
           name={exercise.name}
           _id={exercise._id}
           id={exercise.id}
