@@ -19,7 +19,6 @@ const ExercisesMainSection = () => {
   );
 
   const bestExercisesCard = currentExercises.map((exercise: IExercise) => {
-    console.log(exercise.createdUserId);
     return (
       <div key={exercise._id}>
         <SmallExerciseCard

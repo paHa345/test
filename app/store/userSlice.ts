@@ -76,6 +76,16 @@ export const deleteWorkoutAndUpdateState = createAsyncThunk(
   }
 );
 
+export const deleteExerciseAndUpdateState = createAsyncThunk(
+  "appState/deleteExerciseAndUpdateState",
+  async function (deletedWorkoutId: string, { rejectWithValue, dispatch }) {
+    try {
+      // обновить текущего пользователя - удалить данную тренировку
+      //  из списка тренировок пользователя
+    } catch (error: any) {}
+  }
+);
+
 export enum fetchCurrentUserWorkoutsStatus {
   Ready = "ready",
   Loading = "loading",

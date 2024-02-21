@@ -4,11 +4,12 @@ import Workout from "@/app/models/WorkoutModel";
 import User from "@/app/models/UserModel";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/utils/authOptions";
-import { IUser, IWorkout } from "@/app/types";
+import { IExercise, IUser, IWorkout } from "@/app/types";
+import Exercise from "@/app/models/ExerciseModel";
 
 export async function PATCH(req: NextRequest, res: NextResponse) {
   const session = await getServerSession(authOptions);
-  console.log(session?.user?.email);
+  console.log(session);
   if (!session) {
     return NextResponse.json(
       { message: "Только для зарегистрированных пользователей" },
@@ -20,15 +21,15 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     await connectMongoDB();
     const body = await req.json();
     const currentUser: IUser | null = await User.findOne({ email: session.user?.email });
-    const currentWorkout: IWorkout | null = await Workout.findById(body.workoutId);
+    const currentExercise: IExercise | null = await Exercise.findById(body.exerciseId);
 
-    console.log(currentWorkout);
+    console.log(currentExercise);
 
-    if (!currentWorkout) {
+    if (!currentExercise) {
       throw new Error("Не найдено тренировки");
     }
 
-    if (String(currentWorkout?.userId) !== String(currentUser?._id)) {
+    if (String(currentExercise?.createdUserId) !== String(currentUser?._id)) {
       return NextResponse.json(
         { message: "У вас нет прав для удаления этой тренировки" },
         { status: 403 }
@@ -36,11 +37,11 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     }
 
     console.log(body);
-    console.log(currentWorkout);
+    console.log(currentExercise);
 
     const updatedUser: IUser | null = await User.findOneAndUpdate(
       { email: session.user?.email },
-      { $pull: { workoutsArr: { $in: [body.workoutId] } } }
+      { $pull: { exercisesArr: { $in: [body.exerciseId] } } }
     );
 
     // const updatedUser = await User.findByIdAndUpdate(currentUser?._id, {
