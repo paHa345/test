@@ -177,6 +177,12 @@ export const appStateSlice = createSlice({
     stopDeleteExercise(state) {
       state.deleteExerciseStatus = false;
     },
+    deleteExerciseFromUser(state, action) {
+      const exerciseIndex = state.exercises.findIndex((exercise: IExercise) => {
+        return exercise._id === action.payload;
+      });
+      state.exercises.splice(exerciseIndex, 1);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBestExercisesAndSet.pending, (state) => {

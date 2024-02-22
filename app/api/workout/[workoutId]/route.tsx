@@ -39,7 +39,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { workoutId
     }
     const workout: any = await Workout.findByIdAndDelete(params.workoutId);
     if (!workout) {
-      return NextResponse.json({ message: "Упражнение не найдено" }, { status: 404 });
+      return NextResponse.json({ message: "Тренировка не найдена" }, { status: 404 });
     }
 
     return NextResponse.json({ message: "Success", result: workout });

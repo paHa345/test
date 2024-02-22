@@ -25,6 +25,8 @@ export interface ISmallExerciseProps {
   mainGroupRu: string | undefined;
   createdUserId?: string | undefined;
   isCurrentUser: boolean;
+  deleteExerciseHandler?: any;
+  setDeletedExerciseId?: any;
 }
 
 const SmallExerciseCard = ({
@@ -40,6 +42,7 @@ const SmallExerciseCard = ({
   muscleGroups,
   mainGroup,
   mainGroupRu,
+  setDeletedExerciseId,
 }: ISmallExerciseProps) => {
   const muscleGroupsEl = muscleGroups?.map((el) => {
     return (
@@ -60,6 +63,8 @@ const SmallExerciseCard = ({
   const deleteExerciseHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     console.log("Delete Exercise");
+    setDeletedExerciseId(_id);
+
     dispatch(appStateActions.startDeleteExercise());
   };
 
