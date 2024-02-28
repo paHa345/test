@@ -178,10 +178,10 @@ export const appStateSlice = createSlice({
       state.deleteExerciseStatus = false;
     },
     deleteExerciseFromUser(state, action) {
-      const exerciseIndex = state.exercises.findIndex((exercise: IExercise) => {
+      const exerciseIndex = state.currentExercisesByGroup.findIndex((exercise: IExercise) => {
         return exercise._id === action.payload;
       });
-      state.exercises.splice(exerciseIndex, 1);
+      state.currentExercisesByGroup.splice(exerciseIndex, 1);
     },
   },
   extraReducers: (builder) => {

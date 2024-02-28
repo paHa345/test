@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IUserSlice } from "@/app/store/userSlice";
+import { IUserSlice, userActions } from "@/app/store/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Exercise from "../TrainSection/Exercise";
-import { appStateActions } from "@/app/store/appStateSlice";
+import { IAppSlice, appStateActions } from "@/app/store/appStateSlice";
+import { useRouter } from "next/navigation";
 
 export interface ISmallExerciseProps {
   _id: string | undefined;
@@ -52,12 +53,23 @@ const SmallExerciseCard = ({
     );
   });
 
-  const currentUser = useSelector((state: IUserSlice) => state.userState.currentUser);
+  // const currentUser = useSelector((state: IUserSlice) => state.userState.currentUser);
+  const router = useRouter();
   const dispatch = useDispatch();
+  const currentExercises = useSelector(
+    (state: IAppSlice) => state.appState.currentExercisesByGroup
+  );
 
   const startEditExercisesHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.dataset.exerciseid);
+    const editedExercise = currentExercises.find(
+      (exercise) => exercise._id === e.currentTarget.dataset.exerciseid
+    );
+
+    if (editedExercise) {
+      dispatch(userActions.setEditedExercise(editedExercise));
+      router.push("./catalog/editExercise");
+    }
   };
 
   const deleteExerciseHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {

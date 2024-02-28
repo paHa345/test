@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IResponseUser, IWorkout } from "../types";
+import { IExercise, IResponseUser, IWorkout } from "../types";
 import { appStateActions, appStateSlice } from "./appStateSlice";
 
 export const getUserWorkouts = createAsyncThunk(
@@ -128,6 +128,7 @@ export interface IUserSlice {
       id: string;
       workoutsArr: IWorkout[];
       editedWorkout: IWorkout;
+      editedExercise: IExercise | null;
     };
   };
 }
@@ -143,6 +144,7 @@ interface userState {
     id: string;
     workoutsArr: IWorkout[];
     editedWorkout: IWorkout;
+    editedExercise: IExercise | null;
   };
 }
 
@@ -164,6 +166,7 @@ export const initUserState: userState = {
       userId: "init",
       exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
     },
+    editedExercise: null,
   },
 };
 
@@ -179,6 +182,17 @@ export const userSlice = createSlice({
     },
     setCurrentUserWorkout(state, action) {
       state.currentUser.workoutsArr = action.payload;
+    },
+
+    setEditedExerciseName(state, action) {
+      if (state.currentUser.editedExercise) {
+        state.currentUser.editedExercise.name = action.payload;
+      }
+    },
+    setEditedExerciseType(state, action) {
+      if (state.currentUser.editedExercise) {
+        state.currentUser.editedExercise.type = action.payload;
+      }
     },
     setEditedWorkout(state, action) {
       // console.log(action.payload);
@@ -198,6 +212,9 @@ export const userSlice = createSlice({
     },
     setEditedWorkoutDate(state, action) {
       state.currentUser.editedWorkout.date = action.payload;
+    },
+    setEditedExercise(state, action) {
+      state.currentUser.editedExercise = action.payload;
     },
     changeSetsAmount(state, action) {
       state.currentUser.editedWorkout.exercisesArr[action.payload.index].sets =
