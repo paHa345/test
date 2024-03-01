@@ -19,7 +19,7 @@ const EditExerciseMain = () => {
       <>
         <div className=" py-40 h-3/4 flex flex-col gap-5 items-center">
           <h1>Ошибка. Выберете упражнение для редактирования</h1>
-          <Link className=" hover:underline" href={"./catalog"}>
+          <Link className=" hover:underline" href={"./"}>
             Каталог упражнений
           </Link>
         </div>

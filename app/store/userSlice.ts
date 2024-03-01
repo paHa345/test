@@ -194,6 +194,22 @@ export const userSlice = createSlice({
         state.currentUser.editedExercise.type = action.payload;
       }
     },
+    deleteEditedExerciseMuscleGroup(state, action) {
+      state.currentUser.editedExercise?.muscleGroups?.splice(action.payload, 1);
+    },
+    addEditedExerciseMuscleGroup(state, action) {
+      state.currentUser.editedExercise?.muscleGroups?.push(action.payload);
+    },
+    setEditedexerciseVideo(state, action) {
+      if (state.currentUser.editedExercise) {
+        state.currentUser.editedExercise.video = action.payload;
+      }
+    },
+    setEditedExerciseDescription(state, action) {
+      if (state.currentUser.editedExercise) {
+        state.currentUser.editedExercise.description = action.payload;
+      }
+    },
     setEditedWorkout(state, action) {
       // console.log(action.payload);
       const editedWorkout = state.currentUser.workoutsArr.find((workout) => {

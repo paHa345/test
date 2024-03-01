@@ -43,8 +43,7 @@ const AddButton = ({
         />
         <button
           onClick={addMuscleGroupHandler}
-          className=" bg-baseColour
-        }   self-center mx-3 my-3 py-1 px-2 rounded-md hover:shadow-cardElementShadow "
+          className=" bg-baseColour   self-center mx-3 my-3 py-1 px-2 rounded-md hover:shadow-cardElementShadow "
         >
           Добавить
         </button>
