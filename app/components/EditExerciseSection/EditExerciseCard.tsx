@@ -85,7 +85,7 @@ const EditExerciseCard = () => {
           <span className=" ">
             <label
               htmlFor="login"
-              className="absolute transition-all ease-in-out z-10 bottom-3/4 left-0  bg-white   scale-75"
+              className="absolute transition-all ease-in-out z-10 -top-4 left-2 bg-white scale-95"
             >
               Название
             </label>
@@ -143,7 +143,7 @@ const EditExerciseCard = () => {
             <span className=" ">
               <label
                 htmlFor="type"
-                className="absolute transition-all ease-in-out z-10 bottom-40  left-0  bg-white scale-95"
+                className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
               >
                 Тип упражнения
               </label>
@@ -176,7 +176,7 @@ const EditExerciseCard = () => {
             <span className=" ">
               <label
                 htmlFor="muscleGroups"
-                className="absolute transition-all ease-in-out z-10 bottom-44  left-0  bg-white scale-95"
+                className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
               >
                 Мышечные группы
               </label>
@@ -204,7 +204,7 @@ const EditExerciseCard = () => {
             </div>
           </div> */}
 
-          <div className=" my-4 px-2 py-2 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200 ">
+          <div className=" relative my-4 px-2 py-2 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200 ">
             <div className=" my-3">
               <input
                 className=" w-2/4  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
@@ -236,10 +236,18 @@ const EditExerciseCard = () => {
             ) : (
               <h1 className=" ">Видео не добавлено</h1>
             )}
+          <span className=" ">
+              <label
+                htmlFor="video"
+                className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
+              >
+                Видео
+              </label>
+            </span>
           </div>
         </div>
 
-        <div>
+        <div className=" py-7 pb-6">
           <div className="relative">
             <div className=" mx-2 ">
               <textarea
@@ -252,8 +260,8 @@ const EditExerciseCard = () => {
               <span className=" ">
                 <label
                   htmlFor="login"
-                  className="absolute transition-all ease-in-out z-10 bottom-36  left-0  bg-white scale-95"
-                >
+                  className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-2 bg-white scale-95"
+                  >
                   Описание
                 </label>
               </span>
