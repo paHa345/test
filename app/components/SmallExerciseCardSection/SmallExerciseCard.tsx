@@ -10,6 +10,8 @@ import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Exercise from "../TrainSection/Exercise";
 import { IAppSlice, appStateActions } from "@/app/store/appStateSlice";
 import { useRouter } from "next/navigation";
+import { addWorkoutActions } from "@/app/store/addWorkoutSlice";
+import { editExerciseActions } from "@/app/store/editExerciseSlice";
 
 export interface ISmallExerciseProps {
   _id: string | undefined;
@@ -67,7 +69,8 @@ const SmallExerciseCard = ({
     );
 
     if (editedExercise) {
-      dispatch(userActions.setEditedExercise(editedExercise));
+      dispatch(editExerciseActions.setEditedExercise(editedExercise));
+
       router.push("./catalog/editExercise");
     }
   };

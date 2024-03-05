@@ -8,10 +8,11 @@ import { useSelector } from "react-redux";
 import CatalogMain from "../CatalogSection/CatalogMain";
 import Link from "next/link";
 import EditExerciseCard from "./EditExerciseCard";
+import { IEditExerciseSlice } from "@/app/store/editExerciseSlice";
 
 const EditExerciseMain = () => {
   const editedExercise: IExercise | null = useSelector(
-    (state: IUserSlice) => state.userState.currentUser.editedExercise
+    (state: IEditExerciseSlice) => state.editExerciseState.editedExercise
   );
 
   if (!editedExercise) {

@@ -184,32 +184,37 @@ export const userSlice = createSlice({
       state.currentUser.workoutsArr = action.payload;
     },
 
-    setEditedExerciseName(state, action) {
-      if (state.currentUser.editedExercise) {
-        state.currentUser.editedExercise.name = action.payload;
-      }
-    },
-    setEditedExerciseType(state, action) {
-      if (state.currentUser.editedExercise) {
-        state.currentUser.editedExercise.type = action.payload;
-      }
-    },
-    deleteEditedExerciseMuscleGroup(state, action) {
-      state.currentUser.editedExercise?.muscleGroups?.splice(action.payload, 1);
-    },
-    addEditedExerciseMuscleGroup(state, action) {
-      state.currentUser.editedExercise?.muscleGroups?.push(action.payload);
-    },
-    setEditedexerciseVideo(state, action) {
-      if (state.currentUser.editedExercise) {
-        state.currentUser.editedExercise.video = action.payload;
-      }
-    },
-    setEditedExerciseDescription(state, action) {
-      if (state.currentUser.editedExercise) {
-        state.currentUser.editedExercise.description = action.payload;
-      }
-    },
+    // setEditedExerciseName(state, action) {
+    //   if (state.currentUser.editedExercise) {
+    //     state.currentUser.editedExercise.name = action.payload;
+    //   }
+    // },
+    // setEditedExerciseType(state, action) {
+    //   if (state.currentUser.editedExercise) {
+    //     state.currentUser.editedExercise.type = action.payload;
+    //   }
+    // },
+    // deleteEditedExerciseMuscleGroup(state, action) {
+    //   state.currentUser.editedExercise?.muscleGroups?.splice(action.payload, 1);
+    // },
+    // addEditedExerciseMuscleGroup(state, action) {
+    //   state.currentUser.editedExercise?.muscleGroups?.push(action.payload);
+    // },
+    // setEditedexerciseVideo(state, action) {
+    //   if (state.currentUser.editedExercise) {
+    //     state.currentUser.editedExercise.video = action.payload;
+    //   }
+    // },
+    // setEditedExerciseDescription(state, action) {
+    //   if (state.currentUser.editedExercise) {
+    //     state.currentUser.editedExercise.description = action.payload;
+    //   }
+    // },
+    // setEditedExerciseImage(state, action) {
+    //   if (state.currentUser.editedExercise) {
+    //     state.currentUser.editedExercise.image = action.payload;
+    //   }
+    // },
     setEditedWorkout(state, action) {
       // console.log(action.payload);
       const editedWorkout = state.currentUser.workoutsArr.find((workout) => {
@@ -229,9 +234,9 @@ export const userSlice = createSlice({
     setEditedWorkoutDate(state, action) {
       state.currentUser.editedWorkout.date = action.payload;
     },
-    setEditedExercise(state, action) {
-      state.currentUser.editedExercise = action.payload;
-    },
+    // setEditedExercise(state, action) {
+    //   state.currentUser.editedExercise = action.payload;
+    // },
     changeSetsAmount(state, action) {
       state.currentUser.editedWorkout.exercisesArr[action.payload.index].sets =
         action.payload.value;

@@ -61,7 +61,7 @@ const AddExerciseForm = () => {
     },
   ];
 
-  const [file, setFile] = useState<File>();
+  // const [file, setFile] = useState<File>();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const [imageURL, setImageURL] = useState("");

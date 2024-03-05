@@ -1,35 +1,43 @@
 "use client";
+import { AppDispatch } from "@/app/store";
+import { addExerciseActions } from "@/app/store/addExerciseSlice";
+import {
+  IEditExerciseSlice,
+  editExerciseActions,
+  editExerciseAndUpdate,
+} from "@/app/store/editExerciseSlice";
 import { IUserSlice, userActions } from "@/app/store/userSlice";
 import { IExercise } from "@/app/types";
+import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditExerciseCard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [addedMuscleGroup, setAddedMuscleGroup] = useState("");
   const [addedExerciseVideo, setAddedExerciseVideo] = useState("");
   const inputFileRef = useRef<HTMLInputElement>(null);
-
+  const [updateImageNotification, setUpdateImageNotification] = useState("");
 
   const editedExercise: IExercise | null = useSelector(
-    (state: IUserSlice) => state.userState.currentUser.editedExercise
+    (state: IEditExerciseSlice) => state.editExerciseState.editedExercise
   );
   const changeEditedExerciseName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(userActions.setEditedExerciseName(e.currentTarget.value));
+    dispatch(editExerciseActions.setEditedExerciseName(e.currentTarget.value));
   };
 
   const selectTypeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(e.currentTarget.value);
-    dispatch(userActions.setEditedExerciseType(e.currentTarget.value));
+    dispatch(editExerciseActions.setEditedExerciseType(e.currentTarget.value));
   };
   const deleteMuscleGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log(e.currentTarget.dataset.index);
-    dispatch(userActions.deleteEditedExerciseMuscleGroup(e.currentTarget.dataset.index));
+    dispatch(editExerciseActions.deleteEditedExerciseMuscleGroup(e.currentTarget.dataset.index));
   };
 
   const addMuscleGroupHandler = () => {
-    dispatch(userActions.addEditedExerciseMuscleGroup(addedMuscleGroup));
+    dispatch(editExerciseActions.addEditedExerciseMuscleGroup(addedMuscleGroup));
   };
 
   const changeEditedExerciseAddedMuscleGroup = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,22 +50,39 @@ const EditExerciseCard = () => {
 
   const setEditedExerciseVideo = (e: React.MouseEvent<HTMLButtonElement>) => {
     // console.log(e.currentTarget.value);
-    dispatch(userActions.setEditedexerciseVideo(addedExerciseVideo));
+    dispatch(editExerciseActions.setEditedexerciseVideo(addedExerciseVideo));
   };
 
   const editedExerciseChangeDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // console.log(e.currentTarget.value);
-    dispatch(userActions.setEditedExerciseDescription(e.currentTarget.value));
+    dispatch(editExerciseActions.setEditedExerciseDescription(e.currentTarget.value));
   };
 
-  const selecteditedexerciseImage = (e: React.ChangeEvent<HTMLInputElement>)=>{
+  const selecteditedexerciseImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     // if(editedExercise){
     //   if(editedExercise.exerciseImage){
     //     return <Image src={editedExercise.exerciseImage} alt="Exercise Image" width="100%" height="100%" />
     //   }
     // }
-    console.log(e.currentTarget.files)
-  }
+
+    if (!inputFileRef.current?.files) {
+      return;
+    }
+    if (!e.target.files || e.target.files.length === 0) {
+      return;
+    }
+    if (inputFileRef.current?.files[0].size > 100000) {
+      // console.log("Слишком большой объём выбранной карнтинки");
+      setUpdateImageNotification("Слишком большой объём выбранного изображения");
+      return;
+    }
+    console.log(e.target.files);
+    const objectURL = URL.createObjectURL(e.target.files[0]);
+    dispatch(editExerciseActions.setEditedExerciseImage(objectURL));
+    setUpdateImageNotification("Изображение обновлено");
+
+    console.log(inputFileRef.current?.files[0].size);
+  };
 
   const editedExerciseMuscleGroups: any = editedExercise?.muscleGroups
     ? editedExercise.muscleGroups.map((muscleGroup, index) => {
@@ -82,12 +107,21 @@ const EditExerciseCard = () => {
   //   })
   // }
 
+  const updateExerciseHandler = () => {
+    dispatch(
+      editExerciseAndUpdate({
+        imageFile: inputFileRef.current?.files,
+        editedExercise: editedExercise,
+      })
+    );
+  };
+
   return (
     <div className=" py-7">
       <div className="relative">
         <div className=" text-center text-2xl font-bold pb-6">
           <input
-            className=" px-2  w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+            className="w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
             onChange={changeEditedExerciseName}
             type="text"
             value={editedExercise?.name}
@@ -105,37 +139,40 @@ const EditExerciseCard = () => {
       </div>
       <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 ">
         <div className=" relative px-2 py-10 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200  flex flex-col gap-5 items-center justify-around">
-
-       
-        <div className=" w-4/5 justify-self-center pb-5">
-          {
-            editedExercise !== null && (
-              <img
-                className=" w-full"
-                src={editedExercise.image}
-                alt={editedExercise.image}
-                width={200}
-                height={200}
+          <div className=" w-4/5 justify-self-center pb-5">
+            {
+              editedExercise !== null && (
+                <img
+                  className=" w-full"
+                  src={editedExercise.image}
+                  alt={editedExercise.image}
+                  width={200}
+                  height={200}
+                />
+              )
+              //    {editedExercise?.image.startsWith("https://") ? (
+              //     <img src={editedExercise?.image} alt={editedExercise?.image} />
+              //   ) : (
+              //     <Image
+              //       className=" w-full"
+              //       src={editedExercise?.image}
+              //       alt={editedExercise?.image}
+              //       width={200}
+              //       height={200}
+              //     ></Image>
+              //   )}
+            }
+            <div className=" pt-10 pb-10">
+              {/* {exerciseInputEl} */}
+              {updateImageNotification && <h1 className=" py-2">{updateImageNotification}</h1>}
+              <input
+                onChange={selecteditedexerciseImage}
+                name="file"
+                ref={inputFileRef}
+                type="file"
               />
-            )
-            //    {editedExercise?.image.startsWith("https://") ? (
-            //     <img src={editedExercise?.image} alt={editedExercise?.image} />
-            //   ) : (
-            //     <Image
-            //       className=" w-full"
-            //       src={editedExercise?.image}
-            //       alt={editedExercise?.image}
-            //       width={200}
-            //       height={200}
-            //     ></Image>
-            //   )}
-          }
-                <div className=" pt-10 pb-10">
-        {/* {exerciseInputEl} */}
-        <input onChange={selecteditedexerciseImage} name="file" ref={inputFileRef}  type="file" required />
-
-      </div>
-          <span className=" ">
+            </div>
+            <span className=" ">
               <label
                 htmlFor="type"
                 className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
@@ -143,7 +180,7 @@ const EditExerciseCard = () => {
                 Изображение
               </label>
             </span>
-        </div>
+          </div>
         </div>
         <div className=" self-center">
           <div className=" relative px-2 py-10 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200  flex flex-col gap-5 items-center justify-around">
@@ -264,7 +301,7 @@ const EditExerciseCard = () => {
             ) : (
               <h1 className=" ">Видео не добавлено</h1>
             )}
-          <span className=" ">
+            <span className=" ">
               <label
                 htmlFor="video"
                 className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
@@ -280,7 +317,7 @@ const EditExerciseCard = () => {
             <div className=" mx-2 ">
               <textarea
                 onChange={editedExerciseChangeDescription}
-                className="px-2  w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+                className="w-full  py-3 z-0 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                 id={"editedExerciseDescription"}
                 value={editedExercise?.description}
                 rows={5}
@@ -289,7 +326,7 @@ const EditExerciseCard = () => {
                 <label
                   htmlFor="login"
                   className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-2 bg-white scale-95"
-                  >
+                >
                   Описание
                 </label>
               </span>
@@ -306,6 +343,12 @@ const EditExerciseCard = () => {
         <Review></Review>
     */}
         </div>
+      </div>
+
+      <div className=" flex justify-center pb-20 ">
+        <button onClick={updateExerciseHandler} className=" self-center buttonStandart">
+          Обновить упражнение
+        </button>
       </div>
     </div>
   );
