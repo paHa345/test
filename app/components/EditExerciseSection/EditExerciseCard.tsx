@@ -10,7 +10,7 @@ import { IUserSlice, userActions } from "@/app/store/userSlice";
 import { IExercise } from "@/app/types";
 import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditExerciseCard = () => {
@@ -22,6 +22,9 @@ const EditExerciseCard = () => {
 
   const editedExercise: IExercise | null = useSelector(
     (state: IEditExerciseSlice) => state.editExerciseState.editedExercise
+  );
+  const editExerciseStatus = useSelector(
+    (state: IEditExerciseSlice) => state.editExerciseState.updateExerciseStatus
   );
   const changeEditedExerciseName = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(editExerciseActions.setEditedExerciseName(e.currentTarget.value));
@@ -115,6 +118,10 @@ const EditExerciseCard = () => {
       })
     );
   };
+
+  useEffect(() => {
+    dispatch(editExerciseActions.setUploadExercisestatusToReady());
+  }, []);
 
   return (
     <div className=" py-7">
@@ -343,6 +350,22 @@ const EditExerciseCard = () => {
         <Review></Review>
     */}
         </div>
+      </div>
+
+      <div className=" py-4">
+        {editExerciseStatus === "loading" && (
+          <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">Обновление упражнения</h1>
+        )}
+        {editExerciseStatus === "resolve" && (
+          <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
+            Упражнение успешно обновлено
+          </h1>
+        )}
+        {editExerciseStatus === "error" && (
+          <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+            Ошибка обновления. Повторите попытку позже
+          </h1>
+        )}
       </div>
 
       <div className=" flex justify-center pb-20 ">

@@ -183,6 +183,21 @@ export const appStateSlice = createSlice({
       });
       state.currentExercisesByGroup.splice(exerciseIndex, 1);
     },
+    updateExerciseToEdited(
+      state,
+      action: {
+        payload: IExercise;
+        type: string;
+      }
+    ) {
+      state.currentExercisesByGroup = state.currentExercisesByGroup.map((exercise: IExercise) => {
+        if (exercise._id === action.payload._id) {
+          return action.payload;
+        } else {
+          return exercise;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBestExercisesAndSet.pending, (state) => {
