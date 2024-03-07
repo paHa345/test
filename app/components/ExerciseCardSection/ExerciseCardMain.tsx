@@ -29,6 +29,7 @@ const ExerciseCardMain = ({
       </li>
     );
   });
+
   return (
     <div className=" py-7">
       <div>

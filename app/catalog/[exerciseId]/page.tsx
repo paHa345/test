@@ -1,7 +1,9 @@
 import ExerciseCardMain from "../../components/ExerciseCardSection/ExerciseCardMain";
-import React, { Suspense } from "react";
+import React, { Suspense, cache } from "react";
 
 import { IResponseOneExercise } from "../../types";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/utils/authOptions";
 
 // async function Playlists({ artistID }: { artistID: string }) {
 //     // Wait for the playlists
@@ -25,8 +27,13 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
-  const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`);
+  const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`, {
+    next: { revalidate: 0 },
+  });
   const exercise = await data.json();
+
+  const session = await getServerSession(authOptions);
+  console.log(session?.user?.name);
 
   return (
     <>
