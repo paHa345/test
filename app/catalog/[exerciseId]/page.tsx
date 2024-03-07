@@ -28,12 +28,9 @@ export async function generateStaticParams() {
 
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
   const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`, {
-    next: { revalidate: 0 },
+    next: { revalidate: 30 },
   });
   const exercise = await data.json();
-
-  const session = await getServerSession(authOptions);
-  console.log(session?.user?.name);
 
   return (
     <>
