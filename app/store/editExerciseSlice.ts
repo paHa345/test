@@ -85,6 +85,16 @@ export const editExerciseSlice = createSlice({
         state.editedExercise.type = action.payload;
       }
     },
+    setEditedExerciseMainMuscleGroup(state, action:{payload:{
+      nameRu: string;
+      nameEn: string;
+  } | undefined,type:string}) {
+      if (state.editedExercise) {
+        state.editedExercise.mainGroup = action.payload?.nameEn;
+        state.editedExercise.mainGroupRu = action.payload?.nameRu;
+
+      }
+    },
     deleteEditedExerciseMuscleGroup(state, action) {
       state.editedExercise?.muscleGroups?.splice(action.payload, 1);
     },

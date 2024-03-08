@@ -51,11 +51,16 @@ const ExerciseCardMain = ({
         </div>
         <div className=" self-center">
           <div className=" flex items-center justify-around">
+            <div className=" flex gap-5 flex-col md:flex-row">
+
             {type === "base" ? (
               <p className="  bg-baseColour py-1 px-2 rounded-md">Базовое</p>
-            ) : (
-              <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">Изолированное</p>
-            )}
+              ) : (
+                <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">Изолированное</p>
+                )}
+            <p className=" text-center  bg-mainGroupColour py-1 px-2 rounded-md">{mainGroupRu}</p>
+                </div>
+
 
             <div className="">
               Рейтинг: <span className=" text-lg font-bold">{raiting}</span>

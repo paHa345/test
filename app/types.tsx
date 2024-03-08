@@ -1,3 +1,13 @@
+export const mainMuscleGrourArr = [
+  { nameRu: "Бицепс", nameEn: "biceps" },
+  { nameRu: "Трицепс", nameEn: "triceps" },
+  { nameRu: "Грудь", nameEn: "chest" },
+  { nameRu: "Ноги", nameEn: "legs" },
+  { nameRu: "Плечи", nameEn: "shoulders" },
+  { nameRu: "Спина", nameEn: "back" },
+]
+
+
 export interface asyncThunkStatus {}
 
 export interface IExercises {}
