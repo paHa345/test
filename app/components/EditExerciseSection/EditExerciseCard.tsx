@@ -138,7 +138,7 @@ const EditExerciseCard = () => {
     })
 
     dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup))
-    action()
+    // action()
     router.replace('/')
 
 
