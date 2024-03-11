@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
-  const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`,{  next: { tags: ['collection'] } }
+  const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`,{ cache:"no-cache",  next: { tags: ['collection'] } }
   );
   const exercise = await data.json();
 
