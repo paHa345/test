@@ -12,9 +12,9 @@ import { IExercise, mainMuscleGrourArr } from "@/app/types";
 import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Router from 'next/router'
 
 const EditExerciseCard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -122,6 +122,7 @@ const EditExerciseCard = () => {
         editedExercise: editedExercise,
       })
     );
+    router.refresh()
   };
 
   const mainMuscleGroupElement = mainMuscleGrourArr.map((mainMuscleGroup)=>{
@@ -138,8 +139,7 @@ const EditExerciseCard = () => {
     })
 
     dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup))
-    // action()
-    router.replace('/')
+
 
 
   }
