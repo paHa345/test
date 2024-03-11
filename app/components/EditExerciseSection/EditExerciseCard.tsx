@@ -1,4 +1,5 @@
 "use client";
+import action from "@/app/actions";
 import { AppDispatch } from "@/app/store";
 import { addExerciseActions } from "@/app/store/addExerciseSlice";
 import {
@@ -10,6 +11,8 @@ import { IUserSlice, userActions } from "@/app/store/userSlice";
 import { IExercise, mainMuscleGrourArr } from "@/app/types";
 import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Router } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -20,6 +23,8 @@ const EditExerciseCard = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [updateImageNotification, setUpdateImageNotification] = useState("");
 
+
+  const router = useRouter();
   const editedExercise: IExercise | null = useSelector(
     (state: IEditExerciseSlice) => state.editExerciseState.editedExercise
   );
@@ -133,6 +138,8 @@ const EditExerciseCard = () => {
     })
 
     dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup))
+    action()
+    // router.replace('/')
 
 
   }

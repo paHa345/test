@@ -58,7 +58,7 @@ const ExerciseCardMain = ({
               ) : (
                 <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">Изолированное</p>
                 )}
-            <p className=" text-center  bg-mainGroupColour py-1 px-2 rounded-md">{mainGroupRu}</p>
+            <p className=" text-center   bg-mainGroupColour py-1 px-2 rounded-md">{mainGroupRu}</p>
                 </div>
 
 

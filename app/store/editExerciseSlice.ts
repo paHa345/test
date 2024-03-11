@@ -1,7 +1,9 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IExercise } from "../types";
 import { PutBlobResult } from "@vercel/blob";
 import { appStateActions } from "./appStateSlice";
+import { revalidateTag } from "next/cache";
 
 export const editExerciseAndUpdate = createAsyncThunk(
   "editExerciseState/editExerciseAndUpdate",
@@ -33,13 +35,20 @@ export const editExerciseAndUpdate = createAsyncThunk(
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(editedExercise),
-      });
+        
+      }
+      );
+
       if (!UpdateExerciseReq.ok) {
         throw new Error("Ошибка сервера");
       }
+      console.log("first")
       const editedExerciseRes = await UpdateExerciseReq.json();
       //   dispatch(userActions.updateWorkoutToEdited(editedWorkout));
       dispatch(appStateActions.updateExerciseToEdited(editedExerciseRes.result));
+      // revalidateTag('collection')
+      console.log("first 22")
+
       return editedExerciseRes.result;
     } catch (error: any) {
       return rejectWithValue(error.message);
