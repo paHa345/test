@@ -25,7 +25,6 @@ export async function generateStaticParams() {
     slug: exercise._id,
   }));
 }
-export const fetchCache = 'force-no-store'
 
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
   const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`,{ next: { tags: ['collection'] } }
