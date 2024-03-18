@@ -21,20 +21,20 @@ export const getUserWorkouts = createAsyncThunk(
 
 export const editWorkoutAndUpdate = createAsyncThunk(
   "appState/editWorkoutAndUpdate",
-  async function (editedWorkout: IWorkout, { rejectWithValue, dispatch }) {
+  async function (editedWorkoutData:{workout:IWorkout, workoutWithExerciseData: IWorkout}, { rejectWithValue, dispatch }) {
     try {
       const req = await fetch("./api/workout/editWorkout", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify(editedWorkout),
+        body: JSON.stringify(editedWorkoutData.workout),
       });
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
       const editWorkout = await req.json();
-      dispatch(userActions.updateWorkoutToEdited(editedWorkout));
+      dispatch(userActions.updateWorkoutToEdited(editedWorkoutData.workoutWithExerciseData));
       return editWorkout.result;
     } catch (error: any) {
       return rejectWithValue(error.message);

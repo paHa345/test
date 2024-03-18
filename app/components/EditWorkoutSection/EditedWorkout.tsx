@@ -116,21 +116,8 @@ const EditedWorkout = () => {
 {   ...exercise,     exercise: exercise.exerciseId }
       )
     })
-    console.log(data)
-    console.log({...editedWorkout, exercisesArr: data});
-    // const req = await fetch("./api/workout/editWorkout", {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json;charset=utf-8",
-    //   },
-    //   body: JSON.stringify(editedWorkout),
-    // });
-    // // dispatch(addWorkout(currentWorkout));
-    // dispatch(userActions.updateWorkoutToEdited(editedWorkout));
 
-
-
-  dispatch(editWorkoutAndUpdate({...editedWorkout, exercisesArr: data}));
+  dispatch(editWorkoutAndUpdate({workout: {...editedWorkout, exercisesArr: data}, workoutWithExerciseData: editedWorkout}));
   };
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
