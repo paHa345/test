@@ -23,8 +23,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
       path: "workoutsArr",
       populate: {
         path: "exercisesArr",
-        model: "Exercise",
+        // model: "Exercise",  
+        // select: "id name",
+        populate: [{
+          path: "exercise",
+         model: "Exercise",  
         select: "id name",
+        }],
       },
     });
 

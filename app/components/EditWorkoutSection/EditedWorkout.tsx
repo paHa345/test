@@ -103,7 +103,7 @@ const EditedWorkout = () => {
     // типизировать ответ от сервера
     // const currentUser = await currentUserReq.json();
     // console.log(currentUser.result._id);
-    const editedWorkout: IWorkout = {
+    const editedWorkout: any = {
       name: name,
       comments: description,
       exercisesArr: addedExercises,
@@ -111,7 +111,13 @@ const EditedWorkout = () => {
       userId: editedWorkoutUserId,
       _id: id,
     };
-    // console.log(editedWorkout);
+    const data = editedWorkout.exercisesArr.map((exercise: any) => {
+      return (
+{   ...exercise,     exercise: exercise.exerciseId }
+      )
+    })
+    console.log(data)
+    console.log({...editedWorkout, exercisesArr: data});
     // const req = await fetch("./api/workout/editWorkout", {
     //   method: "PUT",
     //   headers: {
@@ -122,7 +128,9 @@ const EditedWorkout = () => {
     // // dispatch(addWorkout(currentWorkout));
     // dispatch(userActions.updateWorkoutToEdited(editedWorkout));
 
-    dispatch(editWorkoutAndUpdate(editedWorkout));
+
+
+  dispatch(editWorkoutAndUpdate({...editedWorkout, exercisesArr: data}));
   };
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,16 +162,17 @@ const EditedWorkout = () => {
         <h1 className=" mx-auto text-sm">Не добавлено упражнений</h1>
       </div>
     ) : (
-      addedExercises?.map((addedExercise: IAddedExercises, index) => {
+      addedExercises?.map((addedExercise: any, index) => {
         return (
           <div
             className="flex flex-row border-solid border-gray-200 rounded-md border-2 px-3 py-3 shadow-cardElementShadow"
-            key={`${addedExercise.id}_${index}`}
+            key={`${addedExercise.id?._id}_${index}`}
           >
             <div className=" w-3/5">
-              <Link className=" hover:underline" href={`../catalog/${addedExercise.id}`}>
+              {addedExercise.exercise ?               <Link className=" hover:underline" href={`../catalog/${addedExercise.exercise?._id}`}>
                 {addedExercise.name}
-              </Link>
+              </Link>:  <p>{`${addedExercise.name} (архивное)`}</p>}
+
             </div>
             <div className=" w-2/5 flex flex-col">
               <div className=" flex flex-col justify-center">

@@ -19,6 +19,7 @@ const EditWorkoutAddExerciseModal = () => {
   const addedExercises = useSelector(
     (state: IUserSlice) => state.userState.currentUser.editedWorkout.exercisesArr
   );
+  console.log(addedExercises)
 
   const changeSetsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -43,18 +44,19 @@ const EditWorkoutAddExerciseModal = () => {
     addedExercises.length === 0 ? (
       <h1>Не добавлено упражнений</h1>
     ) : (
-      addedExercises?.map((addedExercise: IAddedExercises, index) => {
+      addedExercises?.map((addedExercise, index) => {
         return (
-          <div className="flex flex-row" key={`${addedExercise.id}_${index}`}>
+          <div className="flex flex-row" key={`${addedExercise?.exercise?._id}_${index}`}>
             <div className=" w-3/5">
-              <Link href={`../catalog/${addedExercise.id}`}>{addedExercise.name}</Link>
+              {addedExercise.exercise ?  <Link href={`../catalog/${addedExercise.exercise._id}`}>{addedExercise.name}</Link>:   <p>{`${addedExercise.name} (архивное)`}</p>}
+             
             </div>
             <div className=" w-1/5 flex flex-col justify-center">
               <label htmlFor="">Подходов</label>
               <div className=" self-center">
                 <input
                   data-index={index}
-                  data-exerciseid={addedExercise.id}
+                  data-exerciseid={addedExercise?.exercise?._id}
                   className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeSetsHandler}
                   type="number"
@@ -67,7 +69,7 @@ const EditWorkoutAddExerciseModal = () => {
               <div className=" self-center">
                 <input
                   data-index={index}
-                  data-exerciseid={addedExercise.id}
+                  data-exerciseid={addedExercise?.exercise?._id}
                   className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeRepsHandler}
                   type="number"

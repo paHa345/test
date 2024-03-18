@@ -164,7 +164,7 @@ export const initUserState: userState = {
       date: new Date(),
       comments: "init",
       userId: "init",
-      exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
+      exercisesArr: [{ name: "init", exercise: { id:"squat-01",name: "Приседания со штангой на плечах",_id: "654203ac3f25911208c1eea7"}, exerciseId:'Init', sets: 0, reps: 0 }],
     },
     editedExercise: null,
   },
@@ -246,16 +246,24 @@ export const userSlice = createSlice({
         action.payload.value;
     },
     addExerciseToEditedWorkout(state, action) {
+      console.log(action.payload)
       if (state.currentUser.editedWorkout.exercisesArr.length) {
         state.currentUser.editedWorkout.exercisesArr.push({
-          id: action.payload.id,
+          exercise: action.payload,
+          exerciseId: action.payload._id,
           sets: 0,
           reps: 0,
           name: action.payload.name,
+
         });
       } else {
         state.currentUser.editedWorkout.exercisesArr = [
-          { id: action.payload.id, sets: 0, reps: 0, name: action.payload.name },
+          { exercise: action.payload,
+            exerciseId: action.payload._id,
+            sets: 0,
+            reps: 0,
+            name: action.payload.name,
+             },
         ];
       }
     },
@@ -266,7 +274,7 @@ export const userSlice = createSlice({
         date: new Date(),
         comments: "init",
         userId: "init",
-        exercisesArr: [{ name: "init", id: "init", sets: 0, reps: 0 }],
+        exercisesArr: [{ name: "init", exercise: { id:"squat-01",name: "Приседания со штангой на плечах",_id: "654203ac3f25911208c1eea7"}, exerciseId:"Init", sets: 0, reps: 0,  }],
       };
       state.currentUser.editedWorkout = initEditWorkout;
     },

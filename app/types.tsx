@@ -34,7 +34,7 @@ export interface IWorkout {
   date: Date;
   userId: string;
   name: string;
-  exercisesArr: [{ name: string; id: string; reps: number; sets: number }] | [];
+  exercisesArr: [{ name: string; exercise:{ id:string, name : string, _id : string}; exerciseId:string; reps: number; sets: number }] | [];
 }
 
 export interface IUser {

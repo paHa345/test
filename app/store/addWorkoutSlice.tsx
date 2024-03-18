@@ -48,7 +48,15 @@ export enum addWorkoutFetchStatus {
 }
 
 export interface IAddedExercises {
-  id: string;
+  id: string | { id: {id
+    : 
+    string,
+    name
+    : 
+    string,
+    _id
+    : 
+    number}; name: string; reps: number; sets: number; _id: number };
   name: string;
   sets: number;
   reps: number;

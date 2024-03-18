@@ -59,6 +59,7 @@ export const setCurrentUserWorkouts = createAsyncThunk(
         throw new Error("Ошибка сервера");
       }
       const user: IResponseUser = await req.json();
+      console.log(user.result.workoutsArr)
       dispatch(userActions.setCurrentUserWorkout(user.result.workoutsArr));
     } catch (error: any) {
       return rejectWithValue(error.message);
