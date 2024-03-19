@@ -25,9 +25,14 @@ export async function generateStaticParams() {
     slug: exercise._id,
   }));
 }
-export const revalidate = 0
+// export const revalidate = 0;
 export default async function Page({ params: { exerciseId } }: { params: { exerciseId: string } }) {
-  const data = await fetch(`${process.env.HOST}/api/exercises/${exerciseId}`,{cache:'no-cache', next: { tags: ['collection'] } }
+  const data = await fetch(
+    `${process.env.HOST}/api/exercises/${exerciseId}`
+    // , {
+    //   cache: "no-cache",
+    //   next: { tags: ["collection"] },
+    // }
   );
   const exercise = await data.json();
 

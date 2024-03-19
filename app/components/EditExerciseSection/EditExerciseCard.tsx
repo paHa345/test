@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Router from 'next/router'
+import Router from "next/router";
 
 const EditExerciseCard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +22,6 @@ const EditExerciseCard = () => {
   const [addedExerciseVideo, setAddedExerciseVideo] = useState("");
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [updateImageNotification, setUpdateImageNotification] = useState("");
-
 
   const router = useRouter();
   const editedExercise: IExercise | null = useSelector(
@@ -122,27 +121,24 @@ const EditExerciseCard = () => {
         editedExercise: editedExercise,
       })
     );
-    router.refresh()
+    // router.refresh()
   };
 
-  const mainMuscleGroupElement = mainMuscleGrourArr.map((mainMuscleGroup)=>{
+  const mainMuscleGroupElement = mainMuscleGrourArr.map((mainMuscleGroup) => {
     return (
       <option key={mainMuscleGroup.nameEn} value={mainMuscleGroup.nameEn}>
         {mainMuscleGroup.nameRu}
       </option>
-    )
-  })
-  const selectMainMuscleGroupHandler = (e:React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.currentTarget.value)
-    const currentSelectedMainMuscleGroup = mainMuscleGrourArr.find((muscleGroup)=> {
-      return muscleGroup.nameEn === e.currentTarget.value
-    })
+    );
+  });
+  const selectMainMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.currentTarget.value);
+    const currentSelectedMainMuscleGroup = mainMuscleGrourArr.find((muscleGroup) => {
+      return muscleGroup.nameEn === e.currentTarget.value;
+    });
 
-    dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup))
-
-
-
-  }
+    dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup));
+  };
 
   useEffect(() => {
     dispatch(editExerciseActions.setUploadExercisestatusToReady());
@@ -251,7 +247,6 @@ const EditExerciseCard = () => {
             </div> */}
           </div>
 
-
           <div className=" mt-7 relative px-2 py-10 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200  flex flex-col gap-5 items-center justify-around">
             <select
               className=" hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
@@ -263,9 +258,9 @@ const EditExerciseCard = () => {
               {mainMuscleGroupElement}
             </select>
 
-              <p className=" bg-mainGroupColour py-1 px-2 rounded-md">{editedExercise?.mainGroupRu}</p>
-
-
+            <p className=" bg-mainGroupColour py-1 px-2 rounded-md">
+              {editedExercise?.mainGroupRu}
+            </p>
 
             <span className=" ">
               <label
@@ -275,10 +270,7 @@ const EditExerciseCard = () => {
                 Основная мышечная группа
               </label>
             </span>
-
-
           </div>
-
 
           <div className=" relative my-8 px-2 py-9 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200">
             <input

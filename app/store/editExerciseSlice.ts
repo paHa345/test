@@ -1,4 +1,3 @@
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IExercise } from "../types";
 import { PutBlobResult } from "@vercel/blob";
@@ -35,19 +34,17 @@ export const editExerciseAndUpdate = createAsyncThunk(
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(editedExercise),
-        
-      }
-      );
+      });
 
       if (!UpdateExerciseReq.ok) {
         throw new Error("Ошибка сервера");
       }
-      console.log("first")
+      // console.log("first")
       const editedExerciseRes = await UpdateExerciseReq.json();
       //   dispatch(userActions.updateWorkoutToEdited(editedWorkout));
       dispatch(appStateActions.updateExerciseToEdited(editedExerciseRes.result));
       // revalidateTag('collection')
-      console.log("first 22")
+      // console.log("first 22")
 
       return editedExerciseRes.result;
     } catch (error: any) {
@@ -94,14 +91,21 @@ export const editExerciseSlice = createSlice({
         state.editedExercise.type = action.payload;
       }
     },
-    setEditedExerciseMainMuscleGroup(state, action:{payload:{
-      nameRu: string;
-      nameEn: string;
-  } | undefined,type:string}) {
+    setEditedExerciseMainMuscleGroup(
+      state,
+      action: {
+        payload:
+          | {
+              nameRu: string;
+              nameEn: string;
+            }
+          | undefined;
+        type: string;
+      }
+    ) {
       if (state.editedExercise) {
         state.editedExercise.mainGroup = action.payload?.nameEn;
         state.editedExercise.mainGroupRu = action.payload?.nameRu;
-
       }
     },
     deleteEditedExerciseMuscleGroup(state, action) {
