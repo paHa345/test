@@ -3,14 +3,14 @@ import Exercise from "@/app/models/ExerciseModel";
 import { MongoClient } from "mongodb";
 
 import { NextRequest, NextResponse } from "next/server";
-// export const revalidate = 0;
+export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
   try {
     await connectMongoDB();
     const allExercises = await Exercise.find();
     const response = NextResponse.json({ message: "Success", result: allExercises });
-    // response.headers.set("Cache-Control", "no-store");
+    response.headers.set("Cache-Control", "no-store");
 
     return response;
   } catch (error: any) {
