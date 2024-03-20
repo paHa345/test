@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Router from "next/router";
+import { revalidatePath } from "next/cache";
+import { editExerciseRevalidateServerAction } from "@/actions/editExercise";
 
 const EditExerciseCard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -107,12 +109,6 @@ const EditExerciseCard = () => {
         );
       })
     : [];
-  // if(editedExercise?.muscleGroups){
-
-  //   editedExerciseMuscleGroups = editedExercise.muscleGroups.map(()=>{
-
-  //   })
-  // }
 
   const updateExerciseHandler = () => {
     dispatch(
@@ -121,7 +117,8 @@ const EditExerciseCard = () => {
         editedExercise: editedExercise,
       })
     );
-    // router.refresh()
+
+    editExerciseRevalidateServerAction(editedExercise?._id);
   };
 
   const mainMuscleGroupElement = mainMuscleGrourArr.map((mainMuscleGroup) => {

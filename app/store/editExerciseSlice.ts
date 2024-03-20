@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IExercise } from "../types";
 import { PutBlobResult } from "@vercel/blob";
 import { appStateActions } from "./appStateSlice";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const editExerciseAndUpdate = createAsyncThunk(
   "editExerciseState/editExerciseAndUpdate",
@@ -43,7 +43,8 @@ export const editExerciseAndUpdate = createAsyncThunk(
       const editedExerciseRes = await UpdateExerciseReq.json();
       //   dispatch(userActions.updateWorkoutToEdited(editedWorkout));
       dispatch(appStateActions.updateExerciseToEdited(editedExerciseRes.result));
-      // revalidateTag('collection')
+      // revalidateTag("collection");
+
       // console.log("first 22")
 
       return editedExerciseRes.result;
