@@ -70,6 +70,10 @@ const AddExerciseForm = () => {
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise
   );
 
+  const errorMessage = useSelector(
+    (state: IAddExerciseSlice) => state.addExerciseState.addExerciseErrorMessage
+  );
+
   const image = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise.image
   );
@@ -192,9 +196,14 @@ const AddExerciseForm = () => {
         </h1>
       )}
       {addExerciseStatus === "error" && (
-        <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
-          Ошибка загрузки. Повторите попытку позже
-        </h1>
+        <div>
+          <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">{errorMessage}</h1>
+          <br />
+          <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+            Ошибка загрузки. Повторите попытку позже
+          </h1>
+          <br />
+        </div>
       )}
       <div className=" flex justify-center pb-20 ">
         <button onClick={addExerciseButtonHandler} className=" self-center buttonStandart">

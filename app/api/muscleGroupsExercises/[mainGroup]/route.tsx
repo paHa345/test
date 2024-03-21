@@ -1,12 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import Exercise from "@/app/models/ExerciseModel";
 import { connectMongoDB } from "@/app/libs/MongoConnect";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/utils/authOptions";
+import User from "@/app/models/UserModel";
 
 export async function GET(req: NextRequest, { params }: { params: { mainGroup: string } }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      { message: "Только для зарегистрированных пользователей" },
+      { status: 401 }
+    );
+  }
   try {
     await connectMongoDB();
+    const currentUser: any = await User.findOne({ email: session?.user?.email });
     const exercises = await Exercise.find({
-      mainGroup: params.mainGroup,
+      $and: [
+        { $or: [{ createdUserId: { $eq: currentUser._id } }, { isBest: true }] },
+        { mainGroup: { $eq: params.mainGroup } },
+      ],
     }).populate("commentsArr");
     return NextResponse.json({ message: "Success", result: exercises });
   } catch (error: any) {

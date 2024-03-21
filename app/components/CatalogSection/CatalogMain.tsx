@@ -51,7 +51,7 @@ const CatalogMain = () => {
   });
 
   const getAllExercises = async () => {
-    const response = await fetch("./api/exercises/allExercises", { cache: "no-store" });
+    const response = await fetch("./api/exercises//currentUserExercises", { cache: "no-store" });
     const data = await response.json();
     console.log(data.result);
   };

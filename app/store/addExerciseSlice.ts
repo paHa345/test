@@ -19,6 +19,12 @@ export const addExerciseAndImage = createAsyncThunk(
         body: JSON.stringify(state.addExerciseState.currentAddedExercise),
       });
       const addedExercise = await req.json();
+      console.log(req.status === 406);
+      if (req.status === 406) {
+        dispatch(
+          addExerciseActions.setAddexerciseErrorMessage("Такое имя тренировки уже существует")
+        );
+      }
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
@@ -37,6 +43,7 @@ export const addExerciseAndImage = createAsyncThunk(
       dispatch(addExerciseActions.clearAddexerciseForm());
       return addedExercise;
     } catch (error: any) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }
@@ -67,6 +74,7 @@ export interface IAddExerciseSlice {
       createdUserId?: string;
     };
     fetchAddExerciseStatus: addExerciseFetchStatus;
+    addExerciseErrorMessage: string;
   };
 }
 
@@ -87,6 +95,7 @@ interface IAddExerciseState {
     createdUserId?: string;
   };
   fetchAddExerciseStatus: addExerciseFetchStatus;
+  addExerciseErrorMessage: string;
 }
 
 export const initAddExerciseState: IAddExerciseState = {
@@ -104,6 +113,7 @@ export const initAddExerciseState: IAddExerciseState = {
     createdUserId: "",
   },
   fetchAddExerciseStatus: addExerciseFetchStatus.Ready,
+  addExerciseErrorMessage: "",
 };
 
 export const addExerciseSlice = createSlice({
@@ -182,6 +192,9 @@ export const addExerciseSlice = createSlice({
       state.currentAddedExercise.mainGroup = null;
       state.currentAddedExercise.mainGroupRu = null;
       state.currentAddedExercise.id = null;
+    },
+    setAddexerciseErrorMessage(state, action) {
+      state.addExerciseErrorMessage = action.payload;
     },
   },
   extraReducers: (builder) => {
