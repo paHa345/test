@@ -27,7 +27,7 @@ export const setCurrentMuscleGroupAndSet = createAsyncThunk(
     try {
       let data;
       if (currentMuscleGroup.en === "all") {
-        const req = await fetch(`../api/exercises/allExercises`);
+        const req = await fetch(`../api/exercises/currentUserExercises`);
         data = await req.json();
         if (!req.ok) {
           throw new Error("Ошибка сервера");
@@ -59,7 +59,7 @@ export const setCurrentUserWorkouts = createAsyncThunk(
         throw new Error("Ошибка сервера");
       }
       const user: IResponseUser = await req.json();
-      console.log(user.result.workoutsArr)
+      console.log(user.result.workoutsArr);
       dispatch(userActions.setCurrentUserWorkout(user.result.workoutsArr));
     } catch (error: any) {
       return rejectWithValue(error.message);
