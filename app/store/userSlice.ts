@@ -21,7 +21,10 @@ export const getUserWorkouts = createAsyncThunk(
 
 export const editWorkoutAndUpdate = createAsyncThunk(
   "appState/editWorkoutAndUpdate",
-  async function (editedWorkoutData:{workout:IWorkout, workoutWithExerciseData: IWorkout}, { rejectWithValue, dispatch }) {
+  async function (
+    editedWorkoutData: { workout: IWorkout; workoutWithExerciseData: IWorkout },
+    { rejectWithValue, dispatch }
+  ) {
     try {
       const req = await fetch("./api/workout/editWorkout", {
         method: "PUT",
@@ -164,7 +167,19 @@ export const initUserState: userState = {
       date: new Date(),
       comments: "init",
       userId: "init",
-      exercisesArr: [{ name: "init", exercise: { id:"squat-01",name: "Приседания со штангой на плечах",_id: "654203ac3f25911208c1eea7"}, exerciseId:'Init', sets: 0, reps: 0 }],
+      exercisesArr: [
+        {
+          name: "init",
+          exercise: {
+            id: "squat-01",
+            name: "Приседания со штангой на плечах",
+            _id: "654203ac3f25911208c1eea7",
+          },
+          exerciseId: "Init",
+          sets: 0,
+          reps: 0,
+        },
+      ],
     },
     editedExercise: null,
   },
@@ -184,37 +199,6 @@ export const userSlice = createSlice({
       state.currentUser.workoutsArr = action.payload;
     },
 
-    // setEditedExerciseName(state, action) {
-    //   if (state.currentUser.editedExercise) {
-    //     state.currentUser.editedExercise.name = action.payload;
-    //   }
-    // },
-    // setEditedExerciseType(state, action) {
-    //   if (state.currentUser.editedExercise) {
-    //     state.currentUser.editedExercise.type = action.payload;
-    //   }
-    // },
-    // deleteEditedExerciseMuscleGroup(state, action) {
-    //   state.currentUser.editedExercise?.muscleGroups?.splice(action.payload, 1);
-    // },
-    // addEditedExerciseMuscleGroup(state, action) {
-    //   state.currentUser.editedExercise?.muscleGroups?.push(action.payload);
-    // },
-    // setEditedexerciseVideo(state, action) {
-    //   if (state.currentUser.editedExercise) {
-    //     state.currentUser.editedExercise.video = action.payload;
-    //   }
-    // },
-    // setEditedExerciseDescription(state, action) {
-    //   if (state.currentUser.editedExercise) {
-    //     state.currentUser.editedExercise.description = action.payload;
-    //   }
-    // },
-    // setEditedExerciseImage(state, action) {
-    //   if (state.currentUser.editedExercise) {
-    //     state.currentUser.editedExercise.image = action.payload;
-    //   }
-    // },
     setEditedWorkout(state, action) {
       // console.log(action.payload);
       const editedWorkout = state.currentUser.workoutsArr.find((workout) => {
@@ -246,7 +230,7 @@ export const userSlice = createSlice({
         action.payload.value;
     },
     addExerciseToEditedWorkout(state, action) {
-      console.log(action.payload)
+      console.log(action.payload);
       if (state.currentUser.editedWorkout.exercisesArr.length) {
         state.currentUser.editedWorkout.exercisesArr.push({
           exercise: action.payload,
@@ -254,16 +238,16 @@ export const userSlice = createSlice({
           sets: 0,
           reps: 0,
           name: action.payload.name,
-
         });
       } else {
         state.currentUser.editedWorkout.exercisesArr = [
-          { exercise: action.payload,
+          {
+            exercise: action.payload,
             exerciseId: action.payload._id,
             sets: 0,
             reps: 0,
             name: action.payload.name,
-             },
+          },
         ];
       }
     },
@@ -274,7 +258,19 @@ export const userSlice = createSlice({
         date: new Date(),
         comments: "init",
         userId: "init",
-        exercisesArr: [{ name: "init", exercise: { id:"squat-01",name: "Приседания со штангой на плечах",_id: "654203ac3f25911208c1eea7"}, exerciseId:"Init", sets: 0, reps: 0,  }],
+        exercisesArr: [
+          {
+            name: "init",
+            exercise: {
+              id: "squat-01",
+              name: "Приседания со штангой на плечах",
+              _id: "654203ac3f25911208c1eea7",
+            },
+            exerciseId: "Init",
+            sets: 0,
+            reps: 0,
+          },
+        ],
       };
       state.currentUser.editedWorkout = initEditWorkout;
     },

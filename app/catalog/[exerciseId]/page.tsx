@@ -4,6 +4,7 @@ import React, { Suspense, cache } from "react";
 import { IResponseOneExercise } from "../../types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/utils/authOptions";
+import ExerciseLoadingCard from "@/app/components/LoadingCardSection/ExerciseLoadingCard";
 
 // async function Playlists({ artistID }: { artistID: string }) {
 //     // Wait for the playlists
@@ -36,10 +37,18 @@ export default async function Page({ params: { exerciseId } }: { params: { exerc
   );
   const exercise = await data.json();
 
+  console.log(exercise.result.commentsArr[0]);
+
   return (
     <>
       <div className="mx-auto">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <div>
+              <ExerciseLoadingCard></ExerciseLoadingCard>{" "}
+            </div>
+          }
+        >
           {exercise.status === "Error" && (
             <h1 className=" text-center text-xl font-bold my-32">Упражнение не найдено</h1>
           )}
@@ -57,6 +66,7 @@ export default async function Page({ params: { exerciseId } }: { params: { exerc
               muscleGroups={exercise.result?.muscleGroups}
               mainGroup={exercise.result?.mainGroup}
               mainGroupRu={exercise.result?.mainGroupRu}
+              comments={exercise.result.commentsArr}
             ></ExerciseCardMain>
           )}
         </Suspense>

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 
@@ -5,6 +6,7 @@ import { useState } from "react";
 import Review from "./Review";
 import ReviewForm from "./ReviewForm";
 import { IExercise } from "../../types";
+import Reviews from "./Reviews";
 
 const ExerciseCardMain = ({
   id,
@@ -19,6 +21,7 @@ const ExerciseCardMain = ({
   muscleGroups,
   mainGroup,
   mainGroupRu,
+  comments,
 }: IExercise) => {
   const imageName = image || "";
 
@@ -29,6 +32,8 @@ const ExerciseCardMain = ({
       </li>
     );
   });
+
+  console.log(comments);
 
   return (
     <div className=" py-7">
@@ -52,15 +57,17 @@ const ExerciseCardMain = ({
         <div className=" self-center">
           <div className=" flex items-center justify-around">
             <div className=" flex gap-5 flex-col md:flex-row">
-
-            {type === "base" ? (
-              <p className="  bg-baseColour py-1 px-2 rounded-md">Базовое</p>
+              {type === "base" ? (
+                <p className="  bg-baseColour py-1 px-2 rounded-md">Базовое</p>
               ) : (
-                <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">Изолированное</p>
-                )}
-            <p className=" text-center   bg-mainGroupColour py-1 px-2 rounded-md">{mainGroupRu}</p>
-                </div>
-
+                <p className=" bg-isolatedColour py-1 px-2 rounded-md text-slate-50">
+                  Изолированное
+                </p>
+              )}
+              <p className=" text-center   bg-mainGroupColour py-1 px-2 rounded-md">
+                {mainGroupRu}
+              </p>
+            </div>
 
             <div className="">
               Рейтинг: <span className=" text-lg font-bold">{raiting}</span>
@@ -98,8 +105,7 @@ const ExerciseCardMain = ({
         </div>
         <div className=" ">
           <h1 className=" text-center font-bold text-xl pb-3">Оценки</h1>
-          <Review></Review>
-          <Review></Review>
+          <Reviews></Reviews>
         </div>
       </div>
     </div>

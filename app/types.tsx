@@ -5,12 +5,20 @@ export const mainMuscleGrourArr = [
   { nameRu: "Ноги", nameEn: "legs" },
   { nameRu: "Плечи", nameEn: "shoulders" },
   { nameRu: "Спина", nameEn: "back" },
-]
-
+];
 
 export interface asyncThunkStatus {}
 
 export interface IExercises {}
+
+export interface IComment {
+  _id: string | undefined;
+  data: Date;
+  exerciseId: string | undefined;
+  score: number | undefined;
+  text: string | undefined;
+  userId: string | undefined;
+}
 
 export interface IExercise {
   _id: string | undefined;
@@ -26,6 +34,7 @@ export interface IExercise {
   mainGroup: string | undefined;
   mainGroupRu: string | undefined;
   createdUserId?: string | undefined;
+  comments: IComment[] | undefined;
 }
 
 export interface IWorkout {
@@ -34,7 +43,17 @@ export interface IWorkout {
   date: Date;
   userId: string;
   name: string;
-  exercisesArr: [{ name: string; exercise:{ id:string, name : string, _id : string}; exerciseId:string; reps: number; sets: number }] | [];
+  exercisesArr:
+    | [
+        {
+          name: string;
+          exercise: { id: string; name: string; _id: string };
+          exerciseId: string;
+          reps: number;
+          sets: number;
+        },
+      ]
+    | [];
 }
 
 export interface IUser {
