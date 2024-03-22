@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import Review from "./Review";
 import ReviewForm from "./ReviewForm";
 import { IExercise } from "../../types";
 import Reviews from "./Reviews";
+import { useDispatch, useSelector } from "react-redux";
+import { ICurrentExerciseSlice, currentExrciseActions } from "@/app/store/currentExerciseSlice";
 
 const ExerciseCardMain = ({
   id,
@@ -33,8 +35,13 @@ const ExerciseCardMain = ({
     );
   });
 
-  console.log(comments);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(currentExrciseActions.setCurrentExercise(comments));
+  }, []);
+  const currentExercise = useSelector((state: ICurrentExerciseSlice) => state.currentExerciseState);
 
+  console.log(currentExercise);
   return (
     <div className=" py-7">
       <div>

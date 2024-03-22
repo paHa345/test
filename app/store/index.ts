@@ -5,6 +5,7 @@ import { addWorkoutSlice } from "./addWorkoutSlice";
 import { authSlice } from "./authSlice";
 import { userSlice } from "./userSlice";
 import { editExerciseSlice } from "./editExerciseSlice";
+import { currentExerciseSlice } from "./currentExerciseSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     authState: authSlice.reducer,
     userState: userSlice.reducer,
     editExerciseState: editExerciseSlice.reducer,
+    currentExerciseState: currentExerciseSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

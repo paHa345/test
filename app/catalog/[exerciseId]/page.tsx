@@ -1,3 +1,4 @@
+"use server";
 import ExerciseCardMain from "../../components/ExerciseCardSection/ExerciseCardMain";
 import React, { Suspense, cache } from "react";
 
@@ -5,6 +6,7 @@ import { IResponseOneExercise } from "../../types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/utils/authOptions";
 import ExerciseLoadingCard from "@/app/components/LoadingCardSection/ExerciseLoadingCard";
+import { currentExrciseActions } from "@/app/store/currentExerciseSlice";
 
 // async function Playlists({ artistID }: { artistID: string }) {
 //     // Wait for the playlists
@@ -36,8 +38,6 @@ export default async function Page({ params: { exerciseId } }: { params: { exerc
     // }
   );
   const exercise = await data.json();
-
-  console.log(exercise.result.commentsArr[0]);
 
   return (
     <>
