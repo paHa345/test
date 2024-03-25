@@ -39,9 +39,7 @@ const ExerciseCardMain = ({
   useEffect(() => {
     dispatch(currentExrciseActions.setCurrentExercise(comments));
   }, []);
-  const currentExercise = useSelector((state: ICurrentExerciseSlice) => state.currentExerciseState);
 
-  console.log(currentExercise);
   return (
     <div className=" py-7">
       <div>

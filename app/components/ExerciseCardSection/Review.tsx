@@ -3,13 +3,24 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { IComment } from "@/app/types";
 
-const Review = () => {
+interface IReviewProps {
+  comment: IComment;
+}
+
+const Review = ({ comment }: IReviewProps) => {
+  const workoutDate = new Date(comment.data).toLocaleString("ru-RU", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
     <div className=" flex flex-col py-3 px-3  mb-6 shadow-cardElementShadow">
       <div className=" flex flex-raw justify-between">
-        <p>paHa345</p>
-        <p>25.09.2023</p>
+        <p>{comment.userId?.name}</p>
+        <p>{workoutDate}</p>
       </div>
       <div className=" mx-auto">
         {" "}
@@ -19,15 +30,11 @@ const Review = () => {
             {" "}
             <FontAwesomeIcon className=" text-headerButtonHoverColor" icon={faStar} />
           </span>
-          - 5
+          {comment.score}
         </p>
       </div>
       <div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam culpa fugit similique
-          autem explicabo dolorum itaque doloremque voluptatibus corporis iure perspiciatis, saepe,
-          vel velit incidunt magni labore commodi laudantium eaque.
-        </p>
+        <p>{comment.text}</p>
       </div>
     </div>
   );

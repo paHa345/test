@@ -10,7 +10,14 @@ import Workout from "@/app/models/WorkoutModel";
 export async function GET(req: NextRequest, { params }: { params: { exerciseId: string } }) {
   try {
     await connectMongoDB();
-    const exercise = await Exercise.findById(params.exerciseId).populate("commentsArr");
+    const exercise = await Exercise.findById(params.exerciseId).populate({
+      path: "commentsArr",
+      populate: {
+        path: "userId",
+        model: "User",
+        select: "email name",
+      },
+    });
     return NextResponse.json({ status: "Success", result: exercise });
     // return NextResponse.json({ message: "Olol" });
   } catch (error: any) {

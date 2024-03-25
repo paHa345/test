@@ -38,6 +38,7 @@ export default async function Page({ params: { exerciseId } }: { params: { exerc
     // }
   );
   const exercise = await data.json();
+  console.log(exercise.result?.commentsArr[0]);
 
   return (
     <>

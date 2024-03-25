@@ -17,7 +17,7 @@ export interface IComment {
   exerciseId: string | undefined;
   score: number | undefined;
   text: string | undefined;
-  userId: string | undefined;
+  userId: { email: string; name: string } | undefined;
 }
 
 export interface IExercise {

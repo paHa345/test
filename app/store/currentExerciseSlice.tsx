@@ -1,14 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IExercise } from "../types";
+import { IComment, IExercise } from "../types";
 
 export interface ICurrentExerciseSlice {
   currentExerciseState: {
     currentexercise: IExercise;
+    comments: IComment[] | [];
   };
 }
 
 interface ICurrentExerciseState {
   currentExercise: IExercise;
+  comments: IComment[] | [];
 }
 
 export const initCurrentExerciseState: ICurrentExerciseState = {
@@ -28,6 +30,7 @@ export const initCurrentExerciseState: ICurrentExerciseState = {
     createdUserId: "",
     comments: [],
   },
+  comments: [],
 };
 
 export const currentExerciseSlice = createSlice({
@@ -35,7 +38,7 @@ export const currentExerciseSlice = createSlice({
   initialState: initCurrentExerciseState,
   reducers: {
     setCurrentExercise(state, action) {
-      state.currentExercise = action.payload;
+      state.comments = action.payload;
     },
   },
 });
