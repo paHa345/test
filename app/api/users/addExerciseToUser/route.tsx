@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "@/app/libs/MongoConnect";
-import Workout from "@/app/models/WorkoutModel";
 import User from "@/app/models/UserModel";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/utils/authOptions";
-import { ObjectId } from "mongodb";
 
-export async function PATCH(req: NextRequest, res: NextResponse) {
+export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions);
   //   console.log(session?.user?.email);
   if (!session) {

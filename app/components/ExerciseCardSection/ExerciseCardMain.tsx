@@ -9,6 +9,7 @@ import { IExercise } from "../../types";
 import Reviews from "./Reviews";
 import { useDispatch, useSelector } from "react-redux";
 import { ICurrentExerciseSlice, currentExrciseActions } from "@/app/store/currentExerciseSlice";
+import { getSession, useSession } from "next-auth/react";
 
 const ExerciseCardMain = ({
   id,
@@ -34,6 +35,8 @@ const ExerciseCardMain = ({
       </li>
     );
   });
+
+  const session = useSession();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -106,7 +109,13 @@ const ExerciseCardMain = ({
         </div>
         <div>
           <div></div>
-          <ReviewForm></ReviewForm>
+          {session.data ? (
+            <ReviewForm></ReviewForm>
+          ) : (
+            <div className=" text-center py-6">
+              Войдите под своими учётными данными для добавления отзыва
+            </div>
+          )}
         </div>
         <div className=" ">
           <h1 className=" text-center font-bold text-xl pb-3">Оценки</h1>

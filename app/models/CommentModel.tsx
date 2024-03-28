@@ -1,7 +1,7 @@
 import { ICommentSchema } from "../types";
 import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema<ICommentSchema>({
-  date: { type: Date, required: true },
+  data: { type: Date, required: true },
   score: { type: Number, required: true },
   text: { type: String, required: false },
   userId: { type: String, required: true },

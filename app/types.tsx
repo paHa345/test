@@ -115,7 +115,7 @@ export interface IExerciseSchema {
 }
 
 export interface ICommentSchema {
-  date: Date;
+  data: Date;
   score: Number;
   text: String;
   exerciseId: String;

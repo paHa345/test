@@ -1,16 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import { editExerciseRevalidateServerAction } from "@/actions/editExercise";
+import { AppDispatch } from "@/app/store";
+import { addExerciseAndImage } from "@/app/store/addExerciseSlice";
+import {
+  ICurrentExerciseSlice,
+  addReviewAndUploadToDatabase,
+} from "@/app/store/currentExerciseSlice";
+import { IUserSlice } from "@/app/store/userSlice";
+import { IExercise } from "@/app/types";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
+import React, { FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ReviewForm = () => {
   const [onFocusStatus, setInFocusStatus] = useState({
     review: false,
   });
 
-  const selectMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-  };
+  const params = useParams();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [reviewValue, setReviewValue] = useState("");
+  const [reviewScore, setReviewScore] = useState(0);
+
+  const selectMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setReviewScore(Number(e.target.value));
+  };
 
   const changeLoginHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setReviewValue(e.currentTarget.value);
@@ -24,8 +40,22 @@ const ReviewForm = () => {
     setInFocusStatus({ ...onFocusStatus, [e.target.id]: false });
   };
 
+  const addReviewHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ text: reviewValue, score: reviewScore, exerciseId: params.exerciseId });
+    await dispatch(
+      addReviewAndUploadToDatabase({
+        text: reviewValue,
+        score: reviewScore,
+        exerciseId: params.exerciseId,
+      })
+    );
+    editExerciseRevalidateServerAction(params.exerciseId);
+  };
+
   return (
     <form
+      onSubmit={addReviewHandler}
       action=""
       className=" flex flex-col my-5 px-2 py-2 shadow-cardElementShadow mx-5 border-solid border-2"
     >
@@ -67,7 +97,10 @@ const ReviewForm = () => {
           </label>
         </span>
       </div>
-      <button className=" text-slate-50 w-1/3 font-bold shadow-cardElementShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor">
+      <button
+        type="submit"
+        className=" text-slate-50 w-1/3 font-bold shadow-cardElementShadow min-w-max py-2 px-6 rounded bg-buttonColor hover:bg-buttonHoverColor"
+      >
         {" "}
         Оценить
       </button>

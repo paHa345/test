@@ -230,7 +230,6 @@ export const userSlice = createSlice({
         action.payload.value;
     },
     addExerciseToEditedWorkout(state, action) {
-      console.log(action.payload);
       if (state.currentUser.editedWorkout.exercisesArr.length) {
         state.currentUser.editedWorkout.exercisesArr.push({
           exercise: action.payload,
