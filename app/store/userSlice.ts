@@ -280,7 +280,6 @@ export const userSlice = createSlice({
       const workoutIndex = state.currentUser.workoutsArr.findIndex((workout: IWorkout) => {
         return workout._id === action.payload;
       });
-      console.log(workoutIndex);
 
       state.currentUser.workoutsArr.splice(workoutIndex, 1);
 

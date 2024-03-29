@@ -6,12 +6,16 @@ import Review from "./Review";
 import { IComment } from "@/app/types";
 import { IUserSlice } from "@/app/store/userSlice";
 import { getSession, useSession } from "next-auth/react";
+import DeleteReviewModal from "./DeleteReviewModal";
 
-const Reviews = async () => {
+const Reviews = () => {
   const currentExerciseComments = useSelector(
     (state: ICurrentExerciseSlice) => state.currentExerciseState.comments
   );
-  console.log(currentExerciseComments);
+
+  const daleteReviewShowModalStatus = useSelector(
+    (state: ICurrentExerciseSlice) => state.currentExerciseState.daleteReviewShowModalStatus
+  );
 
   const session = useSession();
   const reviewsEl = currentExerciseComments.map((review: IComment) => {
@@ -21,7 +25,13 @@ const Reviews = async () => {
       </div>
     );
   });
-  return <>{reviewsEl}</>;
+  return (
+    <>
+      {daleteReviewShowModalStatus && <DeleteReviewModal></DeleteReviewModal>}
+
+      {reviewsEl}
+    </>
+  );
 };
 
 export default Reviews;
