@@ -139,7 +139,7 @@ const ExerciseCardMain = ({
       </div>
       {deleteReviewStatus === "resolve" && (
         <div className=" my-auto flex justify-center">
-          <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200 fixed bottom-5">
+          <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200 fixed top-5">
             Ваша оценка успешно удалена
           </h1>
         </div>
