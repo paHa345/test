@@ -10,9 +10,21 @@ import Comment from "@/app/models/CommentModel";
 export async function GET(req: NextRequest, { params }: { params: { reviewId: string } }) {
   //   const currentId = new ObjectId(String(req.query.exerciseId));
 
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      { message: "Только для зарегистрированных пользователей" },
+      { status: 401 }
+    );
+  }
+
   try {
     await connectMongoDB();
-    const review = await Comment.findById(params.reviewId);
+    const review = await Comment.findById(params.reviewId).populate({
+      path: "userId",
+      model: "User",
+      select: "email name",
+    });
     return NextResponse.json({ message: "Success", result: review });
   } catch (error) {
     return NextResponse.json({ message: "Error" }, { status: 400 });
@@ -30,7 +42,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { reviewId:
 
   try {
     await connectMongoDB();
-    console.log(params.reviewId);
     const currentUser: IUser | null = await User.findOne({ email: session.user?.email });
     const currentReview: IComment | null = await Comment.findById(params.reviewId);
 

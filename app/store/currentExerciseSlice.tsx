@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IComment, IExercise } from "../types";
+import { editExerciseRevalidateServerAction } from "@/actions/editExercise";
 
 export const addReviewAndUploadToDatabase = createAsyncThunk(
   "currentExerciseState/addReviewAndUploadToDatabase",
   async function (addedReviewData: any, { rejectWithValue, dispatch }) {
-    console.log(addedReviewData);
     try {
       const addedReviewReq = await fetch("./../api/reviews/addReview", {
         method: "POST",
@@ -29,7 +29,11 @@ export const addReviewAndUploadToDatabase = createAsyncThunk(
 
       const updatedExercise = await updatedExrciseReq.json();
 
-      dispatch(currentExrciseActions.addComment(addedReview.result));
+      const currentAddedReviewReq = await fetch(`./../api/reviews/${addedReview.result._id}`);
+
+      const currentAddedReview = await currentAddedReviewReq.json();
+
+      dispatch(currentExrciseActions.addComment(currentAddedReview.result));
 
       return addedReview;
     } catch (error: any) {
@@ -41,7 +45,6 @@ export const addReviewAndUploadToDatabase = createAsyncThunk(
 export const deleteReview = createAsyncThunk(
   "currentExerciseState/deleteReview",
   async function (deleteReviewData: any, { rejectWithValue, dispatch }) {
-    console.log(deleteReviewData);
     try {
       //delete from exercise
       const deleteReviewFromExerciseReq = await fetch("/api/exercises/deleteReviewFromExercise", {
@@ -59,9 +62,9 @@ export const deleteReview = createAsyncThunk(
         throw new Error("Ошибка сервера");
       }
 
-      //delete from db
+      // //delete from db
 
-      const deletedReviewReq = await fetch(`./api/reviews/${deleteReviewData.reviewId}`, {
+      const deletedReviewReq = await fetch(`/api/reviews/${deleteReviewData.reviewId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -75,6 +78,8 @@ export const deleteReview = createAsyncThunk(
       //delete from slice
 
       await dispatch(currentExrciseActions.deleteReview(deleteReviewData.reviewId));
+      dispatch(currentExrciseActions.stopDeleteReview());
+      editExerciseRevalidateServerAction(deleteReviewData.exerciseId);
     } catch (error: any) {
       rejectWithValue(error);
     }
@@ -94,6 +99,7 @@ export interface ICurrentExerciseSlice {
     comments: IComment[] | [];
     daleteReviewShowModalStatus: boolean;
     deleteReviewStatus: fetchCurrentExerciseStatus;
+    addReviewStatus: fetchCurrentExerciseStatus;
     currentReviewDeleteId: string;
   };
 }
@@ -103,6 +109,8 @@ interface ICurrentExerciseState {
   comments: IComment[] | [];
   daleteReviewShowModalStatus: boolean;
   deleteReviewStatus: fetchCurrentExerciseStatus;
+  addReviewStatus: fetchCurrentExerciseStatus;
+
   currentReviewDeleteId: string;
 }
 
@@ -138,6 +146,7 @@ export const initCurrentExerciseState: ICurrentExerciseState = {
   ],
   daleteReviewShowModalStatus: false,
   deleteReviewStatus: fetchCurrentExerciseStatus.Ready,
+  addReviewStatus: fetchCurrentExerciseStatus.Ready,
   currentReviewDeleteId: "",
 };
 
@@ -180,17 +189,24 @@ export const currentExerciseSlice = createSlice({
 
       state.comments.splice(deletedReviewIndex, 1);
     },
+    setDeleteReviewStatusToReady(state) {
+      state.deleteReviewStatus = fetchCurrentExerciseStatus.Ready;
+    },
+    setAddReviewStatusToReady(state) {
+      state.addReviewStatus = fetchCurrentExerciseStatus.Ready;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addReviewAndUploadToDatabase.pending, (state) => {
-      // state.updateExerciseStatus = uploadExerciseFetchStatus.Loading;
+      state.addReviewStatus = fetchCurrentExerciseStatus.Loading;
     });
+
     builder.addCase(deleteReview.pending, (state) => {
       state.deleteReviewStatus = fetchCurrentExerciseStatus.Loading;
     });
 
     builder.addCase(addReviewAndUploadToDatabase.fulfilled, (state, action) => {
-      // state.updateExerciseStatus = uploadExerciseFetchStatus.Resolve;
+      state.addReviewStatus = fetchCurrentExerciseStatus.Resolve;
     });
 
     builder.addCase(deleteReview.fulfilled, (state, action) => {
@@ -198,8 +214,9 @@ export const currentExerciseSlice = createSlice({
     });
 
     builder.addCase(addReviewAndUploadToDatabase.rejected, (state, action) => {
-      // state.updateExerciseStatus = uploadExerciseFetchStatus.Error;
+      state.addReviewStatus = fetchCurrentExerciseStatus.Error;
     });
+
     builder.addCase(deleteReview.rejected, (state, action) => {
       state.deleteReviewStatus = fetchCurrentExerciseStatus.Error;
     });

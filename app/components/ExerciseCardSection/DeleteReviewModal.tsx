@@ -17,7 +17,7 @@ const DeleteReviewModal = () => {
     (state: ICurrentExerciseSlice) => state.currentExerciseState.currentReviewDeleteId
   );
 
-  const deleteExerciseStatus = useSelector(
+  const deleteReviewStatus = useSelector(
     (state: ICurrentExerciseSlice) => state.currentExerciseState.deleteReviewStatus
   );
 
@@ -30,7 +30,7 @@ const DeleteReviewModal = () => {
         reviewId: reviewId,
       })
     );
-    editExerciseRevalidateServerAction(params.exerciseId);
+    // editExerciseRevalidateServerAction(params.exerciseId);
   };
 
   const stopDeleteReview = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -53,21 +53,19 @@ const DeleteReviewModal = () => {
               Отмена
             </button>
           </div>
-          {/* <div className=" py-4">
-        {deleteExerciseStatus === "loading" && (
-          <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">Удаление упражнения</h1>
-        )}
-        {deleteExerciseStatus === "resolve" && (
-          <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
-            Упражнение успешно удалено
-          </h1>
-        )}
-        {deleteExerciseStatus === "error" && (
-          <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
-            Ошибка удаления. Повторите попытку позже
-          </h1>
-        )}
-      </div> */}
+          <div className=" py-2">
+            {deleteReviewStatus === "loading" && (
+              <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
+                Удаление вашей оценки
+              </h1>
+            )}
+
+            {deleteReviewStatus === "error" && (
+              <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
+                Ошибка удаления. Повторите попытку позже
+              </h1>
+            )}
+          </div>
 
           <div className="modal-body"></div>
         </div>
