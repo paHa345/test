@@ -7,14 +7,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const hashedPassword = await hash(body.password, 12);
-    console.log(hashedPassword);
 
     const addedUser = await User.create({
       name: body.name,
       email: body.email,
       password: hashedPassword,
     });
-    console.log(addedUser);
 
     return NextResponse.json({ message: "Success", result: addedUser });
   } catch (error: any) {

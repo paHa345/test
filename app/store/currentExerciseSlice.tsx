@@ -33,6 +33,14 @@ export const addReviewAndUploadToDatabase = createAsyncThunk(
 
       const currentAddedReview = await currentAddedReviewReq.json();
 
+      const addReviewToUserReq = await fetch(`./../api/users/addReviewToUser`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ reviewsArr: currentAddedReview.result._id }),
+      });
+
       dispatch(currentExrciseActions.addComment(currentAddedReview.result));
 
       return addedReview;
@@ -54,6 +62,20 @@ export const deleteReview = createAsyncThunk(
         },
         body: JSON.stringify({
           exerciseId: deleteReviewData.exerciseId,
+          reviewId: deleteReviewData.reviewId,
+        }),
+      });
+
+      if (!deleteReviewFromExerciseReq.ok) {
+        throw new Error("Ошибка сервера");
+      }
+
+      const deleteReviewFromUserReq = await fetch("/api/users/deleteReviewFromUser", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
           reviewId: deleteReviewData.reviewId,
         }),
       });
