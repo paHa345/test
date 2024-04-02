@@ -6,14 +6,16 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    console.log(body);
     const hashedPassword = await hash(body.password, 12);
+    console.log(hashedPassword);
 
     const addedUser = await User.create({
       name: body.name,
       email: body.email,
       password: hashedPassword,
     });
+    console.log(addedUser);
+
     return NextResponse.json({ message: "Success", result: addedUser });
   } catch (error: any) {
     if (error.code === 11000) {

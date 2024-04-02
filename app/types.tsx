@@ -63,6 +63,7 @@ export interface IUser {
   password: string;
   workoutsArr?: IWorkout[];
   exercisesArr?: IExercise[];
+  reviewsArr?: String[];
 }
 
 export interface IResponseUser {
@@ -86,6 +87,7 @@ export interface IUserSchema {
   password: String;
   workoutsArr?: String[];
   exercisesArr?: String[];
+  reviewsArr?: String[];
 }
 
 export interface IWorkoutSchema {

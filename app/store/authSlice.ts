@@ -50,6 +50,7 @@ export const registerNewUser = createAsyncThunk(
         body: JSON.stringify(registerUser),
       });
       const data = await req.json();
+      console.log(data);
 
       if (req.status === 400) {
         console.log(req);
