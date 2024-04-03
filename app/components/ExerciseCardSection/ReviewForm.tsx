@@ -9,6 +9,7 @@ import {
 } from "@/app/store/currentExerciseSlice";
 import { IUserSlice } from "@/app/store/userSlice";
 import { IExercise } from "@/app/types";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -19,6 +20,8 @@ const ReviewForm = () => {
     review: false,
   });
 
+  const session = useSession();
+
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,6 +31,8 @@ const ReviewForm = () => {
   const addReviewStatus = useSelector(
     (state: ICurrentExerciseSlice) => state.currentExerciseState.addReviewStatus
   );
+
+  const currentUser = useSelector((state: IUserSlice) => state.userState.currentUser);
 
   const selectMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setReviewScore(Number(e.target.value));
@@ -68,6 +73,21 @@ const ReviewForm = () => {
       };
     }
   }, [addReviewStatus]);
+
+  const getReview = async () => {
+    const getCurrentUserexerciseReviewReq = await fetch(
+      `/api/users/getCurrentUserExerciseReview/${params.exerciseId}`
+    );
+    const getCurrentUserexerciseReview = await getCurrentUserexerciseReviewReq.json();
+    console.log(getCurrentUserexerciseReview.result?.reviewsArr[0]);
+  };
+
+  useEffect(() => {
+    console.log(session.data?.user?.email);
+
+    //set current user rewiews
+    getReview();
+  }, []);
 
   return (
     <>
