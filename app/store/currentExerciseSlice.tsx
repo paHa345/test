@@ -115,6 +115,15 @@ export enum fetchCurrentExerciseStatus {
   Error = "error",
 }
 
+interface ICurrentExerciseUserReview {
+  data: Date;
+  exerciseId: string;
+  score: number;
+  text: string;
+  userId: string;
+  _id: string;
+}
+
 export interface ICurrentExerciseSlice {
   currentExerciseState: {
     currentexercise: IExercise;
@@ -123,6 +132,7 @@ export interface ICurrentExerciseSlice {
     deleteReviewStatus: fetchCurrentExerciseStatus;
     addReviewStatus: fetchCurrentExerciseStatus;
     currentReviewDeleteId: string;
+    currentExerciseUserReview: ICurrentExerciseUserReview | undefined;
   };
 }
 
@@ -134,6 +144,7 @@ interface ICurrentExerciseState {
   addReviewStatus: fetchCurrentExerciseStatus;
 
   currentReviewDeleteId: string;
+  currentExerciseUserReview: ICurrentExerciseUserReview | undefined;
 }
 
 export const initCurrentExerciseState: ICurrentExerciseState = {
@@ -170,6 +181,7 @@ export const initCurrentExerciseState: ICurrentExerciseState = {
   deleteReviewStatus: fetchCurrentExerciseStatus.Ready,
   addReviewStatus: fetchCurrentExerciseStatus.Ready,
   currentReviewDeleteId: "",
+  currentExerciseUserReview: undefined,
 };
 
 export const currentExerciseSlice = createSlice({
@@ -216,6 +228,9 @@ export const currentExerciseSlice = createSlice({
     },
     setAddReviewStatusToReady(state) {
       state.addReviewStatus = fetchCurrentExerciseStatus.Ready;
+    },
+    setCurrentExerciseUserReview(state, action) {
+      state.currentExerciseUserReview = action.payload;
     },
   },
   extraReducers: (builder) => {

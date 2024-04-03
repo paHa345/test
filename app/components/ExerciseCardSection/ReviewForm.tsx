@@ -32,8 +32,9 @@ const ReviewForm = () => {
     (state: ICurrentExerciseSlice) => state.currentExerciseState.addReviewStatus
   );
 
-  const currentUser = useSelector((state: IUserSlice) => state.userState.currentUser);
-
+  const currentExerciseUserReview = useSelector(
+    (state: ICurrentExerciseSlice) => state.currentExerciseState.currentExerciseUserReview
+  );
   const selectMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setReviewScore(Number(e.target.value));
   };
@@ -79,7 +80,11 @@ const ReviewForm = () => {
       `/api/users/getCurrentUserExerciseReview/${params.exerciseId}`
     );
     const getCurrentUserexerciseReview = await getCurrentUserexerciseReviewReq.json();
-    console.log(getCurrentUserexerciseReview.result?.reviewsArr[0]);
+    dispatch(
+      currentExrciseActions.setCurrentExerciseUserReview(
+        getCurrentUserexerciseReview.result?.reviewsArr[0]
+      )
+    );
   };
 
   useEffect(() => {
@@ -91,6 +96,7 @@ const ReviewForm = () => {
 
   return (
     <>
+      {currentExerciseUserReview ? <h1>Комментарий есть</h1> : <h1>Добавить комментарий</h1>}
       <form
         onSubmit={addReviewHandler}
         action=""
