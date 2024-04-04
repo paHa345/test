@@ -42,6 +42,7 @@ export const addReviewAndUploadToDatabase = createAsyncThunk(
       });
 
       dispatch(currentExrciseActions.addComment(currentAddedReview.result));
+      dispatch(currentExrciseActions.addCurrentExerciseUserReview(currentAddedReview.result));
 
       return addedReview;
     } catch (error: any) {
@@ -100,6 +101,7 @@ export const deleteReview = createAsyncThunk(
       //delete from slice
 
       await dispatch(currentExrciseActions.deleteReview(deleteReviewData.reviewId));
+      dispatch(currentExrciseActions.deleteCurrentExerciseUserReview());
       dispatch(currentExrciseActions.stopDeleteReview());
       editExerciseRevalidateServerAction(deleteReviewData.exerciseId);
     } catch (error: any) {
@@ -230,6 +232,12 @@ export const currentExerciseSlice = createSlice({
       state.addReviewStatus = fetchCurrentExerciseStatus.Ready;
     },
     setCurrentExerciseUserReview(state, action) {
+      state.currentExerciseUserReview = action.payload;
+    },
+    deleteCurrentExerciseUserReview(state) {
+      state.currentExerciseUserReview = undefined;
+    },
+    addCurrentExerciseUserReview(state, action) {
       state.currentExerciseUserReview = action.payload;
     },
   },
