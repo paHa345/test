@@ -80,9 +80,11 @@ export const registerNewUser = createAsyncThunk(
   "authState/registerNewUser",
   async function (registerUser: any, { rejectWithValue, dispatch }) {
     const registerUserData: any = decode(registerUser);
+    console.log(registerUserData.exp * 1000);
+    console.log(Date.now());
 
     try {
-      if (registerUserData.exp < Date.now()) {
+      if (registerUserData.exp * 1000 < Date.now()) {
         throw new Error("Срок действия ссылки истёк");
       }
       const req = await fetch("/api/auth/signUp", {
