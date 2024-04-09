@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { authOptions } from "../utils/authOptions";
 import { userActions } from "./userSlice";
+import jwt, { JsonWebTokenError, decode } from "jsonwebtoken";
 
 export const loginUser = createAsyncThunk(
   "authState/loginUser",
@@ -37,21 +38,66 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const registerNewUser = createAsyncThunk(
-  "authState/registerNewUser",
-  async function (registerUser: any, { rejectWithValue, dispatch }) {
-    console.log(registerUser);
+export const sendConfirmationEmail = createAsyncThunk(
+  "authState/sendConfirmationEmail",
+  async function (registerUserData: any, { rejectWithValue, dispatch }) {
     try {
-      const req = await fetch("../api/auth/signUp", {
+      const validationUserReq = await fetch("../api/auth/createUserValidation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify(registerUser),
+        body: JSON.stringify(registerUserData),
+      });
+      const data = await validationUserReq.json();
+
+      if (validationUserReq.status === 400) {
+        console.log(validationUserReq);
+        throw new Error("Такой пользователь уже существует");
+      }
+      if (validationUserReq.status === 422) {
+        console.log(validationUserReq);
+        throw new Error("Длинна логина/пароля должна быть более 6 символов");
+      }
+
+      const confirmationUserReq = await fetch("../api/auth/sendConfirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(registerUserData),
+      });
+      const confirmationUser = await confirmationUserReq.json();
+
+      return confirmationUserReq;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const registerNewUser = createAsyncThunk(
+  "authState/registerNewUser",
+  async function (registerUser: any, { rejectWithValue, dispatch }) {
+    const registerUserData: any = decode(registerUser);
+
+    try {
+      if (registerUserData.exp < Date.now()) {
+        throw new Error("Срок действия ссылки истёк");
+      }
+      const req = await fetch("/api/auth/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          name: registerUserData.email,
+          email: registerUserData?.email,
+          password: registerUserData?.password,
+        }),
       });
       const data = await req.json();
       console.log(data);
-
       if (req.status === 400) {
         console.log(req);
         throw new Error("Такой пользователь уже существует");
@@ -60,7 +106,7 @@ export const registerNewUser = createAsyncThunk(
         console.log(req);
         throw new Error("Длинна логина/пароля должна быть более 6 символов");
       }
-      dispatch(authActions.resetRegisteredUser());
+      // dispatch(authActions.resetRegisteredUser());
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -97,6 +143,8 @@ export interface IAuthSlice {
     registerUserErrorMessage: string | unknown;
     loginUserstatus: loginUserStatus;
     loginUserErrorMessage: string | unknown;
+    sendConfirmationEmailStatus: loginUserStatus;
+    sendConfirmationEmailErrorMessage: string | unknown;
   };
 }
 
@@ -114,6 +162,8 @@ interface IAuthState {
   registerUserErrorMessage: string | unknown;
   loginUserstatus: loginUserStatus;
   loginUserErrorMessage: string | unknown;
+  sendConfirmationEmailStatus: loginUserStatus;
+  sendConfirmationEmailErrorMessage: string | unknown;
 }
 
 export const initAuthState: IAuthState = {
@@ -130,6 +180,8 @@ export const initAuthState: IAuthState = {
   registerUserErrorMessage: "",
   loginUserstatus: loginUserStatus.Ready,
   loginUserErrorMessage: "",
+  sendConfirmationEmailStatus: loginUserStatus.Ready,
+  sendConfirmationEmailErrorMessage: "",
 };
 
 export const authSlice = createSlice({
@@ -170,11 +222,17 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.pending, (state) => {
       state.loginUserstatus = loginUserStatus.Loading;
     });
+    builder.addCase(sendConfirmationEmail.pending, (state) => {
+      state.sendConfirmationEmailStatus = loginUserStatus.Loading;
+    });
     builder.addCase(registerNewUser.fulfilled, (state) => {
       state.registerUserStatus = registerUserStatus.Resolve;
     });
     builder.addCase(loginUser.fulfilled, (state) => {
       state.loginUserstatus = loginUserStatus.Resolve;
+    });
+    builder.addCase(sendConfirmationEmail.fulfilled, (state) => {
+      state.sendConfirmationEmailStatus = loginUserStatus.Resolve;
     });
     builder.addCase(registerNewUser.rejected, (state, action) => {
       state.registerUserErrorMessage = action.payload;
@@ -183,6 +241,10 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loginUserErrorMessage = action.payload;
       state.loginUserstatus = loginUserStatus.Error;
+    });
+    builder.addCase(sendConfirmationEmail.rejected, (state, action) => {
+      state.sendConfirmationEmailErrorMessage = action.payload;
+      state.sendConfirmationEmailStatus = loginUserStatus.Error;
     });
   },
 });

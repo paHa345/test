@@ -1,10 +1,17 @@
+import ConfirmEmailMain from "@/app/components/ConfirmEmail/ConfirmEmailMain";
+import { AppDispatch } from "@/app/store";
+import { IAuthSlice, registerNewUser } from "@/app/store/authSlice";
+import jwt, { JsonWebTokenError, decode } from "jsonwebtoken";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ConfirmUserSignIn = () => {
-  const params = useParams();
-  const token = params.confirmToken;
-  return <div>{token}</div>;
+  return (
+    <>
+      <ConfirmEmailMain></ConfirmEmailMain>
+    </>
+  );
 };
 
 export default ConfirmUserSignIn;

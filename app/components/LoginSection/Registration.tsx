@@ -2,7 +2,12 @@
 import { AppDispatch } from "@/app/store";
 import { appStateActions } from "@/app/store/appStateSlice";
 
-import { authActions, registerNewUser, IAuthSlice } from "@/app/store/authSlice";
+import {
+  authActions,
+  registerNewUser,
+  IAuthSlice,
+  sendConfirmationEmail,
+} from "@/app/store/authSlice";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,9 +23,16 @@ const Registration = () => {
   const passValue = useSelector((state: IAuthSlice) => state.authState.registeredUser.password);
 
   const registrationStatus = useSelector((state: IAuthSlice) => state.authState.registerUserStatus);
+  const sendConfirmationEmailStatus = useSelector(
+    (state: IAuthSlice) => state.authState.sendConfirmationEmailStatus
+  );
 
   const errorRegistrationMessage = useSelector(
     (state: IAuthSlice) => state.authState.registerUserErrorMessage
+  );
+
+  const errorSendConfirmationEmail = useSelector(
+    (state: IAuthSlice) => state.authState.sendConfirmationEmailErrorMessage
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +59,8 @@ const Registration = () => {
 
   const registrationUserHandler = (e: any) => {
     e.preventDefault();
-    dispatch(registerNewUser({ name: nameValue, email: emailValue, password: passValue }));
+    // dispatch(registerNewUser({ name: nameValue, email: emailValue, password: passValue }));
+    dispatch(sendConfirmationEmail({ name: nameValue, email: emailValue, password: passValue }));
   };
 
   useEffect(() => {
@@ -143,19 +156,19 @@ const Registration = () => {
           </div>
 
           <div className=" py-4">
-            {registrationStatus === "loading" && (
+            {sendConfirmationEmailStatus === "loading" && (
               <h1 className=" text-center px-3 rounded-md py-3 bg-cyan-200">
-                Регистрация нового пользователя
+                Формирование письма с подтверждением регистрации
               </h1>
             )}
-            {registrationStatus === "resolve" && (
+            {sendConfirmationEmailStatus === "resolve" && (
               <h1 className=" text-center rounded-md   px-3 py-3 bg-green-200">
-                Пользователь успешно зарегистрирован
+                Письмо с подтверждением успешно отправлено на почту {emailValue}
               </h1>
             )}
-            {registrationStatus === "error" && (
+            {sendConfirmationEmailStatus === "error" && (
               <h1 className=" text-center rounded-md   px-3 py-3 bg-rose-500">
-                {`Ошибка регистрации ${errorRegistrationMessage}`}
+                {`Ошибка регистрации ${errorSendConfirmationEmail}`}
               </h1>
             )}
           </div>

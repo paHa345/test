@@ -9,14 +9,25 @@ export async function POST(req: NextRequest) {
 
     await connectMongoDB();
 
-    const hashedPassword = await hash(body.password, 12);
+    // const hashedPassword = await hash(body.password, 12);
 
-    const addedUser = await User.create({
-      name: body.name,
-      email: body.email,
-      password: hashedPassword,
-    });
+    // const addedUser = await User.create({
+    //   name: body.name,
+    //   email: body.email,
+    //   password: hashedPassword,
+    // });
 
+    const addedUser = await User.find({ email: body.email });
+    if (addedUser.length !== 0) {
+      return NextResponse.json({ message: "Такой пользователь уже существует" }, { status: 400 });
+    }
+
+    if (body.name.length < 6 || body.password.length < 6) {
+      return NextResponse.json(
+        { message: "Логин или пароль должны быть длиннее 6 символов" },
+        { status: 422 }
+      );
+    }
     return NextResponse.json({ message: "Success", result: addedUser });
   } catch (error: any) {
     if (error.code === 11000) {

@@ -53,7 +53,8 @@ export async function POST(req: NextRequest) {
       text: ` | Sent from: ${body.email}`,
       html: `<div>Для подтверждения регистрации перейдите по ссылке</div> 
 
-      <a href=${process.env.HOST}'/auth/confirmUserSignIn/'${token}>Подтверждение регистрации</a>
+      <a href=${process.env.HOST}/auth/confirmUserSignIn/${token}>Подтверждение регистрации</a>
+      <p>${process.env.HOST}/auth/confirmUserSignIn/${token}</p>
   `,
     };
 
