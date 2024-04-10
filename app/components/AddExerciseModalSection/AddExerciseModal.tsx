@@ -43,16 +43,16 @@ const AddExerciseModal = () => {
     ) : (
       addedExercises?.map((addedExercise: IAddedExercises, index) => {
         return (
-          <div className="flex flex-row" key={`${addedExercise.id}_${index}`}>
+          <div className="flex flex-row" key={`${addedExercise.exercise}_${index}`}>
             <div className=" w-3/5">
-              <Link href={`../catalog/${addedExercise.id}`}>{addedExercise.name}</Link>
+              <Link href={`../catalog/${addedExercise.exercise}`}>{addedExercise.name}</Link>
             </div>
             <div className=" w-1/5 flex flex-col justify-center">
               <label htmlFor="">Подходов</label>
               <div className=" self-center">
                 <input
                   data-index={index}
-                  data-exerciseid={addedExercise.id}
+                  data-exerciseid={addedExercise.exercise}
                   className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeSetsHandler}
                   type="number"
@@ -65,7 +65,7 @@ const AddExerciseModal = () => {
               <div className=" self-center">
                 <input
                   data-index={index}
-                  data-exerciseid={addedExercise.id}
+                  data-exerciseid={addedExercise.exercise}
                   className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                   onChange={changeRepsHandler}
                   type="number"
