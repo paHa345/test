@@ -141,10 +141,10 @@ const addNewWorkout = () => {
         return (
           <div
             className="flex flex-row border-solid border-gray-200 rounded-md border-2 px-3 py-3 shadow-cardElementShadow"
-            key={`${addedExercise.id}_${index}`}
+            key={`${addedExercise.exercise}_${index}`}
           >
             <div className=" w-3/5">
-              <Link className=" hover:underline" href={`../catalog/${addedExercise.id}`}>
+              <Link className=" hover:underline" href={`../catalog/${addedExercise.exercise}`}>
                 {addedExercise.name}
               </Link>
             </div>
@@ -154,7 +154,7 @@ const addNewWorkout = () => {
                 <div className=" self-center border-current ">
                   <input
                     data-index={index}
-                    data-exerciseid={addedExercise.id}
+                    data-exerciseid={addedExercise.exercise}
                     className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                     onChange={changeSetsHandler}
                     type="number"
@@ -167,7 +167,7 @@ const addNewWorkout = () => {
                 <div className=" self-center">
                   <input
                     data-index={index}
-                    data-exerciseid={addedExercise.id}
+                    data-exerciseid={addedExercise.exercise}
                     className="w-4/5  hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
                     onChange={changeRepsHandler}
                     type="number"

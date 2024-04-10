@@ -10,8 +10,8 @@ const workoutSchema = new mongoose.Schema<IWorkoutSchema>({
   exercisesArr: [
     {
       name: { type: String, required: true },
-      exercise: { type: String,ref: Exercise, required: true },
-      exerciseId: { type: String, required: true},
+      exercise: { type: String, ref: Exercise, required: true },
+      exerciseId: { type: String, required: true },
       sets: { type: Number, required: true },
       reps: { type: Number, required: true },
     },

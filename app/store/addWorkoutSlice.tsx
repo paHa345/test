@@ -7,6 +7,7 @@ import { useState } from "react";
 export const addWorkout = createAsyncThunk(
   "addWorkoutState/addWorkout",
   async function (currentWorkout: any, { rejectWithValue, dispatch }) {
+    // console.log(currentWorkout);
     try {
       const req = await fetch("./../api/workout/addNewWorkout", {
         method: "POST",
@@ -48,15 +49,19 @@ export enum addWorkoutFetchStatus {
 }
 
 export interface IAddedExercises {
-  id: string | { id: {id
-    : 
-    string,
-    name
-    : 
-    string,
-    _id
-    : 
-    number}; name: string; reps: number; sets: number; _id: number };
+  // id:
+  //   | string
+  //   | {
+  //       id: { id: string; name: string; _id: number };
+  //       exerciseId: string;
+  //       exercise: string;
+  //       name: string;
+  //       reps: number;
+  //       sets: number;
+  //       _id: number;
+  //     };
+  exerciseId: string;
+  exercise: string;
   name: string;
   sets: number;
   reps: number;
@@ -112,7 +117,9 @@ export const addWorkoutSlice = createSlice({
     },
     addExerciseToWorkout(state, action) {
       state.currentAddedWorkout.exercises.push({
-        id: action.payload.id,
+        exerciseId: action.payload.id,
+        exercise: action.payload.id,
+        // id: action.payload.id,
         sets: 0,
         reps: 0,
         name: action.payload.name,

@@ -9,6 +9,8 @@ export async function POST(req: NextRequest) {
     await connectMongoDB();
     const workout = await req.json();
 
+    console.log(workout);
+
     const addedWorkout = await Workout.create(workout);
 
     return NextResponse.json({ message: "sucess", result: addedWorkout });
