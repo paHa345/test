@@ -22,8 +22,9 @@ export const loginUser = createAsyncThunk(
       //   }
 
       console.log(result);
+      console.log(process.env.HOST);
 
-      const currentUser = await fetch("./api/users/getUserByEmail");
+      const currentUser = await fetch(`/api/users/getUserByEmail`);
       const data = await currentUser.json();
       console.log(data);
       dispatch(userActions.setCurrentUserId(data.result._id));

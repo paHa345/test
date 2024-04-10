@@ -33,20 +33,11 @@ export const authOptions: AuthOptions = {
           throw new Error("Такого пользователя не существует");
         }
         if (credentials) {
+          console.log(`Password from credentials ${credentials?.password}`);
+          console.log(`Password from user ${user.password}`);
           const validPassword = await compare(credentials?.password, user.password);
-          console.log(
-            await compare(
-              "54.rykhtapa@rosstat.gov.ru",
-              "$2a$12$cMC8nr5pLBwbPVu5UOGfi.EBuwr3CHX2lgFmFgu0BXqSzdzbtpbGa"
-            )
-          );
-          // const pass: any = decode(
-          //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjU0LnJ5a2h0YXBhQHJvc3N0YXQuZ292LnJ1IiwibmFtZSI6IjU0LnJ5a2h0YXBhQHJvc3N0YXQuZ292LnJ1IiwicGFzc3dvcmQiOiIkMmEkMTIkY01DOG5yNXBMQndiUFZ1NVVPR2ZpLkVCdXdyM0NIWDJsZ0ZtRmd1MEJYcVN6ZHpidHBiR2EiLCJpYXQiOjE3MTI3MjA3MzQsImV4cCI6MTcxMjcyNDMzNH0.nEG3CK2iYOPZa4G5h76doVFVTSRd0CHfH6dADEPGB8A"
-          // );
-
-          // console.log(pass.password);
-
-          if (!validPassword) {
+          console.log(validPassword);
+          if (!validPassword && credentials?.password !== user.password) {
             throw new Error("Неверный пароль");
           }
         }

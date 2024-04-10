@@ -11,15 +11,22 @@ import { setCurrentUserWorkouts } from "@/app/store/appStateSlice";
 
 const ConfirmEmailMain = () => {
   const loginUserStatus = useSelector((state: IAuthSlice) => state.authState.loginUserstatus);
+  const registerUserStatus = useSelector((state: IAuthSlice) => state.authState.registerUserStatus);
+
   const params: any = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const token: any = decode(params.confirmToken);
+  console.log(token.password);
   useEffect(() => {
     dispatch(registerNewUser(params.confirmToken));
-    dispatch(loginUser({ login: token.email, password: token.password }));
-
-    dispatch(setCurrentUserWorkouts());
   }, []);
+
+  useEffect(() => {
+    if (registerUserStatus === "resolve") {
+      dispatch(loginUser({ login: token.email, password: token.password }));
+      dispatch(setCurrentUserWorkouts());
+    }
+  }, [registerUserStatus]);
 
   useEffect(() => {
     if (loginUserStatus === "resolve") {

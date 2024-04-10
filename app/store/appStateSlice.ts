@@ -54,7 +54,7 @@ export const setCurrentUserWorkouts = createAsyncThunk(
   "appState/setCurrentUserWorkouts",
   async function (_, { rejectWithValue, dispatch }) {
     try {
-      const req = await fetch("../api/workout/getCurrentUserWorkouts");
+      const req = await fetch(`/api/workout/getCurrentUserWorkouts`);
       if (!req.ok) {
         throw new Error("Ошибка сервера");
       }
