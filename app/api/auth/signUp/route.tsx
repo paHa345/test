@@ -2,6 +2,7 @@ import User from "@/app/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { connectMongoDB } from "@/app/libs/MongoConnect";
+import { decode } from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,12 +10,16 @@ export async function POST(req: NextRequest) {
 
     await connectMongoDB();
 
-    const hashedPassword = await hash(body.password, 12);
+    // console.log("Body" + decode(body.password));
+    // console.log(body);
+    // // const userData = decode()
+
+    // console.log("Hash" + hashedPassword);
 
     const addedUser = await User.create({
       name: body.name,
       email: body.email,
-      password: hashedPassword,
+      password: body.password,
     });
 
     return NextResponse.json({ message: "Success", result: addedUser });

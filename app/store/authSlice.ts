@@ -9,6 +9,7 @@ import jwt, { JsonWebTokenError, decode } from "jsonwebtoken";
 export const loginUser = createAsyncThunk(
   "authState/loginUser",
   async function (loginUser: any, { rejectWithValue, dispatch }) {
+    console.log(loginUser);
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -80,8 +81,7 @@ export const registerNewUser = createAsyncThunk(
   "authState/registerNewUser",
   async function (registerUser: any, { rejectWithValue, dispatch }) {
     const registerUserData: any = decode(registerUser);
-    console.log(registerUserData.exp * 1000);
-    console.log(Date.now());
+    console.log(registerUserData.password);
 
     try {
       if (registerUserData.exp * 1000 < Date.now()) {

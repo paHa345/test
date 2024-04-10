@@ -8,4 +8,6 @@ import { authOptions } from "@/app/utils/authOptions";
 
 const handler = NextAuth(authOptions);
 
+console.log("dfdf");
+
 export { handler as GET, handler as POST };
