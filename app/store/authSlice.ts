@@ -16,23 +16,34 @@ export const loginUser = createAsyncThunk(
         email: loginUser.login,
         password: loginUser.password,
       });
+
+      console.log(result);
+
       //   if (!result?.error) {
       //     //   router.replace("/my");
       //     redirect("my");
       //   }
 
-      console.log(result);
-      console.log(process.env.HOST);
-
-      const currentUser = await fetch(`/api/users/getUserByEmail`);
-      const data = await currentUser.json();
-      console.log(data);
-      dispatch(userActions.setCurrentUserId(data.result._id));
-
+      // console.log(result);
+      // console.log(process.env.HOST);
       if (result?.error) {
         dispatch(authActions.setLoginUserErrorMessage(result));
         throw new Error(`${result.error}`);
       }
+
+      const currentUser = await fetch(`/api/users/getUserByEmail`);
+      if (currentUser.status !== 200) {
+        // dispatch(
+        //   authActions.setLoginUserErrorMessage(
+        //     "Не удалось войти в систему, повторите попытку позднее"
+        //   )
+        // );
+
+        throw new Error("Не удалось войти в систему, повторите попытку позднее");
+      }
+      const data = await currentUser.json();
+      dispatch(userActions.setCurrentUserId(data.result._id));
+
       return result;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -69,6 +80,15 @@ export const sendConfirmationEmail = createAsyncThunk(
         },
         body: JSON.stringify(registerUserData),
       });
+
+      console.log(confirmationUserReq);
+      if (confirmationUserReq.status !== 200) {
+        console.log(validationUserReq);
+        throw new Error(
+          "Не удалось отправить письмо с подтверждением на электронную почту. Повторите попытку позднее"
+        );
+      }
+
       const confirmationUser = await confirmationUserReq.json();
 
       return confirmationUserReq;

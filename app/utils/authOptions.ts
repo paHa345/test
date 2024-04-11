@@ -33,10 +33,10 @@ export const authOptions: AuthOptions = {
           throw new Error("Такого пользователя не существует");
         }
         if (credentials) {
-          console.log(`Password from credentials ${credentials?.password}`);
-          console.log(`Password from user ${user.password}`);
+          // console.log(`Password from credentials ${credentials?.password}`);
+          // console.log(`Password from user ${user.password}`);
           const validPassword = await compare(credentials?.password, user.password);
-          console.log(validPassword);
+          // console.log(validPassword);
           if (!validPassword && credentials?.password !== user.password) {
             throw new Error("Неверный пароль");
           }
