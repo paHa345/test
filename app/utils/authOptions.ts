@@ -1,10 +1,8 @@
 import { compare } from "bcryptjs";
-// import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth, { AuthOptions } from "next-auth";
 import User from "../models/UserModel";
 import { connectMongoDB } from "../libs/MongoConnect";
-import jwt, { decode } from "jsonwebtoken";
 
 export const authOptions: AuthOptions = {
   pages: {

@@ -85,12 +85,12 @@ const EditExerciseCard = () => {
       setUpdateImageNotification("Слишком большой объём выбранного изображения");
       return;
     }
-    console.log(e.target.files);
+    // console.log(e.target.files);
     const objectURL = URL.createObjectURL(e.target.files[0]);
     dispatch(editExerciseActions.setEditedExerciseImage(objectURL));
     setUpdateImageNotification("Изображение обновлено");
 
-    console.log(inputFileRef.current?.files[0].size);
+    // console.log(inputFileRef.current?.files[0].size);
   };
 
   const editedExerciseMuscleGroups: any = editedExercise?.muscleGroups

@@ -65,6 +65,8 @@ const AddExerciseForm = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const [imageURL, setImageURL] = useState("");
+  const [addImageNotification, setAddImageNotification] = useState("");
+  const [addedExerciseImage, setAddedExerciseImage] = useState<string | undefined>(undefined);
 
   const addedExercise = useSelector(
     (state: IAddExerciseSlice) => state.addExerciseState.currentAddedExercise
@@ -92,6 +94,25 @@ const AddExerciseForm = () => {
       </div>
     );
   });
+
+  const changeImageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
+    if (!inputFileRef.current?.files) {
+      return;
+    }
+    if (!e.target.files || e.target.files.length === 0) {
+      return;
+    }
+    if (inputFileRef.current?.files[0].size > 100000) {
+      setAddImageNotification("Слишком большой объём выбранного изображения");
+      return;
+    }
+
+    const objectURL = URL.createObjectURL(e.target.files[0]);
+    // console.log(objectURL);
+    setAddedExerciseImage(objectURL);
+    setAddImageNotification("Изображение добавлено");
+  };
 
   const addExerciseButtonHandler = async () => {
     // console.log(addedExercise);
@@ -174,7 +195,21 @@ const AddExerciseForm = () => {
       {/* <ExerciseName></ExerciseName> */}
       <div className=" pt-10 pb-10">
         {exerciseInputEl}
-        <input name="file" ref={inputFileRef} type="file" required />
+        <input name="file" onChange={changeImageHandler} ref={inputFileRef} type="file" required />
+        {addImageNotification && <h1 className=" py-2">{addImageNotification}</h1>}
+
+        {addedExerciseImage && (
+          <div className=" sm:w-2/5 w-4/5 justify-self-center pt-5 pb-5">
+            <img
+              className=" w-full"
+              src={addedExerciseImage}
+              alt={addedExerciseImage}
+              width={200}
+              height={200}
+            />
+          </div>
+        )}
+
         {/* {blob && (
           <div>
             Blob url: <a href={blob.url}>{blob.url}</a>
