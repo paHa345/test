@@ -102,6 +102,7 @@ export const initAddExerciseState: IAddExerciseState = {
   currentAddedExercise: {
     name: "",
     type: null,
+    raiting: null,
     muscleGroups: [],
     video: null,
     image: null,
@@ -138,6 +139,9 @@ export const addExerciseSlice = createSlice({
       }
       if (action.payload.id === "type") {
         state.currentAddedExercise.type = action.payload.value;
+      }
+      if (action.payload.id === "raiting") {
+        state.currentAddedExercise.raiting = action.payload.value;
       }
       if (action.payload.id === "mainGroup") {
         state.currentAddedExercise.mainGroup = action.payload.value;

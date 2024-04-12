@@ -8,7 +8,7 @@ import {
   editExerciseAndUpdate,
 } from "@/app/store/editExerciseSlice";
 import { IUserSlice, userActions } from "@/app/store/userSlice";
-import { IExercise, mainMuscleGrourArr } from "@/app/types";
+import { IExercise, mainMuscleGrourArr, raitingExerciseArr } from "@/app/types";
 import { faHourglass1 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -128,13 +128,25 @@ const EditExerciseCard = () => {
       </option>
     );
   });
+
+  const raitingExerciseEl = raitingExerciseArr.map((raitingEl) => {
+    return (
+      <option key={raitingEl.nameEn} value={raitingEl.nameEn}>
+        {raitingEl.nameRu}
+      </option>
+    );
+  });
+
   const selectMainMuscleGroupHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.currentTarget.value);
     const currentSelectedMainMuscleGroup = mainMuscleGrourArr.find((muscleGroup) => {
       return muscleGroup.nameEn === e.currentTarget.value;
     });
 
     dispatch(editExerciseActions.setEditedExerciseMainMuscleGroup(currentSelectedMainMuscleGroup));
+  };
+
+  const selectRaitingHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(editExerciseActions.setEditedExerciseRaiting(e.currentTarget.value));
   };
 
   useEffect(() => {
@@ -238,10 +250,6 @@ const EditExerciseCard = () => {
                 Тип упражнения
               </label>
             </span>
-
-            {/* <div className="">
-              Рейтинг: <span className=" text-lg font-bold">{editedExercise?.raiting}</span>
-            </div> */}
           </div>
 
           <div className=" mt-7 relative px-2 py-10 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200  flex flex-col gap-5 items-center justify-around">
@@ -265,6 +273,29 @@ const EditExerciseCard = () => {
                 className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
               >
                 Основная мышечная группа
+              </label>
+            </span>
+          </div>
+
+          <div className=" mt-7 relative px-2 py-10 hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200  flex flex-col gap-5 items-center justify-around">
+            <select
+              className=" hover:border-slate-400 focus:border-slate-400 border-solid rounded border-2  border-slate-200"
+              onChange={selectRaitingHandler}
+              name={"type"}
+              id={"type"}
+            >
+              <option value={"NOT"}>Выберете значение</option>
+              {raitingExerciseEl}
+            </select>
+
+            <p className=" bg-mainGroupColour py-1 px-2 rounded-md">{editedExercise?.raiting}</p>
+
+            <span className=" ">
+              <label
+                htmlFor="type"
+                className="absolute transition-all ease-in-out z-10 -top-4 text-2xl font-bold left-0 bg-white scale-95"
+              >
+                Базовый рейтинг упражнения
               </label>
             </span>
           </div>

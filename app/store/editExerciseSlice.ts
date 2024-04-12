@@ -92,6 +92,11 @@ export const editExerciseSlice = createSlice({
         state.editedExercise.type = action.payload;
       }
     },
+    setEditedExerciseRaiting(state, action) {
+      if (state.editedExercise) {
+        state.editedExercise.raiting = Number(action.payload);
+      }
+    },
     setEditedExerciseMainMuscleGroup(
       state,
       action: {

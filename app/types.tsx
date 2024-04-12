@@ -7,6 +7,14 @@ export const mainMuscleGrourArr = [
   { nameRu: "Спина", nameEn: "back" },
 ];
 
+export const raitingExerciseArr = [
+  { nameRu: "1", nameEn: "1" },
+  { nameRu: "2", nameEn: "2" },
+  { nameRu: "3", nameEn: "3" },
+  { nameRu: "4", nameEn: "4" },
+  { nameRu: "5", nameEn: "5" },
+];
+
 export interface asyncThunkStatus {}
 
 export interface IExercises {}
