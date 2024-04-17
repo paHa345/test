@@ -25,6 +25,7 @@ const ExerciseCardMain = ({
   mainGroup,
   mainGroupRu,
   comments,
+  avgUsersRaiting,
 }: IExercise) => {
   const imageName = image || "";
 
@@ -95,6 +96,17 @@ const ExerciseCardMain = ({
             <div className="">
               Рейтинг: <span className=" text-lg font-bold">{raiting}</span>
             </div>
+            {avgUsersRaiting ? (
+              <div className="">
+                Средний рейтинг пользователей:{" "}
+                <span className=" text-lg font-bold">{avgUsersRaiting}</span>
+              </div>
+            ) : (
+              <div className="">
+                Средний рейтинг пользователей:{" "}
+                <span className=" text-lg font-bold">Нет оценок</span>
+              </div>
+            )}
           </div>
 
           <div className=" text-xl leading-7">

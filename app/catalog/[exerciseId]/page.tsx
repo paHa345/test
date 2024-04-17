@@ -68,6 +68,7 @@ export default async function Page({ params: { exerciseId } }: { params: { exerc
               mainGroup={exercise.result?.mainGroup}
               mainGroupRu={exercise.result?.mainGroupRu}
               comments={exercise.result.commentsArr}
+              avgUsersRaiting={exercise.result?.avgUsersRaiting}
             ></ExerciseCardMain>
           )}
         </Suspense>

@@ -43,6 +43,7 @@ export interface IExercise {
   mainGroupRu: string | undefined;
   createdUserId?: string | undefined;
   comments: IComment[] | undefined;
+  avgUsersRaiting?: string;
 }
 
 export interface IWorkout {
@@ -111,7 +112,6 @@ export interface IExerciseSchema {
   name: String;
   image?: String;
   imageFile?: File | undefined;
-
   isBest?: Boolean;
   type: String;
   raiting?: Number;
@@ -122,6 +122,7 @@ export interface IExerciseSchema {
   mainGroupRu: String;
   commentsArr?: String[];
   createdUserId?: String;
+  avgUsersRaiting?: String;
 }
 
 export interface ICommentSchema {
