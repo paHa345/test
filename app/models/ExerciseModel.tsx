@@ -1,7 +1,6 @@
 import { IExerciseSchema } from "../types";
 import mongoose from "mongoose";
 import Comment from "./CommentModel";
-import Workout from "./WorkoutModel";
 
 const execiseSchema = new mongoose.Schema<IExerciseSchema>({
   id: { type: String, required: true },
@@ -16,7 +15,7 @@ const execiseSchema = new mongoose.Schema<IExerciseSchema>({
   description: { type: String, required: true },
   mainGroup: { type: String, required: true },
   mainGroupRu: { type: String, required: true },
-  commentsArr: [{ type: mongoose.Types.ObjectId, required: false, ref: Comment }],
+  commentsArr: [{ type: mongoose.Schema.Types.ObjectId, required: false, ref: Comment }],
   createdUserId: { type: String, required: false },
   avgUsersRaiting: { type: String, required: false },
 });

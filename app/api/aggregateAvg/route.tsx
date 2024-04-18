@@ -28,6 +28,8 @@ export async function GET(req: NextRequest) {
     ]);
     console.log(data);
 
+    // const data = await Comment.find();
+
     return NextResponse.json({ message: "Success", result: data });
   } catch (error) {
     return NextResponse.json({ message: "Error" }, { status: 400 });
