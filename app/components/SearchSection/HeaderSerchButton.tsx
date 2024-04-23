@@ -18,25 +18,25 @@ const HeaderSerchButton = () => {
 
   const searchFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (searchQuery !== null) {
-      const params = new URLSearchParams(searchParams);
-      console.log(params);
-      if (searchQuery) {
-        params.set("query", searchQuery);
-      } else {
-        params.delete("query");
-      }
-      if ((searchQuery || "").trim().length < 3) {
-        return;
-      }
-      if ((searchQuery || "").trim().length !== 0) {
-        console.log("replace");
-        if (searchQuery !== null) {
-          replace(`/search?query=${searchQuery.trim()}`);
-          dispatch(findExerciseAndSetInState(searchParams.get("query")));
-        }
-      }
-    }
+    // if (searchQuery !== null) {
+    //   const params = new URLSearchParams(searchParams);
+    //   console.log(params);
+    //   if (searchQuery) {
+    //     params.set("query", searchQuery);
+    //   } else {
+    //     params.delete("query");
+    //   }
+    //   if ((searchQuery || "").trim().length < 3) {
+    //     return;
+    //   }
+    //   if ((searchQuery || "").trim().length !== 0) {
+    //     console.log("replace");
+    //     if (searchQuery !== null) {
+    //       replace(`/search?query=${searchQuery.trim()}`);
+    //       dispatch(findExerciseAndSetInState(searchParams.get("query")));
+    //     }
+    //   }
+    // }
   };
 
   return (
