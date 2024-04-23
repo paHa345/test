@@ -8,7 +8,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  console.log(session?.user?.email);
   if (!session) {
     return NextResponse.json(
       { message: "Только для зарегистрированных пользователей" },

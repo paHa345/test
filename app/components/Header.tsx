@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faIdCard, faDumbbell, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { useSession } from "next-auth/react";
+import HeaderSerchButton from "./SearchSection/HeaderSerchButton";
 
 const Header = () => {
   const session = useSession();
@@ -22,13 +23,7 @@ const Header = () => {
             ></Image>
           </div>
         </Link>
-        <div className=" absolute top-14 right-10 md:right-0  md:static">
-          <input
-            className=" px-2 py-2 border border-green-950 rounded-m bg-slate-100 hover:bg-slate-200"
-            type="text"
-            placeholder="Поиск упражнения"
-          />
-        </div>
+        <HeaderSerchButton></HeaderSerchButton>
         <div></div>
         <div className="pr-0 flex justify-end md:pr-10 md:justify-end gap-10 basis-1/2">
           <div className="">
