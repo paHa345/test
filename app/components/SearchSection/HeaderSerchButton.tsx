@@ -7,7 +7,7 @@ import { findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
 
 const HeaderSerchButton = () => {
   const searchParams = useSearchParams();
-  // const { replace } = useRouter();
+  const { replace } = useRouter();
   // const [searchQuery, setSearchQuery] = useState("");
 
   // const changeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
