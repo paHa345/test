@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
-import { findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
+// import { findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
 
 const HeaderSerchButton = () => {
   const searchParams = useSearchParams();

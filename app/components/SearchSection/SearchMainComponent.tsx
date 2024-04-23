@@ -1,6 +1,6 @@
 "use client";
 import { IAppSlice } from "@/app/store/appStateSlice";
-import { ISearchExerciseSlice, findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
+// import { ISearchExerciseSlice, findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
 import { useSearchParams } from "next/navigation";
 
 import React, { useEffect } from "react";
@@ -12,10 +12,10 @@ const SearchMainComponent = () => {
   const searchParams = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   console.log(searchParams.get("query"));
-  const findedExercises = useSelector(
-    (state: ISearchExerciseSlice) => state.searchExerciseState.searchExercises
-  );
-  console.log(findedExercises);
+  // const findedExercises = useSelector(
+  //   (state: ISearchExerciseSlice) => state.searchExerciseState.searchExercises
+  // );
+  // console.log(findedExercises);
   // useEffect(() => {
   //   if (searchParams.get("query") !== null) {
   //     dispatch(findExerciseAndSetInState(searchParams.get("query")));
@@ -23,7 +23,7 @@ const SearchMainComponent = () => {
   // }, []);
   return (
     <>
-      {searchParams.get("query") ? (
+      {/* {searchParams.get("query") ? (
         <div className="py-5 flex justify-center">
           <h1 className=" mx-auto">
             {" "}
@@ -35,7 +35,7 @@ const SearchMainComponent = () => {
         </div>
       ) : (
         <h1>Введите поисковый запрос</h1>
-      )}
+      )} */}
       {/* <p>{testSearch}</p> */}
     </>
   );
