@@ -17,20 +17,21 @@ const HeaderSerchButton = () => {
 
   const searchFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const params = new URLSearchParams(searchParams);
-    console.log(params);
-    if (searchQuery) {
-      params.set("query", searchQuery);
-    } else {
-      params.delete("query");
-    }
-    if (searchQuery.trim().length < 3) {
-      return;
-    }
-    if (searchQuery.trim().length !== 0) {
-      replace(`/search?query=${searchQuery.trim()}`);
-      dispatch(findExerciseAndSetInState(searchParams.get("query")));
-    }
+    // const params = new URLSearchParams(searchParams);
+    // console.log(params);
+    // if (searchQuery) {
+    //   params.set("query", searchQuery);
+    // } else {
+    //   params.delete("query");
+    // }
+    // if (searchQuery.trim().length < 3) {
+    //   return;
+    // }
+    // if (searchQuery.trim().length !== 0) {
+    //   console.log("replace");
+    //   replace(`/search?query=${searchQuery.trim()}`);
+    //   dispatch(findExerciseAndSetInState(searchParams.get("query")));
+    // }
   };
 
   return (
