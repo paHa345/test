@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faIdCard, faDumbbell, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { useSession } from "next-auth/react";
-import HeaderSerchButton from "./SearchSection/HeaderSerchButton";
+// import HeaderSerchButton from "./SearchSection/HeaderSerchButton";
 
 const Header = () => {
   const session = useSession();
@@ -23,7 +23,7 @@ const Header = () => {
             ></Image>
           </div>
         </Link>
-        <HeaderSerchButton></HeaderSerchButton>
+        {/* <HeaderSerchButton></HeaderSerchButton> */}
         <div></div>
         <div className="pr-0 flex justify-end md:pr-10 md:justify-end gap-10 basis-1/2">
           <div className="">
