@@ -6,9 +6,9 @@ import { AppDispatch } from "@/app/store";
 import { findExerciseAndSetInState } from "@/app/store/searchExerciseSlice";
 
 const HeaderSerchButton = () => {
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string | null>("");
+  // const searchParams = useSearchParams();
+  // const { replace } = useRouter();
+  // const [searchQuery, setSearchQuery] = useState<string | null>("");
 
   // const changeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setSearchQuery(e.target.value);
