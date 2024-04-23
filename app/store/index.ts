@@ -6,7 +6,7 @@ import { authSlice } from "./authSlice";
 import { userSlice } from "./userSlice";
 import { editExerciseSlice } from "./editExerciseSlice";
 import { currentExerciseSlice } from "./currentExerciseSlice";
-import { searchExerciseSlice } from "./searchExerciseSlice";
+// import { searchExerciseSlice } from "./searchExerciseSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +17,7 @@ const store = configureStore({
     userState: userSlice.reducer,
     editExerciseState: editExerciseSlice.reducer,
     currentExerciseState: currentExerciseSlice.reducer,
-    searchExerciseState: searchExerciseSlice.reducer,
+    // searchExerciseState: searchExerciseSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
