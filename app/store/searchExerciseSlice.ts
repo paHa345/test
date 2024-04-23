@@ -1,18 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IExercise } from "../types";
 
-// export const findExerciseAndSetInState = createAsyncThunk(
-//   "searchExerciseState/findExerciseAndSetInState",
-//   async function (searchQuery: string | null, { rejectWithValue, dispatch }) {
-//     try {
-//       const findExerciseReq = await fetch(`/api/exercises/findExercises/${searchQuery}`);
-//       const data = await findExerciseReq.json();
-//       console.log(data);
-//     } catch (error) {
-//       return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
-//     }
-//   }
-// );
+export const findExerciseAndSetInState = createAsyncThunk(
+  "searchExerciseState/findExerciseAndSetInState",
+  async function (searchQuery: string | null, { rejectWithValue, dispatch }) {
+    try {
+      const findExerciseReq = await fetch(`/api/exercises/findExercises/${searchQuery}`);
+      const data = await findExerciseReq.json();
+      console.log(data);
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+    }
+  }
+);
 
 export enum searchExerciseFetchStatus {
   Ready = "ready",
@@ -52,18 +52,18 @@ export const searchExerciseSlice = createSlice({
       console.log("first");
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(findExerciseAndSetInState.pending, (state) => {
-  //       state.searchExerciseStatus = searchExerciseFetchStatus.Loading;
-  //     })
-  //     .addCase(findExerciseAndSetInState.fulfilled, (state) => {
-  //       state.searchExerciseStatus = searchExerciseFetchStatus.Resolve;
-  //     })
-  //     .addCase(findExerciseAndSetInState.rejected, (state) => {
-  //       state.searchExerciseStatus = searchExerciseFetchStatus.Error;
-  //     });
-  // },
+  extraReducers: (builder) => {
+    builder
+      .addCase(findExerciseAndSetInState.pending, (state) => {
+        state.searchExerciseStatus = searchExerciseFetchStatus.Loading;
+      })
+      .addCase(findExerciseAndSetInState.fulfilled, (state) => {
+        state.searchExerciseStatus = searchExerciseFetchStatus.Resolve;
+      })
+      .addCase(findExerciseAndSetInState.rejected, (state) => {
+        state.searchExerciseStatus = searchExerciseFetchStatus.Error;
+      });
+  },
 });
 
 export const searchExerciseActions = searchExerciseSlice.actions;
