@@ -15,7 +15,7 @@ const HeaderSerchButton = () => {
   //   console.log(searchQuery);
   // };
 
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   const searchFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
