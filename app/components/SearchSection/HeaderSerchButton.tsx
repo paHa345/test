@@ -9,11 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const HeaderSerchButton = () => {
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
-  const { push } = useRouter();
+  // const searchParams = useSearchParams();
+  // const { replace } = useRouter();
+  // const { push } = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   const changeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -21,18 +21,18 @@ const HeaderSerchButton = () => {
 
   const searchFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!searchQuery?.trim().length) {
-      return;
-    }
-    if (searchQuery?.trim().length < 3) {
-      return;
-    }
+    // if (!searchQuery?.trim().length) {
+    //   return;
+    // }
+    // if (searchQuery?.trim().length < 3) {
+    //   return;
+    // }
 
-    if (searchQuery !== null) {
-      push(`/search?query=${String(searchQuery).trim()}&page=1`);
-    }
+    // if (searchQuery !== null) {
+    //   push(`/search?query=${String(searchQuery).trim()}&page=1`);
+    // }
 
-    setSearchQuery("");
+    // setSearchQuery("");
   };
 
   return (
