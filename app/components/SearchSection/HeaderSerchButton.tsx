@@ -21,18 +21,18 @@ const HeaderSerchButton = () => {
 
   const searchFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (!searchQuery?.trim().length) {
-    //   return;
-    // }
-    // if (searchQuery?.trim().length < 3) {
-    //   return;
-    // }
+    if (!searchQuery?.trim().length) {
+      return;
+    }
+    if (searchQuery?.trim().length < 3) {
+      return;
+    }
 
-    // if (searchQuery !== null) {
-    //   push(`/search?query=${String(searchQuery).trim()}&page=1`);
-    // }
+    if (searchQuery !== null) {
+      push(`/search?query=${String(searchQuery).trim()}&page=1`);
+    }
 
-    // setSearchQuery("");
+    setSearchQuery("");
   };
 
   return (
